@@ -18,6 +18,8 @@ cd $RELEASE_DIR
 
 cat << EOF > $RELEASE_DIR/run.sh
 
+pkill -9 node
+
 cd $RELEASE_DIR
 export HOSTNAME=`hostname`
 export ROOT_URL=http://ingenio.cubestudio.co
