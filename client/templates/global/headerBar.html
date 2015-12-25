@@ -1,5 +1,22 @@
 <template name="headerBar">
-	<div id="headerBar">
-		HEADER
+	<div>
+		<div id="headerBar" class="container-fluid">
+			<a href="/">
+				<img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
+			</a>
+			<ul>
+				<li><a href="">Inicio</a></li>
+				<li><a href="">Productos</a></li>
+				<li><a href="">Preguntas<br>Frecuentes</a></li>
+				<li><a href="">Contáctenos</a></li>
+				<li><a href="">Regístrate</a></li>
+				<li><a href="">Ingreso</a></li>
+			</ul>
+		</div>
+		<div id="searchBar" class="container-fluid">
+			<div style="float: right">
+			<button id="search">Buscar</button>
+		    </div>
+		</div>
 	</div>
 </template>

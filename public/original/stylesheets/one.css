@@ -1,3 +1,23 @@
+/**
+Estilo por defecto y básico para observar la estructura del contenido
+en HTML sin diseño.
+*/
+
 h1 {
 	color: #ff0000;
+}
+
+#headerBar {
+	color: #ffffff;
+	background-color: #000000;
+}
+
+#headerBar img {
+	vertical-align: top;
+}
+
+#footer {
+	color: #ffffff;
+	background-color: #000000;
+	text-align: center;
 }

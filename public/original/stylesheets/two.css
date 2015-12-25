@@ -1,3 +1,104 @@
+/**
+Estilo de prueba inicial basado en el boceto de Manuel Lemes de diciembre 20 de 2015
+enviado en formato PDF.
+
+Referencias:
+[.wW3SC2015a] www.w3schools.com/css/css_navbar.asp
+*/
+
 h1 {
-	color: #0000ff;
+	color: #000000;
+}
+
+#headerBar {
+	color: #ffffff;
+	background-color: #00aeef;
+}
+
+#headerBar img {
+	vertical-align: top;
+}
+
+/**
+Contiene un método dudoso para centrar la lista en el centro
+verticalmente respecto a su padre - por revisar position,
+top y transform. Ver [.wW3SC2015a].
+*/
+#headerBar ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #ffffff;
+	float: none;
+	position: relative;
+	//top: 50%;
+	//transform: translateY(40%);
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar li {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	padding: 14px 16px;	
+	vertical-align: middle;
+	float: left;
+	border: 1px solid #00aeef;
+	height: 84px; // Alto de la imagen de logo
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar li:last-child {
+	border-right: none;
+	border: 1px solid #00aeef;
+	float: right;
+    background-color: #00aeef;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar a {
+	display: inline;
+	float: left;
+	color: #000000;
+	font-size: 200%;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar li:last-child a {
+	color: #ffffff;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar a:hover {
+    background-color: #ffff00;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#headerBar .active {
+    background-color: #ff00ff;
+}
+
+#headerBar {
+	overflow: hidden;
+	padding: 0px 0px 0px 0px;
+	position: relative;
+}
+
+#footer {
+	color: #ffffff;
+	background-color: #00aeef;
+	text-align: center;
 }

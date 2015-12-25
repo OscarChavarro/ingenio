@@ -9,3 +9,4 @@ session                    # Client-side reactive dictionary for your app
 standard-minifiers         # Compilador uglify y simplificador de JavaScript para modo de producción
 tracker                    # Meteor's client-side reactive programming library
 iron:router
+twbs:bootstrap
