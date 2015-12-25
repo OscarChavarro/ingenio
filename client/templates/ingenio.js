@@ -1,23 +1,35 @@
-if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
+Session.setDefault('counter', 0);
 
-  Template.hello.helpers({
+Template.hello.helpers({
     counter: function () {
-      return Session.get('counter');
+        return Session.get('counter');
     }
-  });
+});
 
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
-    }
-  });
+var requestCustomCssChange = function(pattern)
+{
+    Meteor.call("setCustomCss", pattern, function(err, res) {
+        if ( valid(err) ) {
+            alert("Error llamando a setCustomCss");
+        }
+        else if ( !valid(res) || res !== "OK" ) {
+            alert("Error llamando a setCustomCss");
+        }
+        else {
+            location.reload();
+        }
+    });
 }
 
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
+Template.hello.events({
+    "click #add": function () {
+        // increment the counter when button is clicked
+        Session.set('counter', Session.get('counter') + 1);
+    },
+    "click #one": function () {
+        requestCustomCssChange("one");
+    },
+    "click #two": function () {
+        requestCustomCssChange("two");
+    }
+});
