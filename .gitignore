@@ -1,5 +1,4 @@
 local
-packages
 node_modules
 .idea
 npm-shrinkwrap.json
