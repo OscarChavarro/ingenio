@@ -1,8 +1,9 @@
-Session.setDefault('counter', 0);
 
-Template.hello.helpers({
-    counter: function () {
-        return Session.get('counter');
+Router.route("/operatorAdminPanel", {
+    name: "operatorAdminPanel",
+    loadingTemplate: "operatorAdminPanelLoading",
+    data: function() {
+        Session.setDefault("counter", 0);
     }
 });
 
@@ -21,7 +22,13 @@ var requestCustomCssChange = function(pattern)
     });
 }
 
-Template.hello.events({
+Template.operatorAdminPanel.helpers({
+    counter: function () {
+        return Session.get('counter');
+    }
+});
+
+Template.operatorAdminPanel.events({
     "click #add": function () {
         // increment the counter when button is clicked
         Session.set('counter', Session.get('counter') + 1);

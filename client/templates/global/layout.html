@@ -1,0 +1,12 @@
+<template name="layout">
+    {{> headerBar}}
+
+    <div id="contentArea">
+        <!-- yield template is managed by iron route manager. 
+        From current route, content is selected (check route.js table) -->
+        {{> yield}}
+        <!-- end of iron router managed yield template -->
+    </div>
+
+    {{> footer}}
+</template>
