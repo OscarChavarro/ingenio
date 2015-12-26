@@ -10,3 +10,5 @@ standard-minifiers         # Compilador uglify y simplificador de JavaScript par
 tracker                    # Meteor's client-side reactive programming library
 iron:router
 twbs:bootstrap
+accounts-password
+accounts-facebook

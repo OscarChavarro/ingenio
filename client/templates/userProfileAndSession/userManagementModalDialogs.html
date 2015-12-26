@@ -1,0 +1,98 @@
+<template name="defineUserRegistrationModalDialog">
+	<div 
+	    id="userRegistrationModalDialog"
+	    class="modal fade"
+	    role="dialog">
+	    <div class="modal-dialog">
+	    	<div class="modal-content">
+	    		<form id="newUserRegisterForm">
+		    		<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+		    			<h2>Regístrate como usuario en Ingenio</h2>
+		    		</div>
+
+			    	<div class="modal-body">
+						<p>Correo electrónico:
+						<input 
+						    type="email" 
+						    name="email" 
+						    placeholder="Dirección de correo electrónico" 
+						    value="" 
+						    class="form-control"
+						    required>
+						<br>
+
+						Contraseña:
+						<input 
+						    type="password" 
+						    name="password1" 
+						    placeholder="Tu nueva contraseña" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    <br>
+						
+						Contraseña (validación):
+						<input 
+						    type="password" 
+						    name="password2" 
+						    placeholder="Tu nueva contraseña, de nuevo" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    <br>
+						
+						Nombres y apellidos:
+						<input 
+						    type="text" 
+						    name="name" 
+						    placeholder="Tu nombre" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    <br>
+						
+						El nombre o razón social de la empresa para la cual trabajas:
+						<input 
+						    type="text" 
+						    name="corporation" 
+						    placeholder="El nombre de tu empresa" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    <br>
+						
+						Teléfono / whatsapp:
+						<input 
+						    type="text" 
+						    name="phone" 
+						    placeholder="Tu teléfono / whatsapp" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    <br>
+						
+						Ciudad:
+						<input 
+						    type="text" 
+						    name="city" 
+						    placeholder="Tu ciudad" 
+						    value="" 
+						    class="form-control"
+						    required>
+					    </p>
+		            </div>
+					
+					<div class="modal-footer">
+						<div class="btn-group container-fluid" role="group">
+							<input type="submit" name="register" class="btn btn-default" value="¡Registrar!">
+							<input type="submit" name="cancel" data-dismiss="modal" class="btn btn-default" value="Cancelar registro">
+						</div>
+					</div>
+				</form>
+	    	</div>
+	    </div>
+	</div>
+</template>
