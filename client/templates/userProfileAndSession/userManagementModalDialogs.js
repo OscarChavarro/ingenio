@@ -125,3 +125,29 @@ Template.defineUserRegistrationModalDialog.onRendered(function()
 	    };
 	}
 });
+
+Template.userLoginBox.events({
+	"submit #loginUser": function(event, template)
+	{
+        event.preventDefault();
+        var email = event.target.email.value;
+        var password = event.target.password.value;
+
+        console.log("email: " + email);
+        console.log("password: " + password);
+
+        Meteor.loginWithPassword(email, password,
+            function(error)
+            {
+                if ( error ) {
+                    alert("Error en acceso: " + error);
+                }
+                else {
+				    $('[data-toggle="dropdown"]').parent().removeClass("open");
+                }
+            }
+        );
+
+
+	}
+});

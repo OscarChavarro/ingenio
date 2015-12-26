@@ -1,8 +1,25 @@
 <template name="home">
     <h1>INGENIO - INICIO</h1>
 
+    <p>
     Esta es la página de "inicio". En esta zona se debe definir qué información o contenido debe aparecer.
+    </p>
 
-    <a href="/operatorAdminPanel">Panel de administración del operador del sistema</a>
+    <ul>
+        <li><a href="/operatorAdminPanel">Panel de administración del operador del sistema</a></li>
+        <li>
+		    <li class="dropdown">
+		    	<a id="dLabel" href="#" class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		    		Ingresar
+		    		<span class="caret"></span>
+		    	</a>
+		    	<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <li>
+                        {{> userLoginBox}}
+                    </li>
+                </ul>
+		    </li>
+	    </li>
+    </ul>
 
 </template>

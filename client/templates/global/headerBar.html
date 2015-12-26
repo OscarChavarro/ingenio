@@ -1,7 +1,7 @@
 <template name="headerBar">
 	{{> defineUserRegistrationModalDialog}}
 	<div>
-		<div id="headerBar" class="container-fluid">
+		<div id="headerBar" class="container-fluid"  style="position:relative;z-index:2;">
 			<a href="/">
 				<img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
 			</a>
@@ -11,17 +11,18 @@
 				<li><a href="/faq">Preguntas<br>Frecuentes</a></li>
 				<li><a href="/contact">Contáctenos</a></li>
 				{{#if globalIsUserLoggedIn}}
+				    <li>TU NOMBRE SE LLAMA:<br> {{globalGetCurrentLoggedUsername}}</li>
 				    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
 				{{else}}
 				    <li>
 				    	<a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
 				    </li>
-				    <li class="dropdown" style="z-index:1">
-				    	<a href="#" class="dropdown dropdown-menu-right" data-toggle="dropdown">
+				    <li class="dropdown">
+				    	<a href="#" class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				    		Ingresar 
 				    		<span class="caret"></span>
 				    	</a>
-				    	<ul class="dropdown-menu" role="menu">
+				    	<ul class="dropdown-menu" role="menu" style="position:relative;z-index:3;">
                             <li>
                                 {{> userLoginBox}}
                             </li>
