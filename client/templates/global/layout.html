@@ -1,12 +1,17 @@
 <template name="layout">
     {{> headerBar}}
 
-    <div id="contentArea">
-        <!-- yield template is managed by iron route manager. 
-        From current route, content is selected (check route.js table) -->
-        {{> yield}}
-        <!-- end of iron router managed yield template -->
-    </div>
+    <div class="row">
+    	<div id="productCategoryIndexArea" class="col-md-2">
+    		{{> productCategoryIndexList}}
+    	</div>
+	    <div id="contentArea" class="col-md-10">
+	        <!-- yield template is managed by iron route manager. 
+	        From current route, content is selected (check route.js table) -->
+	        {{> yield}}
+	        <!-- end of iron router managed yield template -->
+	    </div>
+	</div>
 
     {{> footer}}
 </template>

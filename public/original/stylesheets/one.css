@@ -16,6 +16,12 @@ h1 {
 	vertical-align: top;
 }
 
+#productIndexArea {
+	color: #ffffff;
+	background-color: #404040;
+	text-align: center;
+}
+
 #footer {
 	color: #ffffff;
 	background-color: #000000;

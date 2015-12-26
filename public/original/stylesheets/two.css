@@ -6,9 +6,17 @@ Referencias:
 [.wW3SC2015a] www.w3schools.com/css/css_navbar.asp
 */
 
+//==========================================================================
+
 h1 {
 	color: #000000;
 }
+
+body {
+	line-height: 1 !important;
+}
+
+//==========================================================================
 
 #headerBar {
 	color: #ffffff;
@@ -22,7 +30,9 @@ h1 {
 /**
 Contiene un método dudoso para centrar la lista en el centro
 verticalmente respecto a su padre - por revisar position,
-top y transform. Ver [.wW3SC2015a].
+top y transform. 
+
+Ver [.wW3SC2015a].
 */
 #headerBar ul {
 	list-style-type: none;
@@ -97,8 +107,53 @@ Ver [.wW3SC2015a]
 	position: relative;
 }
 
+//==========================================================================
+/**
+Ver [.wW3SC2015a].
+*/
+#productCategoryIndexArea ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #ffffff;
+	float: none;
+	position: relative;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#productCategoryIndexArea li {
+	display: block;
+	text-decoration: none;
+	text-align: center;
+	padding: 5px 16px;	
+	vertical-align: middle;
+	float: none;
+	border: 1px solid #ffffff;
+    background-color: #00aeef;
+}
+
+/**
+Ver [.wW3SC2015a]
+*/
+#productCategoryIndexArea a {
+	display: inline;
+	color: #ffffff;
+	font-size: 120%;
+}
+
+//==========================================================================
+
+/**
+Por alguna razón inexplicable esto no lo está tomando en este estilo,
+pero si funciona en one.css.
+*/
 #footer {
 	color: #ffffff;
 	background-color: #00aeef;
 	text-align: center;
 }
+
+//==========================================================================
