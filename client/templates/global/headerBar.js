@@ -7,5 +7,14 @@ Template.headerBar.events({
 	{
         event.preventDefault();
         $("#userRegistrationModalDialog").modal("show");
+	},
+	/**
+    Esta función se llama cuando un usuario registrado en sesión activa
+    desea salir de la sesión.
+	*/
+	"click #logoutUser": function(event, template)
+	{
+        event.preventDefault();
+        globalLogout();
 	}
 });

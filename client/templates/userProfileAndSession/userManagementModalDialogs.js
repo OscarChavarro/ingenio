@@ -76,8 +76,6 @@ Template.defineUserRegistrationModalDialog.onRendered(function()
 	var elements = document.getElementsByTagName("INPUT");
 	var i;
     for ( i = 0; i < elements.length; i++ ) {
-    	console.log("  - " + elements[i].name);
-    	
 	    elements[i].oninvalid = function(e) {
 	    	var msg = "Este campo es necesario";
 	        e.target.setCustomValidity("");

@@ -10,8 +10,24 @@
 				<li><a href="/products">Productos</a></li>
 				<li><a href="/faq">Preguntas<br>Frecuentes</a></li>
 				<li><a href="/contact">Contáctenos</a></li>
-				<li><a href="/register" id="registerNewUser">Regístrate</a></li>
-				<li><a href="/login">Ingreso</a></li>
+				{{#if globalIsUserLoggedIn}}
+				    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
+				{{else}}
+				    <li>
+				    	<a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
+				    </li>
+				    <li class="dropdown" style="z-index:1">
+				    	<a href="#" class="dropdown dropdown-menu-right" data-toggle="dropdown">
+				    		Ingresar 
+				    		<span class="caret"></span>
+				    	</a>
+				    	<ul class="dropdown-menu" role="menu">
+                            <li>
+                                {{> userLoginBox}}
+                            </li>
+                        </ul>
+				    </li>
+				{{/if}}
 			</ul>
 		</div>
 		<div id="searchBar" class="container-fluid">
