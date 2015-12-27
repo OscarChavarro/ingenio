@@ -1,4 +1,6 @@
 <template name="headerBar">
+    <!-- Define todos los diálogos modales desde el principio para evitar bloqueos -->
+    {{> defineWelcomeDialog}}
     {{> defineUserRegistrationModalDialog}}
     <div>
         <div id="headerBar" class="container-fluid"  style="position:relative;z-index:2;">
@@ -21,7 +23,7 @@
                         <a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="#" class="dropdown" data-toggle="dropdown" role="button">
                             Ingresar 
                             <span class="caret"></span>
                         </a>

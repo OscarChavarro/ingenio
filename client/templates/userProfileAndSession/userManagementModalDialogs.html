@@ -34,6 +34,8 @@ Plantilla privada
 </template>
 
 <!--
+Debe definirse al principio de la ejecución, en headerBar para que no se bloquee.
+
 Plantilla pública
 -->
 <template name="defineUserRegistrationModalDialog">
@@ -45,8 +47,8 @@ Plantilla pública
             <div class="modal-content">
                 <form id="newUserRegisterForm">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
                         </button>
                         <h2>Regístrate como usuario en Ingenio</h2>
                     </div>

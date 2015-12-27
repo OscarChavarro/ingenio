@@ -1,3 +1,31 @@
+sendWelcomeAndRegistrationCodeEmail = function(uid, recipient, name)
+{
+    var t = new Date();
+    var subject = "Mensaje de bienvenida a Ingenio";
+    var url = "http://ingenio.cubestudio.co/userAccess/" + uid;
+    var htmlContent = 
+    '<html>' +
+        '<body><table width="100%" border="0">' + 
+            '<tr><td bgcolor="#00aeef">' +
+                '<img src="' + resourceUrlForMail("/images/ingenioHeaderLogo.png")+'">' +
+            '</td></tr>' +
+            '<tr><td>' + 
+                '<h1>¡Bienvenido(a) a INGENIO ' + name + ' !</h1>' +
+                'Este correo es un recordatorio de la creación de tu cuenta de usuario en ' +
+                '<b><a href="' + url + '">INGENIO SOLUCIONES PUBLICITARIAS</a></b>. ' +
+                'Tu cuenta ha sido creada el instante de tiempo ' + t + 
+                'y para iniciar a usarla debes dar click en el enlace para ' +
+                '<b><a href="' + url + '">ACTIVARLA</a></b>.' +
+            '</td></tr>' +
+        '</table></body>' + 
+    '</html>';
+    var senderEmail = "ingenio@cubestudio.co";
+    var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
+
+    sendMandrillMail(recipient, subject, htmlContent, senderEmail, senderName);
+}
+
+
 Template.defineUserRegistrationModalDialog.events({
     /**
     Esta función se invoca cuando un usuario está llenando el formulario
@@ -59,6 +87,11 @@ Template.defineUserRegistrationModalDialog.events({
         $("#userRegistrationModalDialog").modal("hide");
         $("body").removeClass("modal-open");
         $(".userRegistrationModalDialog").remove();
+
+        alert("Tu registro ha sido activado y ahora tienes un usuario en este sitio. Para poder usar " + 
+              "tu nueva cuenta, debes verificar el código que ha sido enviado a tu correo electrónico.");
+
+        sendWelcomeAndRegistrationCodeEmail(Meteor.userId(), email, name);
     }
 });
 
