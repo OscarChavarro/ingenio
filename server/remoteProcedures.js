@@ -32,7 +32,7 @@ Meteor.startup(function () {
                         for ( i in setarr ) {
                             var r = userRole.findOne({_id: setarr[i].userRoleId});
                             if ( valid(r) ) {
-                                arr.push({name: r.userRoleNameEng});
+                                arr.push({nameC: r.nameC});
                                 //console.log("  - Rol: " + r.userRoleNameEng);                                                                          
                             }
                         }
@@ -41,6 +41,13 @@ Meteor.startup(function () {
             }
 
             return arr;
+        },
+        /**                                                                                                                                              
+        Hace el método "setPassword" del API Meteor para usuarios disponible                                                                             
+        al lado del cliente.                                                                                                                             
+        */
+        setUserPassword: function(userId, newPassword) {
+            Accounts.setPassword(userId, newPassword);
         }
     })
 });

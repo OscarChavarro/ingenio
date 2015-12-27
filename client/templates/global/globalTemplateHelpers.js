@@ -20,6 +20,49 @@ globalLogout = function()
 }
 
 /**
+Dado un identificador de usuario y un rol (que debe venir de
+la colección "userRole" en la base de datos Mongo), esta función
+determina si el usuario contiene el rol indicado o no.
+*/
+globalCheckUserRole = function(uid, desiredRole)
+{
+    var roleArr = Session.get("currentUserRoles");
+
+    if ( valid(uid) && !valid(roleArr) ) {
+        Meteor.call("getUserRoles", uid, function(error, response) {
+            if ( !valid(error) && valid(response)) {
+                Session.set("currentUserRoles", response);
+            }
+        });
+        return false;
+    }
+    else if ( valid(uid) && valid(roleArr) ) {
+        var i;
+        for ( i in roleArr ) {
+            if ( roleArr[i].nameC === desiredRole ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    else if ( !valid(uid) ) {
+        Session.set("currentUserRoles", null);
+        return false;
+    }
+    return false;
+}
+
+Template.registerHelper("globalCheckUserRole", function (desiredRole) 
+{
+	var uid = Meteor.userId();
+
+    if ( !valid(uid) || !valid(desiredRole) ) {
+        return false;
+    }
+    return globalCheckUserRole(uid, desiredRole);
+});
+
+/**
 Retorna true si hay una sesión de usuario activa.
 */
 Template.registerHelper("globalIsUserLoggedIn", function () 

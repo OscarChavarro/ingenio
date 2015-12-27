@@ -12,6 +12,9 @@
 				<li><a href="/contact">Contáctenos</a></li>
 				{{#if globalIsUserLoggedIn}}
 				    <li>TU NOMBRE SE LLAMA:<br> {{globalGetCurrentLoggedUsername}}</li>
+				    {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+				        <li><a href="/adminPanel">Administrar</a></li>
+				    {{/if}}
 				    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
 				{{else}}
 				    <li>
