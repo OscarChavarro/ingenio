@@ -34,9 +34,27 @@ Template.operatorAdminPanel.events({
         Session.set('counter', Session.get('counter') + 1);
     },
     "click #one": function () {
+        event.preventDefault();
         requestCustomCssChange("one");
     },
     "click #two": function () {
+        event.preventDefault();
         requestCustomCssChange("two");
+    },
+    "click #postMethod": function (event) {
+        event.preventDefault();
+        Meteor.http.call("POST", "/forwardMandrillIncomingMail", "Test data", 
+            function(error, result) {
+                if ( valid(error) ) {
+                    console.log("Hay error: " + error);
+                }
+                else if ( valid(result) && valid(result.content) ) {
+                    console.log("Listo, resultado: " + result.content);
+                }
+                else {
+                    console.log("No hay resultado");
+                }
+            }
+        );
     }
 });
