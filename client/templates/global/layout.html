@@ -2,16 +2,16 @@
     {{> headerBar}}
 
     <div class="row"  style="position:relative;z-index:1;">
-    	<div id="productCategoryIndexArea" class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
-    		{{> productCategoryIndexList}}
-    	</div>
-	    <div id="contentArea" class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
-	        <!-- yield template is managed by iron route manager. 
-	        From current route, content is selected (check route.js table) -->
-	        {{> yield}}
-	        <!-- end of iron router managed yield template -->
-	    </div>
-	</div>
+        <div id="productCategoryIndexArea" class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+            {{> productCategoryIndexList}}
+        </div>
+        <div id="contentArea" class="col-lg-10 col-md-10 col-sm-8 col-xs-8">
+            <!-- yield template is managed by iron route manager. 
+            From current route, content is selected (check route.js table) -->
+            {{> yield}}
+            <!-- end of iron router managed yield template -->
+        </div>
+    </div>
 
     {{> footer}}
 </template>

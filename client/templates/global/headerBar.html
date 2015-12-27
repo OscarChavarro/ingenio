@@ -1,43 +1,43 @@
 <template name="headerBar">
-	{{> defineUserRegistrationModalDialog}}
-	<div>
-		<div id="headerBar" class="container-fluid"  style="position:relative;z-index:2;">
-			<a href="/">
-				<img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
-			</a>
-			<ul>
-				<li><a href="/">Inicio</a></li>
-				<li><a href="/products">Productos</a></li>
-				<li><a href="/faq">Preguntas<br>Frecuentes</a></li>
-				<li><a href="/contact">Contáctenos</a></li>
-				{{#if globalIsUserLoggedIn}}
-				    <li>TU NOMBRE SE LLAMA:<br> {{globalGetCurrentLoggedUsername}}</li>
-				    {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
-				        <li><a href="/adminPanel">Administrar</a></li>
-				    {{/if}}
-				    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
-				{{else}}
-				    <li>
-				    	<a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
-				    </li>
-				    <li class="dropdown">
-				    	<a href="#" class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				    		Ingresar 
-				    		<span class="caret"></span>
-				    	</a>
-				    	<ul class="dropdown-menu" role="menu" style="position:relative;z-index:3;">
+    {{> defineUserRegistrationModalDialog}}
+    <div>
+        <div id="headerBar" class="container-fluid"  style="position:relative;z-index:2;">
+            <a href="/">
+                <img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
+            </a>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/products">Productos</a></li>
+                <li><a href="/faq">Preguntas<br>Frecuentes</a></li>
+                <li><a href="/contact">Contáctenos</a></li>
+                {{#if globalIsUserLoggedIn}}
+                    <li>TU NOMBRE SE LLAMA:<br> {{globalGetCurrentLoggedUsername}}</li>
+                    {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                        <li><a href="/adminPanel">Administrar</a></li>
+                    {{/if}}
+                    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
+                {{else}}
+                    <li>
+                        <a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Ingresar 
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" style="position:relative;z-index:3;">
                             <li>
                                 {{> userLoginBox}}
                             </li>
                         </ul>
-				    </li>
-				{{/if}}
-			</ul>
-		</div>
-		<div id="searchBar" class="container-fluid">
-			<div style="float: right">
-			<button id="search">Buscar</button>
-		    </div>
-		</div>
-	</div>
+                    </li>
+                {{/if}}
+            </ul>
+        </div>
+        <div id="searchBar" class="container-fluid">
+            <div style="float: right">
+            <button id="search">Buscar</button>
+            </div>
+        </div>
+    </div>
 </template>

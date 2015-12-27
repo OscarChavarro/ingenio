@@ -6,7 +6,7 @@ Meteor.startup(function () {
         */
         setCustomCss: function(pattern)
         {
-        	Inject.rawHead("customHeaderCss", '  <link rel="stylesheet" type="text/css" href="/original/stylesheets/' + pattern + '.css">');
+            Inject.rawHead("customHeaderCss", '  <link rel="stylesheet" type="text/css" href="/original/stylesheets/' + pattern + '.css">');
 
             return "OK";
         },

@@ -54,7 +54,7 @@ globalCheckUserRole = function(uid, desiredRole)
 
 Template.registerHelper("globalCheckUserRole", function (desiredRole) 
 {
-	var uid = Meteor.userId();
+    var uid = Meteor.userId();
 
     if ( !valid(uid) || !valid(desiredRole) ) {
         return false;
@@ -90,7 +90,7 @@ Template.registerHelper("globalGetCurrentLoggedUsername",
         var sessionUserName = Session.get("currentLoggedUsername");
 
         if ( valid(sessionUserName) ) {
-        	return sessionUserName;
+            return sessionUserName;
         }
 
         var user = Meteor.users.findOne({_id:uid});
