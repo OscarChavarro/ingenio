@@ -1,0 +1,136 @@
+<!--
+Plantilla privada.
+-->
+<template name="userRoleLoading">
+    Cargando roles de la base de datos...
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="reportUserRoleHeader">
+    <tr>
+        <td><b>Nombre del rol de usuario (C: VARIABLE_DE_SISTEMA))</b></td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="reportUserRole">
+    <tr>
+        <td>{{nameC}}</td>
+    </tr>
+</template>
+
+<!-- 
+Advertencia: el código dinámico de la función
+Template.editUser.rendered depende de la estructura HTML/DOM
+de esta plantilla. Intentar no modificarla, y de hacerlo,
+revisar que la función en JavaScript siga funcionando.
+
+Plantilla privada.
+-->
+<template name="checkboxForUserRole">
+    {{#if ..}}
+        <input 
+            type="checkbox" 
+            name="userRole"
+            value="{{nameC}}"
+            id="{{_id}}"
+            {{checkIfActive ../_id _id}}
+        />
+    {{else}}
+        <input 
+            type="checkbox" 
+            name="userRole"
+            value="{{nameC}}"
+            id="{{_id}}"
+        />
+    {{/if}}
+    {{nameC}} 
+    <br>
+</template>
+
+<template name="showUserRoleIfActive">
+    {{#if ..}}
+        {{{showIfActive ../_id _id}}}
+    {{/if}}
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="editUserRoleHeader">
+    <tr>
+        <td><b>Nombre del rol de usuario (C: VARIABLE_DE_SISTEMA)</b></td>
+        <td><b>Eliminar</b></td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="editUserRole">
+    <tr>
+        <td>
+            <form name="Eng" class="userRoleEditForm">
+                <input 
+                type="text" 
+                name="userRoleName"
+                value="{{nameC}}"
+                id="{{_id}}"
+                />
+            </form>
+        </td>
+        <td>
+            <form class="userRoleDeleteForm">
+                <input 
+                type="submit" 
+                value="Eliminar rol de usuario" 
+                name="deleteUserRole"
+                id="{{_id}}"
+                />
+            </form>
+        </td>
+    </tr>
+</template>
+
+<!--
+Plantilla pública.
+-->
+<template name="userRoleCreate" class="userRoleCreate">
+    <h1>Crear rol de usuario</h1>
+
+    Actualmente se tienen los siguientes roles de usuario:
+    <table border=2>
+        {{> reportUserRoleHeader}}
+        {{#each dbUserRole}}
+            {{> reportUserRole}}
+        {{/each}}
+    </table>
+        
+    <P>Acá puede agregar un nuevo rol de usuario:</P>
+        
+    <form class="userRoleCreateForm">
+        <label for="nameC">Nombre en formato C: VARIABLE_DE_SISTEMA del rol de usuario:</label>
+        <input type="text" name="nameC" id="nameC" placeholder=""/>
+        <br>
+        <input type="submit" value="Agregar rol de usuario">
+    </form>
+</template>
+
+<!--
+Plantilla pública.
+-->
+<template name="userRoleEditDelete" class="userRoleEditDelete">
+    <h1>Modificar o eliminar rol de usuario</h1>
+
+    Actualmente se tienen los siguientes roles de usuario:
+    <table border=2>
+        {{> editUserRoleHeader}}
+        {{#each dbUserRole}}
+            {{> editUserRole}}
+        {{/each}}
+    </table>
+</template>
