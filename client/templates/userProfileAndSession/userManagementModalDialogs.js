@@ -77,6 +77,10 @@ Template.defineUserRegistrationModalDialog.events({
                 };
                 user2role.insert(u2r);
                 */
+                // El usuario no deberá ingresar sin haber verificado su correo
+                sendWelcomeAndRegistrationCodeEmail(Meteor.userId(), email, name);
+
+                globalLogout();
                 $("#userRegistrationModalDialog").modal("hide");
                 $("body").removeClass("modal-open");
                 $(".userRegistrationModalDialog").remove();
@@ -90,8 +94,6 @@ Template.defineUserRegistrationModalDialog.events({
 
         alert("Tu registro ha sido activado y ahora tienes un usuario en este sitio. Para poder usar " + 
               "tu nueva cuenta, debes verificar el código que ha sido enviado a tu correo electrónico.");
-
-        sendWelcomeAndRegistrationCodeEmail(Meteor.userId(), email, name);
     }
 });
 
