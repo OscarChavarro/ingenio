@@ -1,0 +1,160 @@
+<!--
+Plantilla privada.
+-->
+<template name="reportLanguageHeader">
+    <tr>
+        <td><b>Código ISO639-3</b></td>
+        <td><b>Nombre del lenguaje en inglés</b></td>
+        <td><b>Nombre del lenguaje en español</b></td>
+        <td><b>Está activo</b></td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="reportLanguage">
+    <tr>
+        <td>{{labelISO639_3}}</td>
+        <td>{{languageNameEng}}</td>
+        <td>{{languageNameSpa}}</td>
+        <td>{{#if enabled}}SI{{else}}NO{{/if}}</td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="editLanguageHeader">
+    <tr>
+        <td><b>Código ISO639-3</b></td> 
+        <td><b>Nombre del lenguaje en inglés</b></td>
+        <td><b>Nombre del lenguaje en español</b></td>
+        <td><b>Está activo</b></td>
+        <td><b>Eliminar</b></td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="editLanguage">
+    <tr>
+        <td>
+            <form name="ISO639_3" class="languageCodeEditForm">
+                <input 
+                type="text" 
+                name="label"
+                value="{{labelISO639_3}}"
+                id="{{_id}}"
+                />
+            </form>
+            </td>
+        <td>
+            <form name="Eng" class="languageEditForm">
+                <input 
+                type="text" 
+                name="languageName"
+                value="{{languageNameEng}}"
+                id="{{_id}}"
+                />
+            </form>
+        </td>
+        <td>
+            <form name="Spa" class="languageEditForm">
+                <input 
+                type="text" 
+                name="languageName"
+                value="{{languageNameSpa}}"
+                id="{{_id}}"
+                />
+            </form>
+        </td>
+        <td>
+            {{#if enabled}}
+                <form class="languageActiveForm">
+                    <input 
+                    type="checkbox" 
+                    name="languageActive"
+                    checked
+                    id="{{_id}}"
+                    />
+                </form>
+            {{else}}
+                <form class="languageActiveForm">
+                    <input 
+                    type="checkbox" 
+                    name="languageActive"
+                    id="{{_id}}"
+                    />
+                </form>
+            {{/if}}
+        </td>
+            
+        <td>
+            <form class="languageDeleteForm">
+                <input 
+                type="submit" 
+                value="Eliminar lenguaje" 
+                name="deleteLanguage"
+                id="{{_id}}"
+                />
+            </form>
+        </td>
+    </tr>
+</template>
+
+<!--
+Plantilla privada.
+-->
+<template name="languageLoading">
+    Cargando información de idiomas de la base de datos...
+</template>
+
+<!--
+Plantilla pública.
+-->
+<template name="languageCreate" class="languageCreate">
+    <h1>Crear idioma</h1>
+
+    Actualmente se tienen los siguientes lenguajes:
+    <table border=2>
+        {{> reportLanguageHeader}}
+        {{#each dbLanguageFiltered}}
+            {{> reportLanguage}}
+        {{/each}}
+    </table>
+    
+    <P>Acá puede agregar un nuevo idioma:</P>
+        
+    <form class="languageCreateForm">
+        <label for="labelISO639_3">Código de 3 letras según el estándar ISO639-3:</label>
+        <input type="text" name="labelISO639_3" id="labelISO639_3" placeholder=""/>
+        <br>
+        <label for="languageNameEng">Nombre del idioma en inglés:</label>
+        <input type="text" name="languageNameEng" id="languageNameEn" placeholder=""/>
+        <br>
+        <label for="languageNameEs">Nombre del idioma en español:</label>
+        <input type="text" name="languageNameSpa" id="languageNameEs" placeholder=""/>
+        <br>
+        <label for="enabled">Activo:</label>
+        <input type="checkbox" value="activo" name="enabled" checked/>
+        <br>
+        <input type="submit" value="Agregar idioma">
+    </form>
+</template>
+
+<!--
+Plantilla pública.
+-->
+<template name="languageEditDelete" class="languageEditDelete">
+    <h1>Modificar o eliminar idioma</h1>
+
+    Actualmente se tienen los siguientes idiomas:
+    <table border=2>
+        {{> editLanguageHeader}}
+        {{#each dbLanguageFiltered}}
+            {{> editLanguage}}
+        {{/each}}
+    </table>
+</template>
