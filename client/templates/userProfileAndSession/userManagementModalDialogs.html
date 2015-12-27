@@ -1,3 +1,41 @@
+<!--
+Plantilla privada
+-->
+<template name="classicAuthenticationForm">
+    Correo electrónico:
+    <input 
+        type="email" 
+        name="email" 
+        placeholder="Dirección de correo electrónico" 
+        value="" 
+        class="form-control"
+        required>
+    <br>
+
+    Contraseña:
+    <input 
+        type="password" 
+        name="password1" 
+        placeholder="Tu nueva contraseña" 
+        value="" 
+        class="form-control"
+        required>
+    <br>
+    
+    Contraseña (validación):
+    <input 
+        type="password" 
+        name="password2" 
+        placeholder="Tu nueva contraseña, de nuevo" 
+        value="" 
+        class="form-control"
+        required>
+    <br>
+</template>
+
+<!--
+Plantilla pública
+-->
 <template name="defineUserRegistrationModalDialog">
     <div 
         id="userRegistrationModalDialog"
@@ -14,75 +52,58 @@
                     </div>
 
                     <div class="modal-body">
-                        <p>Correo electrónico:
-                        <input 
-                            type="email" 
-                            name="email" 
-                            placeholder="Dirección de correo electrónico" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-
-                        Contraseña:
-                        <input 
-                            type="password" 
-                            name="password1" 
-                            placeholder="Tu nueva contraseña" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-                        
-                        Contraseña (validación):
-                        <input 
-                            type="password" 
-                            name="password2" 
-                            placeholder="Tu nueva contraseña, de nuevo" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-                        
-                        Nombres y apellidos:
-                        <input 
-                            type="text" 
-                            name="name" 
-                            placeholder="Tu nombre" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-                        
-                        El nombre o razón social de la empresa para la cual trabajas:
-                        <input 
-                            type="text" 
-                            name="corporation" 
-                            placeholder="El nombre de tu empresa" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-                        
-                        Teléfono / whatsapp:
-                        <input 
-                            type="text" 
-                            name="phone" 
-                            placeholder="Tu teléfono / whatsapp" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        <br>
-                        
-                        Ciudad:
-                        <input 
-                            type="text" 
-                            name="city" 
-                            placeholder="Tu ciudad" 
-                            value="" 
-                            class="form-control"
-                            required>
-                        </p>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <p>
+                                Método de autenticación:
+                                <div id="authArea">
+                                    {{> classicAuthenticationForm}}
+                                </div>
+                            </p>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <p>
+                                Nombres y apellidos:
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    placeholder="Tu nombre" 
+                                    value="" 
+                                    class="form-control"
+                                    required>
+                                <br>
+                                
+                                El nombre o razón social de la empresa para la cual trabajas:
+                                <input 
+                                    type="text" 
+                                    name="corporation" 
+                                    placeholder="El nombre de tu empresa" 
+                                    value="" 
+                                    class="form-control"
+                                    required>
+                                <br>
+                                
+                                Teléfono / whatsapp:
+                                <input 
+                                    type="text" 
+                                    name="phone" 
+                                    placeholder="Tu teléfono / whatsapp" 
+                                    value="" 
+                                    class="form-control"
+                                    required>
+                                <br>
+                                
+                                Ciudad:
+                                <input 
+                                    type="text" 
+                                    name="city" 
+                                    placeholder="Tu ciudad" 
+                                    value="" 
+                                    class="form-control"
+                                    required>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="modal-footer">
