@@ -25,7 +25,7 @@ Template.requestPasswordReset.helpers({
       - "NEW": usuario nuevo
       - "EXISTING": usuario que ya estaba validado
     */
-    getUidGivenAtUrl: function() {
+    getUserEmailGivenAtUrl: function() {
         var userSet = Session.get("activeUser");
 
         if ( !valid(userSet) || !valid(userSet.length) || userSet.length != 1 ) {
@@ -36,17 +36,9 @@ Template.requestPasswordReset.helpers({
         activeUserEmail = u.profile.email;
 
         if ( valid(u) && valid(u.profile) && valid(u.profile.validatedEmail) && u.profile.validatedEmail == true ) {
-            Router.go("/");
-            return "EXISTING";
+            return activeUserEmail;
         }
 
-        console.log("Nuevo usuario validado!");
-        users.update(u._id, {$set: {"profile.validatedEmail": true}});
-
-        document.getElementById("welcomeemail").innerHTML = activeUserEmail;
-        $("#userActiveModalDialog").modal("show");
-        Router.go("/");
-
-        return "NEW";
+        return false;
     }
 });
