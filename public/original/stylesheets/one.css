@@ -4,7 +4,7 @@ en HTML sin diseño.
 */
 
 h1 {
-	color: #ff0000;
+	color: #ff0000 !important;
 }
 
 #headerBar {
@@ -16,27 +16,20 @@ h1 {
 	vertical-align: top;
 }
 
-#productIndexArea {
-	color: #ffffff;
-	background-color: #404040;
-	text-align: center;
+#searchBar {
+	margin: 84px 0px 0px 0px;	/* top right bottom left, top es el alto de la imagen de logo */
+	padding: 0px 0px 0px 0px;	/* top right bottom left */
+	background-color: #808080;
 }
 
-#footer {
+#footerArea {
 	color: #ffffff;
 	background-color: #000000;
 	text-align: center;
 }
 
-.dashbox {
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 350px;
-}
-
-.dropdown-menu {
-    min-width: 300px;
-    padding: 0;
-    margin: 0px 0 0;
-    font-size: 14px;
+#productCategoryIndexArea ul {
+	margin: 0px 0px 0px 0px;  /* top right bottom left */
+	padding: 1px 0px 1px 0px; /* top right bottom left */
+	background-color:#404040;
 }

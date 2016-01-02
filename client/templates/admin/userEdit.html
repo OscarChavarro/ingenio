@@ -71,32 +71,35 @@ Plantilla pública.
 <template name="userEditDelete">
     <h1>Consulta de usuarios</h1>
 
-    Actualmente se tienen los siguientes usuarios:
-    <table border=2 width="100%">
-        <tr>
-            <th>N</th>
-            <th>ID</th>
-            <th>Instante de creación</th>
-            <th>Nombre de usuario</th>
-            <th>Correo (no modificable)</th>
-            <th>Modificar contraseña</th>
-            <th>Roles</th>
-            <th>Eliminar</th>
-        </tr>
-        {{#each dbUsers}}
-            {{> editUser}}
-        {{/each}}
-    </table>
+    <p>
+        Actualmente se tienen los siguientes usuarios:
 
-    Notas para el desarrollador: en esta página hay que realizar varias
-    mejoras para que estas funcionalidades sean usables:
-    <ul>
-        <li>Hay que agregar opciones para mostrar el tipo de cuenta (si es
-        sólo de correo o si tiene login con facebook), la gestión de fotografías
-        (por ejemplo para aplicar censura) y posiblemente otros campos (como
-        ir al dashboard de usuario o ver medios de pago).</li>
-        <li>Cuando se tengan muchos usuarios, será impráctico mostrar siempre
-        la lista completa de usuarios. Será necesario implementar los mecanismos
-        de búsqueda y de paginación.</li>
-    </ul>
+        <table border=2 width="100%">
+            <tr>
+                <th>N</th>
+                <th>ID</th>
+                <th>Instante de creación</th>
+                <th>Nombre de usuario</th>
+                <th>Correo (no modificable)</th>
+                <th>Modificar contraseña</th>
+                <th>Roles</th>
+                <th>Eliminar</th>
+            </tr>
+            {{#each dbUsers}}
+                {{> editUser}}
+            {{/each}}
+        </table>
+
+        Notas para el desarrollador: en esta página hay que realizar varias
+        mejoras para que estas funcionalidades sean usables:
+        <ul>
+            <li>Hay que agregar opciones para mostrar el tipo de cuenta (si es
+            sólo de correo o si tiene login con facebook), la gestión de fotografías
+            (por ejemplo para aplicar censura) y posiblemente otros campos (como
+            ir al dashboard de usuario o ver medios de pago).</li>
+            <li>Cuando se tengan muchos usuarios, será impráctico mostrar siempre
+            la lista completa de usuarios. Será necesario implementar los mecanismos
+            de búsqueda y de paginación.</li>
+        </ul>
+    </p>
 </template>
