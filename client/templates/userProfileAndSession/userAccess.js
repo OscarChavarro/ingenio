@@ -69,9 +69,9 @@ Template.defineWelcomeDialog.events({
             {
                 if ( error ) {
                     alert("Error en acceso: " + error);
+                    //$("#...ModalDialog").modal("show");
                 }
                 else {
-                	console.log("Usuario re-verificado, cerrando");
                 	$("#userActiveModalDialog").modal("toggle");
                 }
             }

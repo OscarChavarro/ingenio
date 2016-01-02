@@ -120,11 +120,89 @@ Plantilla pública
     </div>
 </template>
 
+<template name="defineWrongUserAccessModalDialog">
+    <div id="wrongUserAccessModalDialog" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h2>Acceso denegado</h2>
+                </div>
+
+                <div class="modal-body">
+                    <p>
+                    La cuenta de correo electrónico o la contraseña que has ingresado son incorrectas.
+                    Verifica tus datos y vuelve a intentarlo, o intenta reiniciar la contraseña
+                    si crees haberla olvidado.
+                    </p>
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="btn-group" role="group">
+                        <form id="resetPasswordForm">
+                            <button 
+                                type="button" 
+                                name="cancel" 
+                                value="" 
+                                class="btn btn-default" 
+                                data-dismiss="modal">
+                                ¡Cancelar ingreso!
+                            </button>
+                            <input 
+                                type="submit" 
+                                name="resetPassword" 
+                                value="¡Reiniciar contraseña!" 
+                                class="btn btn-default">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="defineUserPasswordResetFeedbackModalDialog">
+    <div id="userPasswordResetFeedbackModalDialog" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h2>Contraseña reiniciada</h2>
+                </div>
+
+                <div class="modal-body">
+                    <p>
+                    Ha sido enviado un mensaje a tu correo electrónico con un enlace privado que al
+                    seguirlo te permitirá reiniciar tu contraseña, especificando una nueva.
+                    </p>
+                </div>
+                
+                <div class="modal-footer">
+                    <div class="btn-group" role="group">
+                        <button 
+                            type="button" 
+                            name="cancel" 
+                            value="" 
+                            class="btn btn-default" 
+                            data-dismiss="modal">
+                            Entendido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <template name="userLoginBox">
     <div class="dashbox">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <form id="loginUser">
+                <form id="loginUserForm">
                     Correo electrónico:
                     <input type="email" name="email" value="" placeholder="Tu correo electrónico" class="form-control">
                     <br>

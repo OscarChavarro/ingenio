@@ -160,22 +160,42 @@ Template.defineUserRegistrationModalDialog.onRendered(function()
 });
 
 Template.userLoginBox.events({
-    "submit #loginUser": function(event, template)
+    /**
+    */
+    "submit #loginUserForm": function(event, template)
     {
         event.preventDefault();
         var email = event.target.email.value;
         var password = event.target.password.value;
 
+        Session.set("loginEmail", email);
+
         Meteor.loginWithPassword(email, password,
             function(error)
             {
                 if ( error ) {
-                    alert("Error en acceso: " + error);
+                    //alert("Error en acceso: " + error);
+                    $("#wrongUserAccessModalDialog").modal("show");
                 }
                 else {
                     $('[data-toggle="dropdown"]').parent().removeClass("open");
                 }
             }
         );
+    }
+});
+
+Template.headerArea.events({
+    /**
+    Evento disparado tras una interacción dentro de loginUserForm. Dispara
+    un llamado al diálogo de userResetFeedbackDialog.
+    */
+    "submit #resetPasswordForm": function(event, template)
+    {
+        event.preventDefault();
+        var email = Session.get("loginEmail");
+        console.log("Voy a reiniciar una contraseña: " + email);
+        $("#wrongUserAccessModalDialog").modal("toggle");
+        $("#userPasswordResetFeedbackModalDialog").modal("show");
     }
 });
