@@ -23,3 +23,9 @@ Meteor.publish(
         return user2role.find();
     }
 );
+
+Meteor.publish(
+    "productCategory", function() {
+        return productCategory.find();
+    }
+);

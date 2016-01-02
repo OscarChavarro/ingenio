@@ -1,0 +1,29 @@
+<template name="manageProductCategoryLoading">
+    Cargando editor...
+</template>
+
+<template name="manageProductCategory">
+	<h1>Editor de categorías y subcategorías</h1>
+
+    <p>
+    	Categorías de productos actuales:
+    </p>
+	<table border="2" width="100%">
+		<tr>
+			<th>Nombre de la categoría</th>
+		</tr>
+	    {{#each dbProductCategory}}
+	        <tr>
+	    	    <td>{{nameSpa}}</td>
+	    	</tr>
+	    {{/each}}
+    </table>
+
+    <p>
+    	Operaciones con productos:
+    	<form class="form-group" id="addNewProductCategoryForm">
+    		<input class="form-control" type="text" value="" placeholder="Nombre">
+    		<input class="form-control" type="submit" value="Crear nueva categoría">
+    	</form>
+    </p>
+</template>
