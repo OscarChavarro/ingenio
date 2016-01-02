@@ -1,0 +1,74 @@
+<template name="headerArea">
+    <!-- Define todos los diálogos modales desde el principio para evitar bloqueos -->
+    {{> defineWelcomeDialog}}
+    {{> defineUserRegistrationModalDialog}}
+    <!-- Fin de la definición de diálogos modales -->
+    <div id="headerArea">
+        <div 
+            id="headerMenuBar"
+            class="container-fluid navbar navbar-fixed-top homeheader"
+            style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+            <a 
+                href="/" 
+                style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+                <img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
+            </a>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/products">Productos</a></li>
+                <li><a href="/faq">Preguntas Frecuentes</a></li>
+                <li><a href="/contact">Contáctenos</a></li>
+                {{#if globalIsUserLoggedIn}}
+                    <li>Bienvenido(a)<br> {{globalGetCurrentLoggedUsername}}</li>
+                    {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                        <li><a href="/adminPanel">Administrar</a></li>
+                    {{/if}}
+                    <li><a href="#" id="logoutUser">Cerrar sesión</a></li>
+                {{else}}
+                    <li>
+                        <a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
+                    </li>
+                    {{> loginDropDownMenuItem}}
+                {{/if}}
+            </ul>
+        </div>
+        <div id="searchBar" class="container-fluid">
+            <div style="float:right">
+                <button id="search">Buscar</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!--
+Plantilla privada
+-->
+<template name="loginDropDownMenuItem">
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button">
+            Ingresar 
+            <span class="caret"></span>
+        </a>
+        <!--
+        Acá no deberían definirse estilos, pero el CSS no los está tomando
+        -->
+        <ul 
+            id="loginPopup" 
+            class="dropdown-menu" 
+            role="menu"
+            style="padding: 0px 0px 0px 0px;">
+            <li 
+                class="loginPopupItem" 
+                style="
+                    height: 200px;
+                    width: 200px;
+                    padding: 0px 0px 0px 0px;
+                    margin: 0px 0px 0px 0px;
+                    border: 0px solid #ff0000;
+                    background-color: #ffffff;
+                    ">
+                {{> userLoginBox}}
+            </li>
+        </ul>
+    </li>
+</template>

@@ -1,4 +1,4 @@
-Template.headerBar.events({
+Template.headerArea.events({
     /**
     Esta función se llama cuando en la barra de navegación un usuario anónimo
     da click en el enlace de crear un nuevo usuario registrado.

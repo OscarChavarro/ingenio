@@ -13,17 +13,42 @@ h1 {
 }
 
 body {
-	line-height: 1 !important;
+	line-height: 1.42857143; /* Igual que en Bootstrap */
+	z-index: 1;
+}
+
+#searchBar {
+	margin-top: 84px; /* Alto de la imagen de logo */
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	background-color: #00aeef;
+}
+
+#centralArea {
+	position: relative; /* Relativo a su hermano previo: #searchBar */
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	background-color: #ffffff;
 }
 
 //==========================================================================
-
-#headerBar {
+#headerMenuBar {
 	color: #ffffff;
 	background-color: #00aeef;
 }
 
-#headerBar img {
+#headerMenuBar img {
 	vertical-align: top;
 }
 
@@ -34,36 +59,51 @@ top y transform.
 
 Ver [.wW3SC2015a].
 */
-#headerBar ul {
+#headerMenuBar ul {
+    position: none; /* Puede ser relative o none */
+    /*
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: #ffffff;
 	float: none;
-	position: relative;
-	//top: 50%;
-	//transform: translateY(40%);
+    */
+	/*
+	top: 50%;
+	transform: translateY(40%);
+	*/
 }
+
+/*
+No toma esta clase. De momento se define el estilo en headerArea.html
+*/
+/*
+.loginPopupItem {
+    
+}
+*/
 
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar li {
+#headerMenuBar li {
+	height: 84px; /* Alto de la imagen de logo */
 	display: block;
 	text-decoration: none;
 	text-align: center;
-	padding: 14px 16px;	
+	padding: 0px 0px 0px 0px;	
+	border: 1px solid #00aeef;
+	/*
 	vertical-align: middle;
 	float: left;
-	border: 1px solid #00aeef;
-	height: 84px; // Alto de la imagen de logo
+	*/
 }
 
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar li:last-child {
+#headerMenuBar li:last-child {
 	border-right: none;
 	border: 1px solid #00aeef;
 	float: right;
@@ -73,75 +113,96 @@ Ver [.wW3SC2015a]
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar a {
+#headerMenuBar a {
 	display: inline;
 	float: left;
 	color: #000000;
 	font-size: 150%;
+	margin: 15px 0px 15px 0px;
 }
 
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar li:last-child a {
+#headerMenuBar li:last-child a {
 	color: #ffffff;
 }
 
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar a:hover {
-    background-color: #ffff00;
+#headerMenuBar a:hover {
+    background-color: #0000ff;
 }
 
 /**
 Ver [.wW3SC2015a]
 */
-#headerBar .active {
+#headerMenuBar .active {
     background-color: #ff00ff;
 }
 
-#headerBar {
-	overflow: hidden;
-	padding: 0px 0px 0px 0px;
-	position: relative;
+//==========================================================================
+
+#productCategoryIndexArea {
+	/* No está tomando estos atributos - por revisar */
+	/* De momento se controla en el atributo style en layout.html */
+    /*
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;	
+	*/
 }
 
-//==========================================================================
 /**
 Ver [.wW3SC2015a].
 */
 #productCategoryIndexArea ul {
+	/* No está tomando estos atributos - por revisar */
+	/* De momento se controla en el atributo style en productCategoryIndexList.html */
+	/*
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	*/
+	/** Pendientes por probar */
+	/*
+	display: block;
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #ffffff;
 	float: none;
-	position: relative;
+	overflow: hidden;
+	position: absolute;
+	*/
 }
 
 /**
 Ver [.wW3SC2015a]
 */
 #productCategoryIndexArea li {
-	display: block;
-	text-decoration: none;
-	text-align: center;
-	padding: 5px 16px;	
-	vertical-align: middle;
-	float: none;
-	border: 1px solid #ffffff;
     background-color: #00aeef;
+	border: 1px solid #ffffff;
+	text-align: center;
+	padding: 5px 10px 5px 10px;	/* top right bottom left */
+	margin: 1px 1px 1px 1px;	/* top right bottom left */
+
+    /* Por probar */
+    /*
+    float: none;
+	vertical-align: middle;
+    display: block;
+	text-decoration: none;
+    */
 }
 
 /**
 Ver [.wW3SC2015a]
 */
 #productCategoryIndexArea a {
-	display: inline;
 	color: #ffffff;
 	font-size: 120%;
+
+	/* Por probar */
+	/*
+	display: inline;
+	*/
 }
 
 //==========================================================================
@@ -157,18 +218,61 @@ pero si funciona en one.css.
 }
 
 //==========================================================================
-
+/*
 .dashbox {
     padding-left: 15px;
     padding-right: 15px;
     width: 350px;
 }
 
-.dropdown-menu {
-    min-width: 300px;
-    padding: 0;
-    margin: 0px 0 0;
-    font-size: 14px;
+li.dropdown.open a.dropdown-toggle {
+  background: transparent !important;
 }
 
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight:300;
+    line-height: 1.42857143;
+    color: #ffffff;
+    white-space: nowrap;
+    font-size: 16px;
+}
+*/
+
+/**
+Copiado sin entender, buscando hacer que el menú dropdown de la headerMenuBar
+se hiciera visible - sin éxito. Por revisar.
+*/
+/*
+.dropdown-menu {
+    display: none; /* A veces se cambia en el estilo ".open > .dropdown-menu" */
+/*
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    position: absolute !important;
+    top: 100%;
+    left: 0px !important;
+    z-index: 1000 !important;
+
+    float: left;
+    min-width: 200px;
+    height: 200px !important;
+    padding: 5px 0 !important;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #233855 !important;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 5px solid #ff0000 !important;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+*/
 //==========================================================================
