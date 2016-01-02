@@ -1,4 +1,31 @@
-sendWelcomeAndRegistrationCodeEmail = function(uid, recipient, name)
+var sendPasswordResetEmail = function(uid, recipient)
+{
+    var t = new Date();
+    var subject = "Mensaje de reinicio de correo en el sistema Ingenio";
+    var url = "http://ingenio.cubestudio.co/requestPasswordReset/" + uid;
+    var htmlContent = 
+    '<html>' +
+        '<body><table width="100%" border="0">' + 
+            '<tr><td bgcolor="#00aeef">' +
+                '<img src="' + resourceUrlForMail("/images/ingenioHeaderLogo.png")+'">' +
+            '</td></tr>' +
+            '<tr><td>' + 
+                '<h1>¡Reinicio de contraseña en el sistema INGENIO!</h1>' +
+                'Este es un correo que ha sido solicitado manualmente desde el sistema ' +
+                '<b>INGENIO SOLUCIONES PUBLICITARIAS</b> ' +
+                'en el instante de tiempo ' + t + 
+                '. Para realizar su cambio de contraseña siga el siguiente enlace: ' +
+                '<b><a href="' + url + '">CAMBIO DE CONTRASEÑA</a></b>.' +
+            '</td></tr>' +
+        '</table></body>' + 
+    '</html>';
+    var senderEmail = "ingenio@cubestudio.co";
+    var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
+
+    sendMandrillMail(recipient, subject, htmlContent, senderEmail, senderName);
+}
+
+var sendWelcomeAndRegistrationCodeEmail = function(uid, recipient, name)
 {
     var t = new Date();
     var subject = "Mensaje de bienvenida a Ingenio";
@@ -186,7 +213,8 @@ Template.userLoginBox.events({
                                 document.getElementById("emailToResetFeedbackArea").innerHTML =
                                     'ERROR Buscando usuarios - llamado fallido a testIfUserExistsByEmail';
                             }
-                            else if ( valid(response) && response == true ) {
+                            else if ( valid(response) && response != false ) {
+                                Session.set("loginUid", response);
                                 var validEmailMessage = 
                                     'La cuenta de correo electrónico o la contraseña que has ingresado son ' + 
                                     'incorrectas. Verifica tus datos y vuelve a intentarlo, o intenta reiniciar ' + 
@@ -215,14 +243,21 @@ Template.userLoginBox.events({
 Template.headerArea.events({
     /**
     Evento disparado tras una interacción dentro de loginUserForm. Dispara
-    un llamado al diálogo de userResetFeedbackDialog.
+    un llamado al diálogo de userResetFeedbackDialog. Sólo es posible llamar
+    a esta función si la cuenta de correo en la variable de sesión "loginEmail"
+    corresponde a un usuario registrado en el sistema (protección contra
+    abusos de correo no solicitado - SPAM).
     */
     "submit #resetPasswordForm": function(event, template)
     {
         event.preventDefault();
         var email = Session.get("loginEmail");
-        console.log("Voy a reiniciar una contraseña: " + email);
+        var uid = Session.get("loginUid");
+        console.log("Voy a reiniciar una contraseña: " + email + " para el usuario " + uid);
         $("#wrongUserAccessModalDialog").modal("toggle");
-        $("#userPasswordResetFeedbackModalDialog").modal("show");
+        if ( valid(email) && valid(uid)  ) {
+            sendPasswordResetEmail(uid, email);            
+            $("#userPasswordResetFeedbackModalDialog").modal("show");
+        }
     }
 });

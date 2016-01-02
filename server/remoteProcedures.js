@@ -1,8 +1,9 @@
 Meteor.startup(function () {
     Meteor.methods({
         /**
-        Dado un correo electrónico, esta función retorna true si existe un usuario con dicho
-        correo.
+        Dado un correo electrónico, esta función retorna el _id del usuario 
+        si existe un usuario con dicho correo. Retorna false si no se
+        encuentra.
         */
         testIfUserExistsByEmail: function(userEmail)
         {
@@ -20,7 +21,7 @@ Meteor.startup(function () {
                 return false;
             }
 
-            return true;
+            return u._id;
         },
         /**
         Permite al usuario administrador de diseño gráfico cambiar el estilo visual (tema)
