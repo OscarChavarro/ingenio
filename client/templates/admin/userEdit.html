@@ -44,7 +44,7 @@ Plantilla privada.
             </form>
         </td>
         <td>
-            <div style="font-size: 75%;margin:0px;border:0px;">
+            <div class="userEditRoleForm">
                 <form id={{_id}}>
                     {{#each dbUserRole}}
                         {{> checkboxForUserRole}}
@@ -72,7 +72,7 @@ Plantilla pública.
     <h1>Consulta de usuarios</h1>
 
     Actualmente se tienen los siguientes usuarios:
-    <table border=2>
+    <table border=2 width="100%">
         <tr>
             <th>N</th>
             <th>ID</th>

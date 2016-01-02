@@ -4,13 +4,11 @@
     {{> defineUserRegistrationModalDialog}}
     <!-- Fin de la definición de diálogos modales -->
     <div id="headerArea">
-        <div 
+        <div
             id="headerMenuBar"
-            class="container-fluid navbar navbar-fixed-top homeheader"
-            style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
-            <a 
-                href="/" 
-                style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
+            class="container-fluid navbar navbar-fixed-top homeheader">
+            <a id="headerMenuBarLogoLink"
+                href="/">
                 <img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
             </a>
             <ul class="nav navbar-nav navbar-right">
@@ -19,7 +17,9 @@
                 <li><a href="/faq">Preguntas Frecuentes</a></li>
                 <li><a href="/contact">Contáctenos</a></li>
                 {{#if globalIsUserLoggedIn}}
-                    <li>Bienvenido(a)<br> {{globalGetCurrentLoggedUsername}}</li>
+                    <li>
+                        <p>Bienvenido(a)<br> {{globalGetCurrentLoggedUsername}}</p>
+                    </li>
                     {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
                         <li><a href="/adminPanel">Administrar</a></li>
                     {{/if}}
@@ -33,8 +33,8 @@
             </ul>
         </div>
         <div id="searchBar" class="container-fluid">
-            <div style="float:right">
-                <button id="search">Buscar</button>
+            <div>
+                <button id="searchBarButton">Buscar</button>
             </div>
         </div>
     </div>
@@ -49,24 +49,8 @@ Plantilla privada
             Ingresar 
             <span class="caret"></span>
         </a>
-        <!--
-        Acá no deberían definirse estilos, pero el CSS no los está tomando
-        -->
-        <ul 
-            id="loginPopup" 
-            class="dropdown-menu" 
-            role="menu"
-            style="padding: 0px 0px 0px 0px;">
-            <li 
-                class="loginPopupItem" 
-                style="
-                    height: 200px;
-                    width: 200px;
-                    padding: 0px 0px 0px 0px;
-                    margin: 0px 0px 0px 0px;
-                    border: 0px solid #ff0000;
-                    background-color: #ffffff;
-                    ">
+        <ul id="loginPopup" class="dropdown-menu" role="menu">
+            <li class="loginPopupItem">
                 {{> userLoginBox}}
             </li>
         </ul>

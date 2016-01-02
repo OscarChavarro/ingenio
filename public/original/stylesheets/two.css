@@ -6,10 +6,10 @@ Referencias:
 [.wW3SC2015a] www.w3schools.com/css/css_navbar.asp
 */
 
-//==========================================================================
+/*==========================================================================*/
 
 h1 {
-	color: #000000;
+	color: #ff0000;
 }
 
 body {
@@ -17,35 +17,31 @@ body {
 	z-index: 1;
 }
 
+/*==========================================================================*/
+
 #searchBar {
-	margin-top: 84px; /* Alto de la imagen de logo */
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
+	margin: 84px 0px 0px 0px;	/* top right bottom left, top es el alto de la imagen de logo */
+	padding: 0px 0px 0px 0px;	/* top right bottom left */
 	background-color: #00aeef;
+}
+
+#searchBarButton {
+	float:right;
 }
 
 #centralArea {
 	position: relative; /* Relativo a su hermano previo: #searchBar */
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
+	margin: 0px 0px 0px 0px;	/* top right bottom left */
+	padding: 0px 0px 0px 0px;	/* top right bottom left */
 	background-color: #ffffff;
 }
 
-//==========================================================================
+/*==========================================================================*/
+
 #headerMenuBar {
 	color: #ffffff;
-	background-color: #00aeef;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
 }
 
 #headerMenuBar img {
@@ -53,7 +49,7 @@ body {
 }
 
 /**
-Contiene un método dudoso para centrar la lista en el centro
+étodo dudoso para centrar la lista en el centro
 verticalmente respecto a su padre - por revisar position,
 top y transform. 
 
@@ -75,15 +71,6 @@ Ver [.wW3SC2015a].
 	*/
 }
 
-/*
-No toma esta clase. De momento se define el estilo en headerArea.html
-*/
-/*
-.loginPopupItem {
-    
-}
-*/
-
 /**
 Ver [.wW3SC2015a]
 */
@@ -92,7 +79,7 @@ Ver [.wW3SC2015a]
 	display: block;
 	text-decoration: none;
 	text-align: center;
-	padding: 0px 0px 0px 0px;	
+	padding: 0px 2px 0px 2px;	
 	border: 1px solid #00aeef;
 	/*
 	vertical-align: middle;
@@ -118,7 +105,25 @@ Ver [.wW3SC2015a]
 	float: left;
 	color: #000000;
 	font-size: 150%;
-	margin: 15px 0px 15px 0px;
+	padding: 30px 3px 30px 3px;
+    margin: 1px 1px 1px 1px;
+}
+
+#headerMenuBar p {
+	display: inline;
+	float: left;
+	color: #000000;
+	font-size: 150%;
+	padding: 15px 3px 15px 3px;
+    margin: 1px 1px 1px 1px;
+}
+
+/**
+Esta es una excepción a la regla "#headerMenuBar a"
+*/
+a#headerMenuBarLogoLink {
+	margin: 0px 0px 0px 0px !important;
+	padding: 0px 0px 0px 0px !important;
 }
 
 /**
@@ -142,27 +147,50 @@ Ver [.wW3SC2015a]
     background-color: #ff00ff;
 }
 
-//==========================================================================
+/*==========================================================================*/
+
+#loginPopup {
+	padding: 0px 0px 0px 0px;
+}
+
+/*
+This class uses !important attributes to override headerbar menu
+button configurations.
+*/
+.loginPopupItem {
+    height: 200px !important;
+    width: 200px !important;
+    padding: 0px 0px 0px 0px !important;
+    margin: 0px 0px 0px 0px !important;
+    border: 0px solid #ff0000 !important;
+    background-color: #ffffff !important;
+}
+
+/*==========================================================================*/
+
+/**
+*/
+#footerArea {
+	color: #ffffff;
+	background-color: #00aeef;
+	text-align: center;
+}
+
+/*==========================================================================*/
 
 #productCategoryIndexArea {
-	/* No está tomando estos atributos - por revisar */
-	/* De momento se controla en el atributo style en layout.html */
-    /*
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;	
-	*/
+	margin: 0px 0px 0px 0px;  /* top right bottom left */
+	padding: 0px 0px 0px 0px; /* top right bottom left */
 }
 
 /**
 Ver [.wW3SC2015a].
 */
 #productCategoryIndexArea ul {
-	/* No está tomando estos atributos - por revisar */
-	/* De momento se controla en el atributo style en productCategoryIndexList.html */
-	/*
-	margin: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
-	*/
+	margin: 0px 0px 0px 0px;  /* top right bottom left */
+	padding: 1px 0px 1px 0px; /* top right bottom left */
+	background-color:#ff0000;
+
 	/** Pendientes por probar */
 	/*
 	display: block;
@@ -205,74 +233,17 @@ Ver [.wW3SC2015a]
 	*/
 }
 
-//==========================================================================
+/*==========================================================================*/
 
-/**
-Por alguna razón inexplicable esto no lo está tomando en este estilo,
-pero si funciona en one.css.
-*/
-#footer {
-	color: #ffffff;
-	background-color: #00aeef;
-	text-align: center;
+.userEditRoleForm {
+	font-size: 75%;
+	margin: 0px 0px 0px 0px;
+	border: 0px;
 }
 
-//==========================================================================
-/*
-.dashbox {
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 350px;
+.userEditRoleCheckbox {
+    margin: 0px 0px 0px 0px !important;
+    border: 0px !important;
 }
 
-li.dropdown.open a.dropdown-toggle {
-  background: transparent !important;
-}
-
-.dropdown-menu>li>a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight:300;
-    line-height: 1.42857143;
-    color: #ffffff;
-    white-space: nowrap;
-    font-size: 16px;
-}
-*/
-
-/**
-Copiado sin entender, buscando hacer que el menú dropdown de la headerMenuBar
-se hiciera visible - sin éxito. Por revisar.
-*/
-/*
-.dropdown-menu {
-    display: none; /* A veces se cambia en el estilo ".open > .dropdown-menu" */
-/*
-    margin-top: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-
-    position: absolute !important;
-    top: 100%;
-    left: 0px !important;
-    z-index: 1000 !important;
-
-    float: left;
-    min-width: 200px;
-    height: 200px !important;
-    padding: 5px 0 !important;
-    margin: 2px 0 0;
-    font-size: 14px;
-    text-align: left;
-    list-style: none;
-    background-color: #233855 !important;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 5px solid #ff0000 !important;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-}
-*/
-//==========================================================================
+/*==========================================================================*/
