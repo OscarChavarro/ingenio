@@ -132,33 +132,28 @@ Plantilla pública
                 </div>
 
                 <div class="modal-body">
-                    <p>
-                    La cuenta de correo electrónico o la contraseña que has ingresado son incorrectas.
-                    Verifica tus datos y vuelve a intentarlo, o intenta reiniciar la contraseña
-                    si crees haberla olvidado.
-                    </p>
-
-                    <p>
-                    El correo electrónico es: <div id="emailToResetFeedbackArea"></div>
+                    <p id="emailToResetFeedbackArea">
                     </p>
                 </div>
                 
                 <div class="modal-footer">
                     <div class="btn-group" role="group">
                         <form id="resetPasswordForm">
-                            <button 
-                                type="button" 
-                                name="cancel" 
-                                value="" 
-                                class="btn btn-default" 
-                                data-dismiss="modal">
-                                ¡Cancelar ingreso!
-                            </button>
-                            <input 
-                                type="submit" 
-                                name="resetPassword" 
-                                value="¡Reiniciar contraseña!" 
-                                class="btn btn-default">
+                            <div id="emailToResetButtonArea">
+                                <button 
+                                    type="button" 
+                                    name="cancel" 
+                                    value="" 
+                                    class="btn btn-default" 
+                                    data-dismiss="modal">
+                                    ¡Cancelar ingreso!
+                                </button>
+                                <input 
+                                    type="submit" 
+                                    name="resetPassword" 
+                                    value="¡Reiniciar contraseña!" 
+                                    class="btn btn-default">
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -174,7 +174,34 @@ Template.userLoginBox.events({
             function(error)
             {
                 if ( error ) {
-                    document.getElementById("emailToResetFeedbackArea").innerHTML = "HOLA";
+                    document.getElementById("emailToResetButtonArea").innerHTML = 
+                        '<button type="button" name="cancel" value="" class="btn btn-default" data-dismiss="modal"> ¡Cancelar ingreso! </button>';
+                    document.getElementById("emailToResetFeedbackArea").innerHTML = "Buscando usuarios... ";
+                    Meteor.call(
+                        "testIfUserExistsByEmail", 
+                        Session.get("loginEmail"), 
+                        function(error, response) {
+                            var userEmail = Session.get("loginEmail");
+                            if ( valid(error) ) {
+                                document.getElementById("emailToResetFeedbackArea").innerHTML =
+                                    'ERROR Buscando usuarios - llamado fallido a testIfUserExistsByEmail';
+                            }
+                            else if ( valid(response) && response == true ) {
+                                var validEmailMessage = 
+                                    'La cuenta de correo electrónico o la contraseña que has ingresado son ' + 
+                                    'incorrectas. Verifica tus datos y vuelve a intentarlo, o intenta reiniciar ' + 
+                                    'la contraseña si crees haberla olvidado.';
+                                document.getElementById("emailToResetFeedbackArea").innerHTML = validEmailMessage;
+                                document.getElementById("emailToResetButtonArea").innerHTML =
+                                    '<button type="button" name="cancel" value="" class="btn btn-default" data-dismiss="modal"> ¡Cancelar ingreso! </button>' + 
+                                    '<input type="submit" name="resetPassword" value="¡Reiniciar contraseña!" class="btn btn-default">';
+                            }
+                            else {
+                                document.getElementById("emailToResetFeedbackArea").innerHTML =
+                                    'El usuario ' + userEmail + ' no se encuentra registrado en el sistema. Revisa que tu dirección de correo esté bien escrita y sea la que registraste en este sistema.';
+                            }
+                        }
+                    );
                     $("#wrongUserAccessModalDialog").modal("show");
                 }
                 else {

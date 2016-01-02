@@ -1,6 +1,28 @@
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        Dado un correo electrónico, esta función retorna true si existe un usuario con dicho
+        correo.
+        */
+        testIfUserExistsByEmail: function(userEmail)
+        {
+            if ( !valid(userEmail) ) {
+                return false;
+            }
+            var users = global["users"];
+
+            if ( !valid(users) ) {
+                return false;
+            }
+
+            var u = users.findOne({"profile.email": userEmail});
+            if ( !valid(u) ) {
+                return false;
+            }
+
+            return true;
+        },
+        /**
         Permite al usuario administrador de diseño gráfico cambiar el estilo visual (tema)
         actualmente seleccionado a nivel global para el sistema.
         */
