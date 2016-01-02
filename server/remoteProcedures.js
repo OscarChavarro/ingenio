@@ -1,6 +1,13 @@
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        Hace el método "setPassword" del API Meteor para usuarios disponible
+        al lado del cliente.
+        */
+        setUserPassword: function(userId, newPassword) {
+            Accounts.setPassword(userId, newPassword);
+        },
+        /**
         Dado un correo electrónico, esta función retorna el _id del usuario 
         si existe un usuario con dicho correo. Retorna false si no se
         encuentra.
