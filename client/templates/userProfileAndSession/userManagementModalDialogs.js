@@ -174,7 +174,7 @@ Template.userLoginBox.events({
             function(error)
             {
                 if ( error ) {
-                    //alert("Error en acceso: " + error);
+                    document.getElementById("emailToResetFeedbackArea").innerHTML = "HOLA";
                     $("#wrongUserAccessModalDialog").modal("show");
                 }
                 else {
