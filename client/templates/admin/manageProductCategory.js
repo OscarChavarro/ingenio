@@ -2,7 +2,8 @@ Router.route("/manageProductCategory", {
     name: "manageProductCategory",
     loadingTemplate: "manageProductCategoryLoading",
     data: function() {
-        productCategoryFiltered = productCategory.find();
+        var options =  {"sort" : [["nameSpa", "asc"]]};
+        productCategoryCursor = productCategory.find({}, options);
     },
     waitOn: function() {
         return Meteor.subscribe("productCategory");
@@ -12,13 +13,31 @@ Router.route("/manageProductCategory", {
 Template.manageProductCategory.helpers({
     dbProductCategory: function()
     {
-        return productCategoryFiltered;
+        return productCategoryCursor;
     }
 });
 
 Template.manageProductCategory.events({
     "submit #addNewProductCategoryForm": function(event, template) {
         event.preventDefault();
-        console.log("tun tururuntun");
+        var n = event.target.identifier.value;
+        var root;
+
+        root = productCategory.findOne({nameSpa: "/"});
+        var oid;
+        if ( !valid(root) ) {
+            console.log("Creando categoría raíz");
+            oid = new Mongo.ObjectID();
+            productCategory.insert({_id: oid, nameSpa: "/", parentCategoryId: null});
+            root = productCategory.findOne({nameSpa: "/"});
+            if ( !valid(root) ) {
+                console.log("ERROR: No se encuentra root");
+                return;
+            }
+        }
+
+        oid = new Mongo.ObjectID();
+        productCategory.insert({_id: oid, nameSpa: n, parentCategoryId: root._id});
+        getTopLevelProductCategories();
     }
 });

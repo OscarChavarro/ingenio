@@ -1,6 +1,23 @@
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        Retorna un arreglo con las categorías de nivel superior.
+        */
+        getTopLevelProductCategories: function()
+        {
+            var productCategory = global["productCategory"];
+            if ( !valid(productCategory) ) {
+                return null;
+            }
+            var root = productCategory.findOne({nameSpa: "/"});
+            if ( !valid(root) || !valid(root._id) ) {
+                return null;
+            }
+            var options =  {"sort" : [["nameSpa", "asc"]]};
+            var dataset = productCategory.find({parentCategoryId: root._id}, options);
+            return dataset.fetch();
+        },
+        /**
         Hace el método "setPassword" del API Meteor para usuarios disponible
         al lado del cliente.
         */

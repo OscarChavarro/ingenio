@@ -1,4 +1,22 @@
 /**
+Trae la lista de categorías del servidor.
+*/
+getTopLevelProductCategories = function() {
+    Meteor.call("getTopLevelProductCategories", null, function(error, response) {
+        if ( valid(error) ) {
+            console.log("Error llamando a getTopLevelProductCategories");
+        }
+        else if ( valid(response) ) {
+            var topLevelProductCategoriesArray = response;
+            Session.set("topLevelProductCategoriesArray", topLevelProductCategoriesArray);
+        }
+        else {
+            console.log("Respuesta de getTopLevelProductCategories inválida");
+        }
+    });
+}
+
+/**
 Cierra la sesión de usuario y limpia las variables de sesión relacionadas.
 */
 globalLogout = function()
