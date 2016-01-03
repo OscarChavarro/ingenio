@@ -8,6 +8,12 @@ Template.registerHelper("resourceUrl", function(urlSegment)
     }
 );
 
+Template.registerHelper("globalDbProductCategories", function()
+    {
+        return Session.get("topLevelProductCategoriesArray");
+    }
+);
+
 Template.registerHelper("globalCheckUserRole", function (desiredRole) 
 {
     var uid = Meteor.userId();
