@@ -18,7 +18,8 @@ Template.manageProductCategory.helpers({
 });
 
 Template.manageProductCategory.events({
-    "submit #addNewProductCategoryForm": function(event, template) {
+    "submit #addNewProductCategoryForm": function(event, template) 
+    {
         event.preventDefault();
         var n = event.target.identifier.value;
         var root;
@@ -38,6 +39,23 @@ Template.manageProductCategory.events({
 
         oid = new Mongo.ObjectID();
         productCategory.insert({_id: oid, nameSpa: n, parentCategoryId: root._id});
+        getTopLevelProductCategories();
+    },
+    "submit .categoryNameDelete": function(event, template) 
+    {
+        event.preventDefault();
+
+        productCategory.remove(this._id);
+    },
+    "keyup .editCategoryName": function(event, template) 
+    {
+        event.preventDefault();
+
+        if ( !valid(this._id) || !valid(event.target.value) ) {
+            return false;
+        }
+
+        productCategory.update(this._id, {$set: {nameSpa: event.target.value}});
         getTopLevelProductCategories();
     }
 });

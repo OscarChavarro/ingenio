@@ -11,10 +11,20 @@
 	<table border="2" width="100%">
 		<tr>
 			<th>Nombre de la categoría</th>
+            <th>Eliminar</th>
 		</tr>
 	    {{#each dbProductCategory}}
 	        <tr>
-	    	    <td>{{nameSpa}}</td>
+	    	    <td>
+                    <form class="categoryNameForm">
+                        <input type="text" class="editCategoryName" value={{nameSpa}}>
+                    </form>
+                </td>
+                <td>
+                    <form class="categoryNameDelete">
+                        <input type="submit" name="delete" value="Eliminar">
+                    </form>
+                </td>
 	    	</tr>
 	    {{/each}}
     </table>
