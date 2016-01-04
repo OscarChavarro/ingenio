@@ -68,6 +68,26 @@ Template.manageProductCategory.events({
         productCategory.update(this._id, {$set: {nameSpa: event.target.value}});
         getTopLevelProductCategories();
     },
+    "keyup .editFriendlyUrl": function(event, template) 
+    {
+        event.preventDefault();
+
+        if ( !valid(this._id) || !valid(event.target.value) ) {
+            return false;
+        }
+        newUrl = event.target.value;
+
+        var prev = productCategory.findOne({friendlyUrl: newUrl, _id: {$ne: this._id}});
+
+        if ( !valid(prev) ) {
+            productCategory.update(this._id, {$set: {friendlyUrl: newUrl}});
+            getTopLevelProductCategories();
+            event.target.style.color = "#000000";
+        }
+        else {
+            event.target.style.color = "#ff0000";
+        }
+    },
     "change .parentCategories": function(event, template)
     {
         event.preventDefault();
