@@ -73,32 +73,9 @@ Template.manageProductCategory.events({
         event.preventDefault();
         var elementData = event.target.value;
 
-        root = productCategory.findOne({nameSpa: "/"});
-        if ( !valid(elementData) || !valid(root) ) {
-            console.log("Cancelando cambio por no tener nodo root");
-            return false;
-        }
-
-        var myId = new Mongo.ObjectID(elementData.substring(10, 34));
-
-        // Esto debe tener en cuenta varios casos:
-        // 1. No se cambia a que el padre sea él mismo, para evitar dependencia circular
-        //    (viene validado por las restricciones en el formulario)
-        // 2. No se cambia a un padre que no sea de nivel 1
-        //    (viene validado por las restricciones en el formulario)
-        // 3. No se cambia al root
-        //    (viene validado por las restricciones en el formulario)
-        // 4. Si antes era nivel raíz y luego pasa a ser subcategoría... todos sus
-        //    actuales hijos pasan a ser hijos de raíz
-        if ( elementData.length < 37 ) {
-            console.log("Cambio a " + myId + " a root");
-            productCategory.update(myId, {$set: {parentCategoryId: root._id}});
-        }
-        else {
-            var parentId = elementData.substring(46, 70);
-            console.log("Cambio a " + myId + " a " + parentId);
-        }
-
+        Meteor.call("changeProductCategories", elementData, function(error, value) {
+            getTopLevelProductCategories();            
+        });
     }
 });
 
@@ -120,16 +97,20 @@ Template.categorySelectionChange.helpers({
         return false;
     },
     notItself: function(container, subjectBeingTested) {
-        if ( !valid(container) || !valid(subjectBeingTested) || 
-             !valid(subjectBeingTested.parentCategoryId) || !valid(container._id) ) {
+        if ( !valid(container) || !valid(subjectBeingTested) ) {
             return false;
         }
 
-        var sid = "" + subjectBeingTested._id;
+        var sid = "" + subjectBeingTested;
         if ( sid.indexOf("ObjectID(") > -1 ) {
             sid = sid.substring(10, 34);
         }
-        var cid = "" + container._id;
+
+        var cid = "" + container;
+        if ( cid.indexOf("ObjectID(") > -1 ) {
+            cid = cid.substring(10, 34);
+        }
+
         if ( sid === cid ) {
             return false;
         }

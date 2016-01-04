@@ -1,6 +1,49 @@
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        */
+        changeProductCategories: function(elementData)
+        {
+            var productCategory = global["productCategory"];
+
+            if ( !valid(productCategory) ) {
+                return;
+            }
+
+            root = productCategory.findOne({nameSpa: "/"});
+            if ( !valid(elementData) || !valid(root) ) {
+                return;
+            }
+
+            var myId = new Mongo.ObjectID(elementData.substring(10, 34));
+
+            // Esto debe tener en cuenta varios casos:
+            // 1. No se cambia a que el padre sea él mismo, para evitar dependencia circular
+            //    (viene validado por las restricciones en el formulario)
+            // 2. No se cambia a un padre que no sea de nivel 1
+            //    (viene validado por las restricciones en el formulario)
+            // 3. No se cambia al root
+            //    (viene validado por las restricciones en el formulario)
+            // 4. Si antes era nivel raíz y luego pasa a ser subcategoría... todos sus
+            //    actuales hijos pasan a ser hijos de raíz
+            if ( elementData.length < 37 ) {
+                console.log("Voy a cambiar de categoría a " + myId + " a ROOT " + root._id);
+                productCategory.update(myId, {$set: {parentCategoryId: root._id}});
+            }
+            else {
+                var parentId = myId;
+                myId = new Mongo.ObjectID(elementData.substring(46, 70));
+                console.log("Voy a cambiar de categoría a " + myId + " a " + parentId);
+                var childrenArray = productCategory.find({parentCategoryId: myId}).fetch();
+                var i;
+                for ( i in childrenArray ) {
+                    console.log("  - Reasignando a root a " + childrenArray[i]._id);
+                    productCategory.update(childrenArray[i]._id, {$set: {parentCategoryId: root._id}});
+                }
+                productCategory.update(myId, {$set: {parentCategoryId: parentId}});
+            }
+        },
+        /**
         Retorna un arreglo con las categorías de nivel superior.
         */
         getRootProductCategoryId: function()

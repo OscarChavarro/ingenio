@@ -58,7 +58,7 @@
         <select name="categoryChange" class="parentCategories">
             <option value={{_id}}>[CATEGORÍA]</option>
             {{#each globalDbProductCategories}}
-                {{#if notItself . ..}}
+                {{#if notItself ./_id ../_id}}
                     {{#if containerIsParent . ..}}
                         <option value={{this._id}}{{../_id}} selected>Subcategoría [{{this.nameSpa}}]</option>
                     {{else}}
