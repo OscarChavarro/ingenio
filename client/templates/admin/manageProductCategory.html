@@ -19,7 +19,11 @@
 	        <tr>
                 <td>
                     <form class="categoryNameForm">
-                        <input type="text" class="editCategoryName" value={{nameSpa}}>
+                        <input 
+                            type="text" 
+                            class="editCategoryName" 
+                            value={{nameSpa}} 
+                            style="width: 100%;">
                     </form>
                 </td>
                 <td>
@@ -29,12 +33,20 @@
                 </td>
                 <td>
                     <form class="friendlyUrlForm">
-                        <input type="text" class="editFriendlyUrl" value={{nameSpa}}>
+                        <input 
+                            type="text" 
+                            class="editFriendlyUrl" 
+                            value={{nameSpa}}
+                            style="width: 100%;">
                     </form>
                 </td>
                 <td>
                     <form class="categoryDelete">
-                        <input type="submit" name="delete" value="Eliminar">
+                        <input 
+                            type="submit" 
+                            name="delete" 
+                            value="Eliminar" 
+                            style="width: 100%;">
                     </form>
                 </td>
 	    	</tr>
@@ -42,7 +54,7 @@
     </table>
 
     <p>
-    	Operaciones con productos:
+    	Operaciones con categorías de productos:
     	<form class="form-group" id="addNewProductCategoryForm">
     		<input class="form-control" name="identifier"  type="text" value="" placeholder="Nombre">
             {{> categorySelectionCreate}}
@@ -55,7 +67,7 @@
     {{#if isRootOrNull}}
         La categoría raíz no se puede recategorizar.
     {{else}}
-        <select name="categoryChange" class="parentCategories">
+        <select name="categoryChange" class="parentCategories" style="width: 100%;">
             <option value={{_id}}>[CATEGORÍA]</option>
             {{#each globalDbProductCategories}}
                 {{#if notItself ./_id ../_id}}
