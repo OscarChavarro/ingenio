@@ -9,16 +9,8 @@ Meteor.startup(function () {
                 return null;
             }
 
-            console.log("Busco los hijos de " + catId);
-
-            var oid = new Mongo.ObjectID(catId);
+            var oid = "ObjectID(\"" + catId + "\")";
             var children = productCategory.find({parentCategoryId: oid}).fetch();
-
-            var i;
-            for ( i in children ) {
-                console.log("  - id: " + children[i]._id);
-                console.log("  - n: " + children[i].nameSpa);
-            }
 
             return children;
         },

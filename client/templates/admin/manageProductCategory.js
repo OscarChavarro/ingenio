@@ -38,11 +38,11 @@ Template.manageProductCategory.events({
         }
 
         var parent;
-
-        parent = ("" + event.target.parentCategories.value).substring(10, 34);
+        var baseName = event.target.parentCategories.value;
+        parent = ("" + baseName).substring(10, 34);
         parent = "ObjectID(\"" + parent + "\")";
 
-        if ( !valid(parent) || parent === "null" ) {
+        if ( !valid(parent) || baseName === "null" ) {
             parent = root._id;
         }
 
