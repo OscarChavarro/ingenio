@@ -29,3 +29,9 @@ Meteor.publish(
         return productCategory.find();
     }
 );
+
+Meteor.publish(
+    "product", function() {
+        return product.find();
+    }
+);

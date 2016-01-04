@@ -1,0 +1,97 @@
+<!--
+Plantilla privada
+-->
+<template name="manageProductLoading">
+	Cargando producto de la base de datos...
+</template>
+
+<!--
+Plantilla pública
+-->
+<template name="manageProduct">
+	A continuación se listan los productos:
+	<table border="2" width="100%">
+		<th>Referencia interna</th>
+		<th>Referencia externa</th>
+		<th>Nombre</th>
+		<th>Descripción</th>
+		{{#each dbProduct}}
+		    <tr>
+		        <td>
+		        	{{internalReference}}
+		        </td>
+		        <td>
+		        	{{externalReference}}
+		        </td>
+		        <td>
+		        	{{nameSpa}}
+		        </td>
+		        <td>
+		        	{{descriptionSpa}}
+		        </td>
+		    </tr>
+		{{/each}}
+    </table>
+
+    <!-- ====================================================================== -->
+    <p>
+		O puedes crear un nuevo producto:
+		<form class="container-fluid" id="addNewProductForm">
+			<div class="form-group">
+				<label for="productNameId">
+					Nombre de producto:
+				</label>
+				<input
+				    class="form-control" 
+				    type="text" 
+				    id="productNameId" 
+				    name="productName" 
+				    value="" 
+				    placeholder="Nombre corto del producto">
+			</div>
+			<div class="form-group">
+				<label for="productInternalReferenceId">
+					Referencia interna (de Ingenio) del producto:
+				</label>
+				<input
+				    class="form-control" 
+				    type="text" 
+				    id="productInternalReferenceId" 
+				    name="productInternalReference" 
+				    value="" 
+				    placeholder="Referencia interna del producto">
+			</div>
+			<div class="form-group">
+				<label for="productExternalReferenceId">
+					Referencia externa (del proveedor) del producto:
+				</label>
+				<input
+				    class="form-control" 
+				    type="text" 
+				    id="productExternalReferenceId" 
+				    name="productExternalReference" 
+				    value="" 
+				    placeholder="Referencia externa del producto">
+				<label for="productDescriptionId">
+					Descripción del producto:
+				</label>
+			</div>
+			<div class="form-group">
+				<input
+				    class="form-control" 
+				    type="text" 
+				    id="productDescriptionId" 
+				    name="productDescription" 
+				    value="" 
+				    placeholder="Descripción del producto">
+			</div>
+			<div class="form-group">
+				<input
+				    class="form-control" 
+				    type="submit" 
+				    name="productCreate" 
+				    value="Crear producto">
+			</div>
+		</form>
+    </p>
+</template>
