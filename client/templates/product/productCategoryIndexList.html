@@ -1,7 +1,25 @@
 <template name="productCategoryIndexList">
     <ul>
         {{#each globalDbProductCategories}}
-            <li><a href="#">{{this.nameSpa}}</a></li>
+            <li class="dropdown">
+                <a 
+                    class= "productCategoryMenuOption dropdown-toggle"
+                    data-id={{extractIdFromObjectID this._id}}
+                    data-toggle="dropdown" 
+                    role="button">
+                    {{this.nameSpa}}
+                    <span class="caret"></span>
+                </a>
+                <ul 
+                    class="dropdown-menu" 
+                    role="menu">
+                    <li class="loginPopupItem">
+                        <div id={{extractIdFromObjectID this._id}}>
+                            Acá irán las categorías de {{extractIdFromObjectID this._id}}
+                        </div>
+                    </li>
+                </ul>
+            </li>
         {{/each}}
     </ul>
 </template>

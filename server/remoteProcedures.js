@@ -2,6 +2,28 @@ Meteor.startup(function () {
     Meteor.methods({
         /**
         */
+        getSubcategoriesByCategoryId(catId)
+        {
+            var productCategory = global["productCategory"];
+            if ( !valid(productCategory) || !valid(catId) || catId === "null" ) {
+                return null;
+            }
+
+            console.log("Busco los hijos de " + catId);
+
+            var oid = new Mongo.ObjectID(catId);
+            var children = productCategory.find({parentCategoryId: oid}).fetch();
+
+            var i;
+            for ( i in children ) {
+                console.log("  - id: " + children[i]._id);
+                console.log("  - n: " + children[i].nameSpa);
+            }
+
+            return children;
+        },
+        /**
+        */
         changeProductCategories: function(elementData)
         {
             var productCategory = global["productCategory"];
