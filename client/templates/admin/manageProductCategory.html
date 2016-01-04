@@ -52,16 +52,22 @@
 </template>
 
 <template name="categorySelectionChange">
-    <select name="categoryChange" class="parentCategories">
-        <option value={{_id}}>[CATEGORÍA]</option>
-        {{#each globalDbProductCategories}}
-            {{#if containerIsParent . ..}}
-                <option value={{this._id}}{{../_id}} selected>Subcategoría [{{this.nameSpa}}]</option>
-            {{else}}
-                <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
-            {{/if}}
-        {{/each}}
-    </select>
+    {{#if isRootOrNull}}
+        La categoría raíz no se puede recategorizar.
+    {{else}}
+        <select name="categoryChange" class="parentCategories">
+            <option value={{_id}}>[CATEGORÍA]</option>
+            {{#each globalDbProductCategories}}
+                {{#if notItself . ..}}
+                    {{#if containerIsParent . ..}}
+                        <option value={{this._id}}{{../_id}} selected>Subcategoría [{{this.nameSpa}}]</option>
+                    {{else}}
+                        <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
+                    {{/if}}
+                {{/if}}
+            {{/each}}
+        </select>
+    {{/if}}
 </template>
 
 <template name="categorySelectionCreate">

@@ -3,6 +3,21 @@ Meteor.startup(function () {
         /**
         Retorna un arreglo con las categorías de nivel superior.
         */
+        getRootProductCategoryId: function()
+        {
+            var productCategory = global["productCategory"];
+            if ( !valid(productCategory) ) {
+                return null;
+            }
+            var root = productCategory.findOne({nameSpa: "/"});
+            if ( !valid(root) || !valid(root._id) ) {
+                return null;
+            }
+            return root._id;
+        },
+        /**
+        Retorna un arreglo con las categorías de nivel superior.
+        */
         getTopLevelProductCategories: function()
         {
             var productCategory = global["productCategory"];

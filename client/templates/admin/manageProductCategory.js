@@ -81,18 +81,24 @@ Template.manageProductCategory.events({
 
         var myId = new Mongo.ObjectID(elementData.substring(10, 34));
 
+        // Esto debe tener en cuenta varios casos:
+        // 1. No se cambia a que el padre sea él mismo, para evitar dependencia circular
+        //    (viene validado por las restricciones en el formulario)
+        // 2. No se cambia a un padre que no sea de nivel 1
+        //    (viene validado por las restricciones en el formulario)
+        // 3. No se cambia al root
+        //    (viene validado por las restricciones en el formulario)
+        // 4. Si antes era nivel raíz y luego pasa a ser subcategoría... todos sus
+        //    actuales hijos pasan a ser hijos de raíz
         if ( elementData.length < 37 ) {
             console.log("Cambio a " + myId + " a root");
+            productCategory.update(myId, {$set: {parentCategoryId: root._id}});
         }
         else {
             var parentId = elementData.substring(46, 70);
             console.log("Cambio a " + myId + " a " + parentId);
         }
 
-        // Esto debe tener en cuenta varios casos:
-        // 1. No se cambia a que el padre sea él mismo, para evitar dependencia circular
-        // 2. No se cambia a un padre que no sea de nivel 1
-        // 3. No se cambia al root
     }
 });
 
@@ -109,6 +115,35 @@ Template.categorySelectionChange.helpers({
         }
         var cid = "" + container._id;
         if ( sid === cid ) {
+            return true;
+        }
+        return false;
+    },
+    notItself: function(container, subjectBeingTested) {
+        if ( !valid(container) || !valid(subjectBeingTested) || 
+             !valid(subjectBeingTested.parentCategoryId) || !valid(container._id) ) {
+            return false;
+        }
+
+        var sid = "" + subjectBeingTested._id;
+        if ( sid.indexOf("ObjectID(") > -1 ) {
+            sid = sid.substring(10, 34);
+        }
+        var cid = "" + container._id;
+        if ( sid === cid ) {
+            return false;
+        }
+        return true;
+    },
+    isRootOrNull: function()
+    {
+        var rid = Session.get("rootProductCategoryId");
+        if ( !valid(rid) || !valid(this) || !valid(this._id) ) {
+            return true;
+        }
+        rid = "" + rid;
+        var tid = ("" + this._id);
+        if ( tid === rid ) {
             return true;
         }
         return false;

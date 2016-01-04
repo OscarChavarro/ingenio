@@ -2,6 +2,19 @@
 Trae la lista de categorías del servidor.
 */
 getTopLevelProductCategories = function() {
+    Meteor.call("getRootProductCategoryId", null, function(error, response) {
+        if ( valid(error) ) {
+            console.log("Error llamando a getRootProductCategoryId");
+        }
+        else if ( valid(response) ) {
+            var root = response;
+            Session.set("rootProductCategoryId", root);
+        }
+        else {
+            console.log("Respuesta de getRootProductCategoryId inválida");
+        }
+    });
+
     Meteor.call("getTopLevelProductCategories", null, function(error, response) {
         if ( valid(error) ) {
             console.log("Error llamando a getTopLevelProductCategories");
