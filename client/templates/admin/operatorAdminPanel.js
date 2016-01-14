@@ -1,4 +1,3 @@
-
 Router.route("/operatorAdminPanel", {
     name: "operatorAdminPanel",
     loadingTemplate: "operatorAdminPanelLoading",

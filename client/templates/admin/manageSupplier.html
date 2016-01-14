@@ -1,0 +1,31 @@
+<template name="manageSupplier">
+    <h3>Lista de Proveedores</h3>
+    <table class="table table-striped table-responsive">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Número de Contacto</th>
+                <th>Dirección Física</th>
+                <th>Correo Electrónico</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each getList}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.contactNumber}}}</td>
+                    <td>{{this.physicalAddress}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{#quickRemoveButton collection="supplier" _id=this._id class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <h3>Información del Proveedor</h3> {{> quickForm buttonContent="Registrar Proveedor" id="insertSupplier" type="insert" collection="supplier"}}
+</template>
+
+<template name="manageSupplierLoading">
+    Cargando editor...
+</template>

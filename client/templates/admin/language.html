@@ -27,7 +27,7 @@ Plantilla privada.
 -->
 <template name="editLanguageHeader">
     <tr>
-        <td><b>Código ISO639-3</b></td> 
+        <td><b>Código ISO639-3</b></td>
         <td><b>Nombre del lenguaje en inglés</b></td>
         <td><b>Nombre del lenguaje en español</b></td>
         <td><b>Está activo</b></td>
@@ -42,63 +42,34 @@ Plantilla privada.
     <tr>
         <td>
             <form name="ISO639_3" class="languageCodeEditForm">
-                <input 
-                type="text" 
-                name="label"
-                value="{{labelISO639_3}}"
-                id="{{_id}}"
-                />
+                <input type="text" name="label" value="{{labelISO639_3}}" id="{{_id}}" class="form-control" />
             </form>
-            </td>
+        </td>
         <td>
             <form name="Eng" class="languageEditForm">
-                <input 
-                type="text" 
-                name="languageName"
-                value="{{languageNameEng}}"
-                id="{{_id}}"
-                />
+                <input type="text" name="languageName" value="{{languageNameEng}}" id="{{_id}}" class="form-control" />
             </form>
         </td>
         <td>
             <form name="Spa" class="languageEditForm">
-                <input 
-                type="text" 
-                name="languageName"
-                value="{{languageNameSpa}}"
-                id="{{_id}}"
-                />
+                <input type="text" name="languageName" value="{{languageNameSpa}}" id="{{_id}}" class="form-control" />
             </form>
         </td>
         <td>
             {{#if enabled}}
-                <form class="languageActiveForm">
-                    <input 
-                    type="checkbox" 
-                    name="languageActive"
-                    checked
-                    id="{{_id}}"
-                    />
-                </form>
+            <form class="languageActiveForm">
+                <input type="checkbox" name="languageActive" checked id="{{_id}}" class="form-control" />
+            </form>
             {{else}}
-                <form class="languageActiveForm">
-                    <input 
-                    type="checkbox" 
-                    name="languageActive"
-                    id="{{_id}}"
-                    />
-                </form>
+            <form class="languageActiveForm">
+                <input type="checkbox" name="languageActive" id="{{_id}}" class="form-control" />
+            </form>
             {{/if}}
         </td>
-            
+
         <td>
             <form class="languageDeleteForm">
-                <input 
-                type="submit" 
-                value="Eliminar lenguaje" 
-                name="deleteLanguage"
-                id="{{_id}}"
-                />
+                <input type="submit" value="Eliminar lenguaje" name="deleteLanguage" id="{{_id}}" class="btn btn-danger" />
             </form>
         </td>
     </tr>
@@ -115,32 +86,37 @@ Plantilla privada.
 Plantilla pública.
 -->
 <template name="languageCreate" class="languageCreate">
-    <h1>Crear idioma</h1>
-
-    Actualmente se tienen los siguientes lenguajes:
-    <table border=2>
-        {{> reportLanguageHeader}}
-        {{#each dbLanguageFiltered}}
-            {{> reportLanguage}}
-        {{/each}}
+    <h1>Crear idioma</h1> Actualmente se tienen los siguientes lenguajes:
+    <table class="table table-striped table-responsive">
+        <thead>
+            {{> reportLanguageHeader}}
+        </thead>
+        <tbody>
+            {{#each dbLanguageFiltered}} {{> reportLanguage}} {{/each}}
+        </tbody>
     </table>
-    
-    <P>Acá puede agregar un nuevo idioma:</P>
-        
+
+    <h3>Agregar un nuevo idioma:</h3>
+
     <form class="languageCreateForm">
-        <label for="labelISO639_3">Código de 3 letras según el estándar ISO639-3:</label>
-        <input type="text" name="labelISO639_3" id="labelISO639_3" placeholder=""/>
+        <div class="form-group">
+            <label for="labelISO639_3">Código de 3 letras según el estándar ISO639-3:</label>
+            <input type="text" name="labelISO639_3" id="labelISO639_3" placeholder="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="languageNameEng">Nombre del idioma en inglés:</label>
+            <input type="text" name="languageNameEng" id="languageNameEn" placeholder="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="languageNameEs">Nombre del idioma en español:</label>
+            <input type="text" name="languageNameSpa" id="languageNameEs" placeholder="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="enabled">Activo:</label>
+            <input type="checkbox" value="activo" name="enabled" checked/>
+        </div>
+        <input type="submit" value="Agregar idioma" class="btn btn-success">
         <br>
-        <label for="languageNameEng">Nombre del idioma en inglés:</label>
-        <input type="text" name="languageNameEng" id="languageNameEn" placeholder=""/>
-        <br>
-        <label for="languageNameEs">Nombre del idioma en español:</label>
-        <input type="text" name="languageNameSpa" id="languageNameEs" placeholder=""/>
-        <br>
-        <label for="enabled">Activo:</label>
-        <input type="checkbox" value="activo" name="enabled" checked/>
-        <br>
-        <input type="submit" value="Agregar idioma">
     </form>
 </template>
 
@@ -148,13 +124,13 @@ Plantilla pública.
 Plantilla pública.
 -->
 <template name="languageEditDelete" class="languageEditDelete">
-    <h1>Modificar o eliminar idioma</h1>
-
-    Actualmente se tienen los siguientes idiomas:
-    <table border=2>
-        {{> editLanguageHeader}}
-        {{#each dbLanguageFiltered}}
-            {{> editLanguage}}
-        {{/each}}
+    <h1>Modificar o eliminar idioma</h1> Actualmente se tienen los siguientes idiomas:
+    <table class="table table-striped table-responsive">
+        <thead>
+            {{> editLanguageHeader}}
+        </thead>
+        <tbody>
+            {{#each dbLanguageFiltered}} {{> editLanguage}} {{/each}}
+        </tbody>
     </table>
 </template>

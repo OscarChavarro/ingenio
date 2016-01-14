@@ -1,0 +1,54 @@
+<template name="showProductLoading">
+    Cargando información del producto...
+</template>
+
+<template name="showProduct">
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+
+        </div>
+        <div class="col-lg-5">
+            {{#each getImages getCurrent}} {{#if isFirstImage this}}
+            <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive"> {{/if}} {{/each}}
+        </div>
+        <div class="col-lg-4">
+            <h2>{{getCurrent.nameSpa}}</h2>
+            <p>{{{getCurrent.descriptionSpa}}}</p>
+            <h4>Información del Proveedor</h4>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>{{getCurrent.supplierId.name}}</td>
+                    </tr>
+                    <tr>
+                        <td>Número de Contacto</td>
+                        <td>{{getCurrent.supplierId.contactNumber}}</td>
+                    </tr>
+                    <tr>
+                        <td>Dirección Física</td>
+                        <td>{{getCurrent.supplierId.physicalAddress}}</td>
+                    </tr>
+                    <tr>
+                        <td>Correo Electrónico</td>
+                        <td>{{getCurrent.supplierId.email}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-3">
+            <h4>Categorias a las que pertenece:</h4>
+            <table class="table table-hover">
+                <tbody>
+                    {{#each getCurrent.categories}}
+                        <tr>
+                            <td>
+                                <a href="../showProductListByCategory/{{friendlyUrl}}">{{nameSpa}}</a>
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

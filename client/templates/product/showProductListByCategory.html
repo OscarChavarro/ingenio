@@ -1,0 +1,19 @@
+<template name="showProductListByCategoryLoading">
+    Cargando lista de productos...
+</template>
+
+<template name="showProductListByCategory">
+    <div class="row" style="margin-top:10px;">
+        {{#each getProductList}}
+        <div class="col-md-3 col-xs-6" style="text-align:center;">
+            <a href="/showProduct/{{this._id}}">
+                {{#each getImages this}}
+                    <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
+                {{/each}}
+            </a>
+            <br>
+            <a href="/showProduct/{{this._id}}">{{this.nameSpa}}</a>
+        </div>
+        {{/each}}
+    </div>
+</template>

@@ -3,27 +3,26 @@
 </template>
 
 <template name="manageProductCategory">
-	<h1>Editor de categorías y subcategorías</h1>
+    <h1>Editor de categorías y subcategorías</h1>
 
     <p>
-    	Categorías de productos actuales:
+        Categorías de productos actuales:
     </p>
-	<table border="2" width="100%">
-		<tr>
-			<th>Nombre de la categoría</th>
-            <th>Categoría / Subcategoría de</th>
-            <th>URL amigable</th>
-            <th>Eliminar</th>
-		</tr>
-	    {{#each dbProductCategory}}
-	        <tr>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre de la categoría</th>
+                <th>Categoría / Subcategoría de</th>
+                <th>URL amigable</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each dbProductCategory}}
+            <tr>
                 <td>
                     <form class="categoryNameForm">
-                        <input 
-                            type="text" 
-                            class="editCategoryName" 
-                            value={{nameSpa}} 
-                            style="width: 100%;">
+                        <input type="text" class="editCategoryName form-control" value={{nameSpa}} style="width: 100%;">
                     </form>
                 </td>
                 <td>
@@ -33,60 +32,43 @@
                 </td>
                 <td>
                     <form class="">
-                        <input 
-                            type="text" 
-                            class="editFriendlyUrl" 
-                            value={{friendlyUrl}}
-                            style="width: 100%;">
+                        <input type="text" class="editFriendlyUrl form-control" value={{friendlyUrl}} style="width: 100%;">
                     </form>
                 </td>
-                <td>
-                    <form class="categoryDelete">
-                        <input 
-                            type="submit" 
-                            name="delete" 
-                            value="Eliminar" 
-                            style="width: 100%;">
-                    </form>
+                <td style="text-align:center;">
+                    {{#quickRemoveButton collection="product" _id=_id class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}
                 </td>
-	    	</tr>
-	    {{/each}}
+            </tr>
+            {{/each}}
+        </tbody>
     </table>
 
     <p>
-    	Operaciones con categorías de productos:
-    	<form class="form-group" id="addNewProductCategoryForm">
-    		<input class="form-control" name="identifier"  type="text" value="" placeholder="Nombre">
-            {{> categorySelectionCreate}}
-    		<input class="form-control" type="submit" value="Crear nueva categoría">
-    	</form>
+        Operaciones con categorías de productos: {{> categorySelectionCreate}} {{#autoForm resetOnSuccess="true" id="insertCategory"
+        type="insert" collection="productCategory"}} {{> afQuickField name='nameSpa'}} {{> afQuickField name='friendlyUrl'}}
+        <button type="submit" class="btn btn-primary">Crear Categoria</button>
+        {{/autoForm}}
     </p>
 </template>
 
 <template name="categorySelectionChange">
-    {{#if isRootOrNull}}
-        La categoría raíz no se puede recategorizar.
-    {{else}}
-        <select name="categoryChange" class="parentCategories" style="width: 100%;">
-            <option value={{_id}}>[CATEGORÍA]</option>
-            {{#each globalDbProductCategories}}
-                {{#if notItself ./_id ../_id}}
-                    {{#if containerIsParent . ..}}
-                        <option value={{this._id}}{{../_id}} selected>Subcategoría [{{this.nameSpa}}]</option>
-                    {{else}}
-                        <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
-                    {{/if}}
-                {{/if}}
-            {{/each}}
-        </select>
+    {{#if isRootOrNull}} La categoría raíz no se puede recategorizar. {{else}}
+    <select name="categoryChange" class="parentCategories form-control" style="width: 100%;">
+        <option value={{_id}}>[CATEGORÍA]</option>
+        {{#each globalDbProductCategories}} {{#if notItself ./_id ../_id}} {{#if containerIsParent . ..}}
+        <option value={{this._id}}{{../_id}} selected>Subcategoría [{{this.nameSpa}}]</option>
+        {{else}}
+        <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
+        {{/if}} {{/if}} {{/each}}
+    </select>
     {{/if}}
 </template>
 
 <template name="categorySelectionCreate">
-    <select name="parentCategories">
-        <option value="null">[CATEGORÍA]</option>
+    <select name="parentCategories" id="parentCategories" class="form-control">
+        <option value="">[CATEGORÍA]</option>
         {{#each globalDbProductCategories}}
-            <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
+        <option value={{this._id}}{{../_id}}>Subcategoría [{{this.nameSpa}}]</option>
         {{/each}}
     </select>
 </template>

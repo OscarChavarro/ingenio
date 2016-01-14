@@ -33,31 +33,14 @@ Plantilla privada.
 -->
 <template name="checkboxForUserRole">
     {{#if ..}}
-        <input 
-            class="userEditRoleCheckbox"
-            type="checkbox" 
-            name="userRole"
-            value="{{nameC}}"
-            id="{{_id}}"
-            {{checkIfActive ../_id _id}}
-        />
-    {{else}}
-        <input 
-            class="userEditRoleCheckbox"
-            type="checkbox" 
-            name="userRole"
-            value="{{nameC}}"
-            id="{{_id}}"
-        />
-    {{/if}}
-    {{nameC}} 
+    <input class="userEditRoleCheckbox" type="checkbox" name="userRole" value="{{nameC}}" id="{{_id}}" {{checkIfActive ../_id
+    _id}} /> {{else}}
+    <input class="userEditRoleCheckbox" type="checkbox" name="userRole" value="{{nameC}}" id="{{_id}}" /> {{/if}} {{nameC}}
     <br>
 </template>
 
 <template name="showUserRoleIfActive">
-    {{#if ..}}
-        {{{showIfActive ../_id _id}}}
-    {{/if}}
+    {{#if ..}} {{{showIfActive ../_id _id}}} {{/if}}
 </template>
 
 <!--
@@ -77,22 +60,12 @@ Plantilla privada.
     <tr>
         <td>
             <form name="Eng" class="userRoleEditForm">
-                <input 
-                type="text" 
-                name="userRoleName"
-                value="{{nameC}}"
-                id="{{_id}}"
-                />
+                <input type="text" name="userRoleName" value="{{nameC}}" id="{{_id}}" class="form-control" />
             </form>
         </td>
         <td>
             <form class="userRoleDeleteForm">
-                <input 
-                type="submit" 
-                value="Eliminar rol de usuario" 
-                name="deleteUserRole"
-                id="{{_id}}"
-                />
+                <input type="submit" value="Eliminar rol de usuario" name="deleteUserRole" id="{{_id}}" class="btn btn-danger" />
             </form>
         </td>
     </tr>
@@ -102,23 +75,25 @@ Plantilla privada.
 Plantilla pública.
 -->
 <template name="userRoleCreate" class="userRoleCreate">
-    <h1>Crear rol de usuario</h1>
-
-    Actualmente se tienen los siguientes roles de usuario:
-    <table border=2>
-        {{> reportUserRoleHeader}}
-        {{#each dbUserRole}}
-            {{> reportUserRole}}
-        {{/each}}
+    <h1>Crear rol de usuario</h1> Actualmente se tienen los siguientes roles de usuario:
+    <table class="table table-striped table-responsive">
+        <thead>
+            {{> reportUserRoleHeader}}
+        </thead>
+        <tbody>
+            {{#each dbUserRole}} {{> reportUserRole}} {{/each}}
+        </tbody>
     </table>
-        
-    <P>Acá puede agregar un nuevo rol de usuario:</P>
-        
+
+    <h3>Agregar un nuevo rol de usuario:</h3>
+
     <form class="userRoleCreateForm">
-        <label for="nameC">Nombre en formato C: VARIABLE_DE_SISTEMA del rol de usuario:</label>
-        <input type="text" name="nameC" id="nameC" placeholder=""/>
+        <div class="form-group">
+            <label for="nameC">Nombre en formato C: VARIABLE_DE_SISTEMA del rol de usuario:</label>
+            <input type="text" name="nameC" id="nameC" placeholder="" class="form-control"/>
+        </div>
         <br>
-        <input type="submit" value="Agregar rol de usuario">
+        <input type="submit" value="Agregar rol de usuario" class="btn btn-success">
     </form>
 </template>
 
@@ -126,13 +101,13 @@ Plantilla pública.
 Plantilla pública.
 -->
 <template name="userRoleEditDelete" class="userRoleEditDelete">
-    <h1>Modificar o eliminar rol de usuario</h1>
-
-    Actualmente se tienen los siguientes roles de usuario:
-    <table border=2>
-        {{> editUserRoleHeader}}
-        {{#each dbUserRole}}
-            {{> editUserRole}}
-        {{/each}}
+    <h1>Modificar o eliminar rol de usuario</h1> Actualmente se tienen los siguientes roles de usuario:
+    <table class="table table-striped table-responsive">
+        <thead>
+            {{> editUserRoleHeader}}
+        </thead>
+        <tbody>
+            {{#each dbUserRole}} {{> editUserRole}} {{/each}}
+        </tbody>
     </table>
 </template>

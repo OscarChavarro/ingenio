@@ -1,0 +1,54 @@
+<template name="manageProductEquivalence">
+    <h3>Lista de equivalencias</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Primer Producto</td>
+                <td>Segundo Producto</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each getList}}
+            <tr>
+                <td>
+                    {{this.firstProductId.nameSpa}}
+                </td>
+                <td>
+                    {{this.secondProductId.nameSpa}}
+                </td>
+                <td>
+                    {{#quickRemoveButton collection="productEquivalence" _id=this._id class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <br>
+    <h3>Registrar Equivalencia</h3>
+    <form action="" class="insertProductEquivalence">
+        <div class="form-group">
+            <label for="">Primer Producto</label>
+            <select name="firstProductId" id="firstProductId" class="form-control">
+                <option value="">Seleccione un Producto</option>
+                {{#each getProductList}}
+                <option value="{{this._id}}">{{this.nameSpa}} ({{this.internalIngenioReference}})</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="">Segundo Producto</label>
+            <select name="secondProductId" id="secondProductId" class="form-control">
+                <option value="">Seleccione otro Producto</option>
+                {{#each getProductList}}
+                <option value="{{this._id}}">{{this.nameSpa}} ({{this.internalIngenioReference}})</option>
+                {{/each}}
+            </select>
+        </div>
+        <input type="submit" value="Agregar" class="btn btn-success">
+    </form>
+</template>
+
+<template name="manageProductEquivalenceLoading">
+    Cargando editor...
+</template>

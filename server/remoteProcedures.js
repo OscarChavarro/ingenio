@@ -8,10 +8,10 @@ Meteor.startup(function () {
             if ( !valid(productCategory) || !valid(catId) || catId === "null" ) {
                 return null;
             }
-
-            var oid = "ObjectID(\"" + catId + "\")";
-            var children = productCategory.find({parentCategoryId: oid}).fetch();
-
+            
+            //var oid = "ObjectID(\"" + catId + "\")";
+            var children = productCategory.find({parentCategoryId: catId}).fetch();
+            console.log(children);
             return children;
         },
         /**

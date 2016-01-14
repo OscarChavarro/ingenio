@@ -2,96 +2,104 @@
 Plantilla privada
 -->
 <template name="manageProductLoading">
-	Cargando producto de la base de datos...
+    Cargando productos de la base de datos...
 </template>
 
 <!--
 Plantilla pública
 -->
 <template name="manageProduct">
-	A continuación se listan los productos:
-	<table border="2" width="100%">
-		<th>Referencia interna</th>
-		<th>Referencia externa</th>
-		<th>Nombre</th>
-		<th>Descripción</th>
-		{{#each dbProduct}}
-		    <tr>
-		        <td>
-		        	{{internalReference}}
-		        </td>
-		        <td>
-		        	{{externalReference}}
-		        </td>
-		        <td>
-		        	{{nameSpa}}
-		        </td>
-		        <td>
-		        	{{descriptionSpa}}
-		        </td>
-		    </tr>
-		{{/each}}
+    <h3>Lista de Productos:</h3>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Referencia interna</th>
+                <th>Referencia externa</th>
+                <th>Precio</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each dbProduct}}
+            <tr>
+                <td>
+                    {{nameSpa}}
+                </td>
+                <td>
+                    {{{descriptionSpa}}}
+                </td>
+                <td>
+                    {{internalIngenioReference}}
+                </td>
+                <td>
+                    {{supplierReference}}
+                </td>
+                <td>
+                    {{price}}
+                </td>
+                <td>
+                    {{#quickRemoveButton collection="product" _id=_id class="btn btn-danger" beforeRemove=onBeforeDelete}}Eliminar{{/quickRemoveButton}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
     </table>
 
     <!-- ====================================================================== -->
     <p>
-		O puedes crear un nuevo producto:
-		<form class="container-fluid" id="addNewProductForm">
-			<div class="form-group">
-				<label for="productNameId">
-					Nombre de producto:
-				</label>
-				<input
-				    class="form-control" 
-				    type="text" 
-				    id="productNameId" 
-				    name="productName" 
-				    value="" 
-				    placeholder="Nombre corto del producto">
-			</div>
-			<div class="form-group">
-				<label for="productInternalReferenceId">
-					Referencia interna (de Ingenio) del producto:
-				</label>
-				<input
-				    class="form-control" 
-				    type="text" 
-				    id="productInternalReferenceId" 
-				    name="productInternalReference" 
-				    value="" 
-				    placeholder="Referencia interna del producto">
-			</div>
-			<div class="form-group">
-				<label for="productExternalReferenceId">
-					Referencia externa (del proveedor) del producto:
-				</label>
-				<input
-				    class="form-control" 
-				    type="text" 
-				    id="productExternalReferenceId" 
-				    name="productExternalReference" 
-				    value="" 
-				    placeholder="Referencia externa del producto">
-				<label for="productDescriptionId">
-					Descripción del producto:
-				</label>
-			</div>
-			<div class="form-group">
-				<input
-				    class="form-control" 
-				    type="text" 
-				    id="productDescriptionId" 
-				    name="productDescription" 
-				    value="" 
-				    placeholder="Descripción del producto">
-			</div>
-			<div class="form-group">
-				<input
-				    class="form-control" 
-				    type="submit" 
-				    name="productCreate" 
-				    value="Crear producto">
-			</div>
-		</form>
+        O puedes crear un nuevo producto:
+        <h3>Categorías a las que pertenece el producto (al menos una):</h3>
+        <div class="row">
+            {{#each categoryList}}
+            <div class="col-md-2 col-xs-6">
+                <input type="checkbox" name="categories" value="{{this._id}}">{{this.nameSpa}}
+            </div>
+            {{/each}}
+        </div>
+        <h3>Galería de Imágenes del producto:</h3>
+        <input type="file" class="form-control" id="productImages" name="productImages" multiple>
+        <h3>Proveedor del producto:</h3>
+        <select name="productSupplier" id="productSupplier" class="form-control">
+            <option value="">Seleccione un Proveedor</option>
+            {{#each supplierList}}
+            <option value="{{this._id}}">{{this.name}}</option>
+            {{/each}}
+        </select>
+        <h3>Información del producto:</h3> {{#autoForm resetOnSuccess="true" id="insertProduct" type="insert" collection="product"}} {{> afQuickField name='nameSpa'}}
+        {{> afQuickField name='descriptionSpa' rows=5}} {{> afQuickField name='price'}} {{> afQuickField name='supplierReference'}}
+        {{> afQuickField name='internalIngenioReference'}}
+        <button type="submit" class="btn btn-primary">Crear Producto</button>
+        {{/autoForm}}
+        <!--<form class="container-fluid" id="addNewProductForm">
+            <div class="form-group">
+                <label for="productNameId">
+                    Nombre de producto:
+                </label>
+                <input class="form-control" type="text" id="productNameId" name="productName" value="" placeholder="Nombre corto del producto">
+            </div>
+            <div class="form-group">
+                <label for="productInternalReferenceId">
+                    Referencia interna (de Ingenio) del producto:
+                </label>
+                <input class="form-control" type="text" id="productInternalReferenceId" name="productInternalReference" value="" placeholder="Referencia interna del producto">
+            </div>
+            <div class="form-group">
+                <label for="productExternalReferenceId">
+                    Referencia externa (del proveedor) del producto:
+                </label>
+                <input class="form-control" type="text" id="productExternalReferenceId" name="productExternalReference" value="" placeholder="Referencia externa del producto">
+                <label for="productDescriptionId">
+                    Descripción del producto:
+                </label>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" id="productDescriptionId" name="productDescription" value="" placeholder="Descripción del producto">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="submit" name="productCreate" value="Crear producto">
+            </div>
+        </form>-->
     </p>
 </template>
