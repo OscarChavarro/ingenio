@@ -12,18 +12,22 @@
         </thead>
         <tbody>
             {{#each getList}}
-                <tr>
-                    <td>{{this.name}}</td>
-                    <td>{{this.contactNumber}}}</td>
-                    <td>{{this.physicalAddress}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{#quickRemoveButton collection="supplier" _id=this._id class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}</td>
-                </tr>
+            <tr>
+                <td>{{this.name}}</td>
+                <td>{{this.contactNumber}}}</td>
+                <td>{{this.physicalAddress}}</td>
+                <td>{{this.email}}</td>
+                <td>
+                    {{#quickRemoveButton collection="supplier" _id=this._id class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}
+                    <a href="/manageSupplier/update/{{this._id}}" class="btn btn-primary">Editar</a>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>
-
-    <h3>Información del Proveedor</h3> {{> quickForm buttonContent="Registrar Proveedor" id="insertSupplier" type="insert" collection="supplier"}}
+    O agregue un proveedor
+    <br>
+    <a href="/manageSupplier/create" class="btn btn-success">Registrar Proveedor</a>
 </template>
 
 <template name="manageSupplierLoading">

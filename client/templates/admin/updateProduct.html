@@ -1,0 +1,30 @@
+<template name="updateProduct">
+    <h3>Categorías a las que pertenece el producto (al menos una):</h3>
+    <div class="row">
+        {{#each categoryList}}
+        <div class="col-md-2 col-xs-6">
+            {{#if isProductInCategory this._id}}
+            <input type="checkbox" name="categories" value="{{this._id}}" checked>{{this.nameSpa}} {{else}}
+            <input type="checkbox" name="categories" value="{{this._id}}">{{this.nameSpa}} {{/if}}
+        </div>
+        {{/each}}
+    </div>
+    <h3>Proveedor del producto:</h3>
+    <select name="productSupplier" id="productSupplier" class="form-control">
+        <option value="">Seleccione un Proveedor</option>
+        {{#each supplierList}} {{#if isCurrentSupplier this._id}}
+        <option value="{{this._id}}" selected>{{this.name}}</option>
+        {{else}}
+        <option value="{{this._id}}">{{this.name}}</option>
+        {{/if}} {{/each}}
+    </select>
+    <h3>Información del producto:</h3> {{#autoForm resetOnSuccess="true" id="updateProduct" type="update" doc=getCurrent collection="product"}} {{> afQuickField
+    name='nameSpa'}} {{> afQuickField name='descriptionSpa' rows=5}} {{> afQuickField name='price'}} {{> afQuickField name='supplierReference'}}
+    {{> afQuickField name='internalIngenioReference'}}
+    <button type="submit" class="btn btn-success">Actualizar Producto</button>
+    {{/autoForm}}
+</template>
+
+<template name="updateProductLoading">
+    Cargando el editor...
+</template>

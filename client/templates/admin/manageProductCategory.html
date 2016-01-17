@@ -42,13 +42,9 @@
             {{/each}}
         </tbody>
     </table>
-
-    <p>
-        Operaciones con categorías de productos: {{> categorySelectionCreate}} {{#autoForm resetOnSuccess="true" id="insertCategory"
-        type="insert" collection="productCategory"}} {{> afQuickField name='nameSpa'}} {{> afQuickField name='friendlyUrl'}}
-        <button type="submit" class="btn btn-primary">Crear Categoria</button>
-        {{/autoForm}}
-    </p>
+    O puedes crear una nueva categoria:
+    <br>
+    <a href="/manageProductCategory/create" class="btn btn-success">Agregar Categoría</a>
 </template>
 
 <template name="categorySelectionChange">

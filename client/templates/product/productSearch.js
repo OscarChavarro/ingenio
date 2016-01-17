@@ -1,26 +1,21 @@
-Router.route("/:friendlyUrl", {
-    name: "showProductListByCategory",
-    loadingTemplate: "showProductListByCategoryLoading",
+Router.route("/productSearch/:nameSpa", {
+    name: "productSearch",
+    loadingTemplate: "productSearchLoading",
     data: function () {
-        return this.params.friendlyUrl;
+        return this.params.nameSpa;
     },
     waitOn: function () {
         return Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("productCategory") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement");
     }
 });
 
-Template.showProductListByCategory.helpers({
+Template.productSearch.helpers({
     //SE OBTIENEN TODOS LOS PRODUCTOS DE LA CATEGORIA ACTUAL
     getProductList: function () {
-        var productList = [];
-        var category = productCategory.findOne({ friendlyUrl: Template.currentData() });
-        product2category.find({ categoryId: (typeof category != "undefined" ? category._id : null) }).fetch().forEach(function (element, index, array) {
-            if (element.productId) {
-                //SE OBTIENE LA INFORMACION GENERAL
-                var productInfo = product.findOne({ _id: element.productId });
-                productList.push(productInfo);
-            }
-        });
+        console.log(Template.currentData());
+        var search = new RegExp(Template.currentData(), 'i');
+        var productList = product.find({ nameSpa: search }).fetch();
+        console.log(productList);
         return productList;
     },
     //SE OBTIENE LA INFORMACION DE LA CATEGORIA ACTUAL

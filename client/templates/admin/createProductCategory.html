@@ -1,0 +1,10 @@
+<template name="createProductCategory">
+        Operaciones con categorías de productos: {{> categorySelectionCreate}} {{#autoForm resetOnSuccess="true" id="insertCategory"
+        type="insert" collection="productCategory"}} {{> afQuickField name='nameSpa'}} {{> afQuickField name='friendlyUrl'}}
+        <button type="submit" class="btn btn-success">Crear Categoria</button>
+        {{/autoForm}}
+</template>
+
+<template name="createProductCategoryLoading">
+    Cargando el editor...
+</template>

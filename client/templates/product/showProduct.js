@@ -25,7 +25,6 @@ Template.showProduct.helpers({
                 productInfo.categories.push(productCategory.findOne({ _id: element.categoryId }));
             }
         });
-        console.log(productInfo);
         //SE DEVUELVE LA INFORMACION DEL PRODUCTO
         return productInfo;
     },

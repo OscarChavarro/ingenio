@@ -25,7 +25,6 @@ Template.manageProductCategory.events({
 
         root = productCategory.findOne({ nameSpa: "/" });
         if (!valid(root)) {
-            console.log("Creando categoría raíz");
             oid = new Mongo.ObjectID();
             productCategory.insert({ _id: oid, nameSpa: "/", parentCategoryId: null });
             root = productCategory.findOne({ nameSpa: "/" });
@@ -149,52 +148,5 @@ Template.categorySelectionChange.helpers({
             return true;
         }
         return false;
-    }
-});
-
-AutoForm.addHooks(['insertCategory'], {
-    before: {
-        insert: function (doc) {
-            console.log($("#parentCategories").val());
-
-            if ($("#parentCategories").val().length <= 0) {
-                var root = productCategory.findOne({ nameSpa: "/" });
-                if (!valid(root)) {
-                    alert("Ocurrió un error inesperado.");
-                    return false;
-                } else {
-                    console.log(root._id);
-                    doc.parentCategoryId = root._id;
-                }
-            } else {
-                doc.parentCategoryId = $("#parentCategories").val();
-            }
-
-            if (typeof productCategory.findOne({ nameSpa: doc.nameSpa }) != "undefined") {
-                alert("Ya existe una categoria con el nombre especificado.");
-                return false;
-            }
-
-            if (typeof productCategory.findOne({ friendlyUrl: doc.friendlyUrl.toLowerCase() }) != "undefined") {
-                alert("Ya existe una categoria con la URL amigable especificada.");
-                return false;
-            }
-
-            return doc;
-        }
-    },
-    onSuccess: function (formType, result) {
-        $("input[name='categories']").each(function (index) {
-            console.log($(this).val());
-            if ($(this).is(":checked")) {
-                product2category.insert({
-                    productId: result,
-                    categoryId: $(this).val()
-                });
-                $(this).removeAttr('checked');
-            }
-        });
-        getTopLevelProductCategories();
-        alert("Categoría registrada con éxito.");
     }
 });

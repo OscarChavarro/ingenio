@@ -14,7 +14,7 @@ Template.productCategoryIndexList.events({
                 html += '<ul>';
                 var i;
                 for (i in children) {
-                    html += '<li><a href="/showProductListByCategory/' + children[i].friendlyUrl + '">' + children[i].nameSpa + '</a></li>';
+                    html += '<li><a href="/' + children[i].friendlyUrl + '">' + children[i].nameSpa + '</a></li>';
                 }
                 html += '</ul>';
                 document.getElementById(catId).innerHTML = html;
