@@ -4,16 +4,20 @@
 
 <template name="productSearch">
     <div class="row" style="margin-top:10px;">
-        {{#each getProductList}}
-        <div class="col-md-3 col-xs-6" style="text-align:center;">
-            <a href="/showProduct/{{this._id}}">
-                {{#each getImages this}}
-                    <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
-                {{/each}}
-            </a>
-            <br>
-            <a href="/showProduct/{{this._id}}">{{this.nameSpa}}</a>
-        </div>
-        {{/each}}
+        {{#if areThereAnyProducts getProductList}}
+            {{#each getProductList}}
+            <div class="col-md-3 col-xs-6" style="text-align:center;">
+                <a href="/product/{{this.friendlyUrl}}">
+                    {{#each getImages this}}
+                        <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
+                    {{/each}}
+                </a>
+                <br>
+                <a href="/product/{{this.friendlyUrl}}">{{this.nameSpa}}</a>
+            </div>
+            {{/each}}
+        {{else}}
+            <h3>No se encontraron productos para mostrar.</h3>
+        {{/if}}
     </div>
 </template>

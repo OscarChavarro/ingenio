@@ -1,3 +1,5 @@
+productGallery = undefined;
+
 Router.route("/manageProduct/create", {
     name: "createProduct",
     loadingTemplate: "createProductLoading",
@@ -8,6 +10,10 @@ Router.route("/manageProduct/create", {
     waitOn: function () {
         return Meteor.subscribe("productCategory") && Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("supplier") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement") && Meteor.subscribe("productEquivalence");
     }
+});
+
+Template.createProduct.onCreated(function () {
+    productGallery = new ReactiveArray([]);
 });
 
 Template.createProduct.helpers({
@@ -22,6 +28,32 @@ Template.createProduct.helpers({
     },
     supplierList: function () {
         return supplier.find().fetch();
+    },
+    getCurrentGalleryList: function () {
+        console.log("Important stuff");
+        return productGallery.list();
+    },
+    readURL: function (input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+});
+
+Template.createProduct.events({
+    'change #productImages': function (event, template) {
+        console.log("Stuff");
+        productGallery.clear();
+        FS.Utility.eachFile(event, function (file) {
+            productGallery.push(file);
+        });
+        console.log(productGallery.list());
     }
 });
 
@@ -45,6 +77,13 @@ AutoForm.addHooks(['insertProduct'], {
                 return false;
             } else {
                 doc.supplierId = $("#productSupplier").val();
+            }
+
+            if (valid(doc.friendlyUrl)) {
+                if (typeof product.findOne({ friendlyUrl: doc.friendlyUrl.toLowerCase() }) != "undefined") {
+                    alert("Ya existe un producto con la URL amigable especificada.");
+                    return false;
+                }
             }
 
             return doc;

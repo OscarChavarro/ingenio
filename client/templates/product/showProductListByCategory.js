@@ -48,5 +48,8 @@ Template.showProductListByCategory.helpers({
             });
             return resources;
         }
+    },
+    areThereAnyProducts: function (list) {
+        return (list.length > 0);
     }
 });

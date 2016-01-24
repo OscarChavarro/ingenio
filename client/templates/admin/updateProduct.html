@@ -20,7 +20,7 @@
     </select>
     <h3>Información del producto:</h3> {{#autoForm resetOnSuccess="true" id="updateProduct" type="update" doc=getCurrent collection="product"}} {{> afQuickField
     name='nameSpa'}} {{> afQuickField name='descriptionSpa' rows=5}} {{> afQuickField name='price'}} {{> afQuickField name='supplierReference'}}
-    {{> afQuickField name='internalIngenioReference'}}
+    {{> afQuickField name='internalIngenioReference'}} {{> afQuickField name='friendlyUrl'}}
     <button type="submit" class="btn btn-success">Actualizar Producto</button>
     {{/autoForm}}
 </template>

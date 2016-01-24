@@ -57,6 +57,14 @@ AutoForm.addHooks(['updateProduct'], {
             } else {
                 product.update({ _id: doc._id }, { $set: { supplierId: $("#productSupplier").val() } });
             }
+
+            if (valid(doc.friendlyUrl)) {
+                if (typeof product.findOne({ friendlyUrl: doc.friendlyUrl.toLowerCase() }) != "undefined") {
+                    alert("Ya existe un producto con la URL amigable especificada.");
+                    return false;
+                }
+            }
+
             return doc;
         }
     },

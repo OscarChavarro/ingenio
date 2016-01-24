@@ -23,3 +23,5 @@ aldeed:simple-schema
 aldeed:collection2
 aldeed:autoform
 aldeed:delete-button
+claudiojulio:blueimp-gallery
+manuel:reactivearray

@@ -9,6 +9,11 @@
     </div>
     <h3>Galería de Imágenes del producto:</h3>
     <input type="file" class="form-control" id="productImages" name="productImages" multiple>
+    <div class="row">
+        {{#each getCurrentGalleryList}}
+            {{name}}
+        {{/each}}
+    </div>
     <h3>Proveedor del producto:</h3>
     <select name="productSupplier" id="productSupplier" class="form-control">
         <option value="">Seleccione un Proveedor</option>
@@ -18,7 +23,7 @@
     </select>
     <h3>Información del producto:</h3> {{#autoForm resetOnSuccess="true" id="insertProduct" type="insert" collection="product"}} {{> afQuickField name='nameSpa'}}
     {{> afQuickField name='descriptionSpa' rows=5}} {{> afQuickField name='price'}} {{> afQuickField name='supplierReference'}}
-    {{> afQuickField name='internalIngenioReference'}}
+    {{> afQuickField name='internalIngenioReference'}} {{> afQuickField name='friendlyUrl'}}
     <button type="submit" class="btn btn-success">Crear Producto</button>
     {{/autoForm}}
 </template>

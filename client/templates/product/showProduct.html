@@ -8,8 +8,11 @@
 
         </div>
         <div class="col-lg-5">
-            {{#each getImages getCurrent}} {{#if isFirstImage this}}
-            <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive"> {{/if}} {{/each}}
+            <div id="product-gallery" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
+                <div class="slides"></div>
+                <a class="prev">‹</a>
+                <a class="next">›</a>
+            </div>
         </div>
         <div class="col-lg-4">
             <h2>{{getCurrent.nameSpa}}</h2>
@@ -41,11 +44,11 @@
             <table class="table table-hover">
                 <tbody>
                     {{#each getCurrent.categories}}
-                        <tr>
-                            <td>
-                                <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
+                        </td>
+                    </tr>
                     {{/each}}
                 </tbody>
             </table>
