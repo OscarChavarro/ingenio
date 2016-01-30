@@ -75,21 +75,21 @@ Template.showProduct.onRendered(function () {
             description: 'Descripción de la Imagen'
         });
     });
-    console.log(datasetTest);
     if (datasetTest.resources.length > 0) {
         var gallery = blueimp.Gallery(carouselLinks, {
             container: '#product-gallery',
             carousel: true,
-            startSlideshow: false,
+            startSlideshow: true,
             fullScreen: false,
                 
             //callback executed at gallery init, sets all thumbnails to invisible
-            /*onopen: function () {
-                 var thumbnails = document.getElementsByClassName('indicator')[0].querySelectorAll('li');
-                 for (i = 0; i < thumbnails.length; i++) {
-                     thumbnails[i].className = 'invisible';
-                 }
-             },*/
+            onopen: function () {
+                var thumbnails = document.getElementsByClassName('indicator')[0].querySelectorAll('li');
+                console.log(thumbnails);
+                for (i = 0; i < thumbnails.length; i++) {
+                    thumbnails[i].className = 'invisible';
+                }
+            }
         });
     }
 });

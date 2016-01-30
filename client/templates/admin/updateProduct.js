@@ -23,7 +23,23 @@ Template.updateProduct.helpers({
         return supplier.find().fetch();
     },
     getCurrent: function () {
-        var current = product.findOne({ _id: Template.currentData() })
+        var current = product.findOne({ _id: Router.current().params.id });
+        var i = 0;
+        var producto2multimedia = product2multimediaElement.find({ productId: current._id });
+        var imgs = [];
+        producto2multimedia.forEach(function (element, index, array) {
+            var img = multimediaElement.findOne({ _id: element.multimediaElementId });
+            imgs.push(img);
+        });
+        current.resources = imgs;
+
+        var followingOrder = 0;
+        producto2multimedia.forEach(function (element, index, array) {
+            if (element.order >= followingOrder) {
+                followingOrder = element.order;
+            }
+        });
+        current.followingOrder = followingOrder;
         return current;
     },
     isCurrentSupplier: function (supplierId) {
@@ -33,6 +49,31 @@ Template.updateProduct.helpers({
     isProductInCategory: function (categoryId) {
         var isCurrent = product2category.findOne({ productId: Router.current().params.id, categoryId: categoryId });
         return (typeof isCurrent != "undefined");
+    }
+});
+
+Template.updateProduct.events({
+    'click .photo-image': function (event, template) {
+        if (confirm("¿Está seguro que desea eliminar la imagen?")) {
+            product2multimediaElement.find({ productId: event.target.dataset.productid, multimediaElementId: event.target.dataset.photoid }).fetch().forEach(function (element, index, array) {
+                product2multimediaElement.remove(element._id);
+            });
+        }
+    },
+    'change .photo-selector': function (event, template) {
+        FS.Utility.eachFile(event, function (file) {
+            multimediaElement.insert(file, function (err, fileObj) {
+                product2multimediaElement.insert({
+                    productId: event.target.dataset.productid,
+                    multimediaElementId: fileObj._id,
+                    order: (event.target.dataset.followingorder + 1)
+                });
+            });
+        });
+        $("#photo-selector").val("");
+    },
+    'click .add-image': function (event, template) {
+        $("#photo-selector").click();
     }
 });
 

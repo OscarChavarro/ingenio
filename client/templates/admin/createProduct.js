@@ -1,5 +1,4 @@
 productGallery = undefined;
-
 Router.route("/manageProduct/create", {
     name: "createProduct",
     loadingTemplate: "createProductLoading",
@@ -14,6 +13,9 @@ Router.route("/manageProduct/create", {
 
 Template.createProduct.onCreated(function () {
     productGallery = new ReactiveArray([]);
+    for (var i = 1; i <= 6; i++) {
+        $("#productImage" + i).val("");
+    }
 });
 
 Template.createProduct.helpers({
@@ -30,30 +32,73 @@ Template.createProduct.helpers({
         return supplier.find().fetch();
     },
     getCurrentGalleryList: function () {
-        console.log("Important stuff");
         return productGallery.list();
     },
-    readURL: function (input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+    readURL: function (file, index) {
+        var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
+        reader.onload = function (e) {
+            $('#image' + index).attr('src', e.target.result);
         }
+
+        reader.readAsDataURL(file);
     }
 });
 
 Template.createProduct.events({
-    'change #productImages': function (event, template) {
-        console.log("Stuff");
+    'change .product-image': function (event, template) {
         productGallery.clear();
-        FS.Utility.eachFile(event, function (file) {
-            productGallery.push(file);
-        });
-        console.log(productGallery.list());
+        for (var i = 1; i <= 6; i++) {
+            if ($("#productImage" + i).val() != "") {
+                FS.Utility.eachFile({
+                    originalEvent: {
+                        target: {
+                            files: $("#productImage" + i).get(0).files
+                        }
+                    }
+                }, function (file) {
+                    productGallery.push(file);
+                });
+            }
+        }
+    },
+    'click .add-image': function (event, template) {
+        for (var i = 1; i <= 6; i++) {
+            if ($("#productImage" + i).val() == "") {
+                $("#productImage" + i).click();
+                return false;
+            }
+        }
+    },
+    'click .remove-image': function (event, template) {
+        var empty = 0;
+        for (var i = 1; i <= 6; i++) {
+            if ($("#productImage" + i).val() == "") {
+                if (i === 1) {
+                    $("#productImage" + i).val("");
+                } else {
+                    $("#productImage" + (i - 1)).val("");
+                }
+                empty++;
+            }
+        }
+        if (empty === 0) {
+            $("#productImage6").val("");
+        }
+        productGallery.clear();
+        for (var i = 1; i <= 6; i++) {
+            if ($("#productImage" + i).val() != "") {
+                FS.Utility.eachFile({
+                    originalEvent: {
+                        target: {
+                            files: $("#productImage" + i).get(0).files
+                        }
+                    }
+                }, function (file) {
+                    productGallery.push(file);
+                });
+            }
+        }
     }
 });
 
@@ -91,7 +136,6 @@ AutoForm.addHooks(['insertProduct'], {
     },
     onSuccess: function (formType, result) {
         $("input[name='categories']").each(function (index) {
-            console.log($(this).val());
             if ($(this).is(":checked")) {
                 product2category.insert({
                     productId: result,
@@ -100,24 +144,29 @@ AutoForm.addHooks(['insertProduct'], {
                 $(this).removeAttr('checked');
             }
         });
-        //console.log($('.myFileInput').get(0).files);
         var currentOrder = 1;
-        FS.Utility.eachFile({
-            originalEvent: {
-                target: {
-                    files: $('#productImages').get(0).files
-                }
-            }
-        }, function (file) {
-            multimediaElement.insert(file, function (err, fileObj) {
-                product2multimediaElement.insert({
-                    productId: result,
-                    multimediaElementId: fileObj._id,
-                    order: currentOrder
+
+        for (var i = 1; i <= 6; i++) {
+            if ($("#productImage" + i).val() != "") {
+                FS.Utility.eachFile({
+                    originalEvent: {
+                        target: {
+                            files: $("#productImage" + i).get(0).files
+                        }
+                    }
+                }, function (file) {
+                    multimediaElement.insert(file, function (err, fileObj) {
+                        product2multimediaElement.insert({
+                            productId: result,
+                            multimediaElementId: fileObj._id,
+                            order: currentOrder
+                        });
+                        currentOrder++;
+                    });
                 });
-                currentOrder++;
-            });
-        });
+            }
+        }
+
         alert("Producto registrado con éxito.");
     }
 });

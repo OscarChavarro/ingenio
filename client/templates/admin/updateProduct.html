@@ -9,6 +9,18 @@
         </div>
         {{/each}}
     </div>
+    <h3>Galería de Imágenes del producto:</h3>
+    <button class="btn btn-success add-image">Subir Imagen</button>
+    <br>
+    <input type="file" class="photo-selector hidden" id="photo-selector" data-productid="{{getCurrent._id}}" data-followingorder="{{getCurrent.followingOrder}}">
+    <br>
+    <div class="row" id="image-gallery">
+        {{#each getCurrent.resources}}
+        <div class="col-lg-4 col-md-3 col-xs-6">
+            <img id="image{{@index}}" data-index="{{@index}}" data-photoId="{{_id}}" data-productId="{{getCurrent._id}}" src="{{url store='multimediaElement'}}" class="img-responsive photo-image" alt="Imagen" style="border: 1px gray solid;">
+        </div>
+        {{/each}}
+    </div>
     <h3>Proveedor del producto:</h3>
     <select name="productSupplier" id="productSupplier" class="form-control">
         <option value="">Seleccione un Proveedor</option>

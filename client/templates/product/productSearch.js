@@ -12,10 +12,8 @@ Router.route("/productSearch/:nameSpa", {
 Template.productSearch.helpers({
     //SE OBTIENEN TODOS LOS PRODUCTOS DE LA CATEGORIA ACTUAL
     getProductList: function () {
-        console.log(Template.currentData());
         var search = new RegExp(Template.currentData(), 'i');
         var productList = product.find({ nameSpa: search }).fetch();
-        console.log(productList);
         return productList;
     },
     //SE OBTIENE LA INFORMACION DE LA CATEGORIA ACTUAL
