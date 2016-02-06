@@ -5,7 +5,50 @@ Router.route("/product/:friendlyUrl", {
         return this.params.friendlyUrl;
     },
     waitOn: function () {
-        return Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("productCategory") && Meteor.subscribe("supplier") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement");
+        return Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("productCategory") && Meteor.subscribe("supplier") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement") && Meteor.subscribe("product2user");
+    }
+});
+
+Template.showProduct.events({
+    "keyup .cart-amount": function (event, template) {
+        event.preventDefault();
+        event.target.style.color = "#000000";
+        if (!valid(event.target.dataset.id)) {
+            event.target.style.color = "#ff0000";
+            return false;
+        }
+        if (!valid(event.target.value) || isNaN(event.target.value) || event.target.value.length <= 0) {
+            event.target.style.color = "#ff0000";
+            return false;
+        }
+        product2user.update(event.target.dataset.id, { $set: { quantity: event.target.value.trim() } });
+    },
+    "submit .add-product": function (event, template) {
+        event.preventDefault();
+        if (!valid(event.target.productId.value)) {
+            alert("Ocurrió un error inesperado. Por favor refresque la página e intente de nuevo");
+            return false;
+        }
+        if (!valid(event.target.productPrice.value)) {
+            alert("Ocurrió un error inesperado. Por favor refresque la página e intente de nuevo");
+            return false;
+        }
+        if (!valid(Meteor.userId())) {
+            alert("Debe haber iniciado sesión para realizar esta acción.");
+            return false;
+        }
+        if (!valid(event.target.quantity.value) || isNaN(event.target.quantity.value) || event.target.quantity.value.length <= 0) {
+            alert("La cantidad a cotizar ingresada es inválida.");
+            return false;
+        }
+
+        product2user.insert({
+            userId: Meteor.userId(),
+            productId: event.target.productId.value.trim(),
+            quantity: event.target.quantity.value
+        });
+
+        alert("El producto se ha agregado a la lista de cotización satisfactoriamente.");
     }
 });
 
@@ -52,6 +95,26 @@ Template.showProduct.helpers({
     },
     isFirstImage: function (image) {
         return (image.order == 1);
+    },
+    isLoggedIn: function () {
+        return valid(Meteor.userId());
+    },
+    getShoppingCart: function () {
+        var Productos = product2user.find({ userId: Meteor.userId() }).fetch();
+        if (typeof Productos != "undefined") {
+            for (var i = 0; i < Productos.length; i++) {
+                Productos[i].productId = product.findOne({ _id: Productos[i].productId });
+            }
+        } else {
+            return [];
+        }
+        return Productos;
+    },
+    isShoppingCartEmpty: function (ShoppingCart) {
+        return !valid(ShoppingCart) || ShoppingCart.length <= 0
+    },
+    isProductInShoppingCart: function (currentProduct) {
+        return (typeof product2user.findOne({ productId: currentProduct._id, userId: Meteor.userId() }) != "undefined");
     }
 });
 

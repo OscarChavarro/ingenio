@@ -65,3 +65,9 @@ Meteor.publish(
         return productEquivalence.find();
     }
     );
+
+Meteor.publish(
+    "product2user", function () {
+        return product2user.find();
+    }
+    );

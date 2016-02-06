@@ -18,7 +18,40 @@
         <div class="col-lg-4">
             <h2>{{getCurrent.nameSpa}}</h2>
             <p>{{{getCurrent.descriptionSpa}}}</p>
-            <h4>Información del Proveedor</h4>
+            {{#if isProductInShoppingCart getCurrent}} Ya usted agregó este producto a su lista de cotización {{else}}
+            <h3>Cotizador Automático</h3>
+            <h4>con la Marca incluida</h4>
+            <form class="add-product" role="form">
+                <input type="hidden" value="{{getCurrent._id}}" name="productId" id="productId">
+                <input type="hidden" value="{{getCurrent.price}}" name="productPrice" id="productPrice">
+                <div class="form-group">
+                    <label for="">Cantidad</label>
+                    <input class="form-control" type="text" name="quantity" id="quantity">
+                </div>
+                <div class="form-group">
+                    <label for="">Precio Unitario</label>
+                    <input class="form-control" type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
+                </div>
+                <input type="submit" class="btn btn-success" value="Agregar">
+            </form>
+            El precio puede variar sin previo aviso, estos articulos estan sujeto a inventario, este precio es antes de IVA.
+            <br> La marcación que incluye esta definida bajo parámetros estándares de acuerdo al producto.
+            <h5>Recomendación</h5>
+            <ol>
+                <li>
+                    Solicite su cotización formal, para que podamos verificar el inventario en el color requerido y el precio.
+                </li>
+                <li>
+                    Cuando requiera una marcación mayor a dos tintas escríbenos un correo y por favor envía el logo que necesites que se coloque
+                    en el producto, para que de esta manera se realice la cotización.
+                </li>
+                <li>
+                    En caso de tener alguna duda comuníquese con su asesora, en caso de que seas cliente nuevo, llámanos y te asignaremos una
+                    asesoria.
+                </li>
+            </ol>
+            {{/if}}
+            <!--<h4>Información del Proveedor</h4>
             <table class="table table-striped">
                 <tbody>
                     <tr>
@@ -38,7 +71,7 @@
                         <td>{{getCurrent.supplierId.email}}</td>
                     </tr>
                 </tbody>
-            </table>
+            </table>-->
         </div>
         <div class="col-lg-3">
             <h4>Categorias a las que pertenece:</h4>
@@ -53,6 +86,37 @@
                     {{/each}}
                 </tbody>
             </table>
+            {{#if isLoggedIn}}
+            <table class="table table-hover">
+                <caption>Lista de Productos a cotizar</caption>
+                <thead>
+                    <tr>
+                        <td>Producto</td>
+                        <td>Cantidad</td>
+                        <td>Precio</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if isShoppingCartEmpty getShoppingCart}}
+                    <tr>
+                        <td colspan="3">No hay ningún producto para cotizar</td>
+                    </tr>
+                    {{else}} 
+                        {{#each getShoppingCart}}
+                        <tr>
+                            <td>{{productId.nameSpa}}</td>
+                            <td>
+                                <input type="text" class="cart-amount form-control" data-id="{{_id}}" value="{{quantity}}">
+                            </td>
+                            <td>{{productId.price}}</td>
+                        </tr>
+                        {{/each}} 
+                    {{/if}}
+                </tbody>
+            </table>
+            {{#unless isShoppingCartEmpty getShoppingCart}} Ya no voy a agregar más productos y requiero que me envien la cotización
+            <button class="btn btn-primary">Generar Solicitud de Cotización</button>
+            {{/unless}} {{/if}}
         </div>
     </div>
 </template>
