@@ -6,7 +6,7 @@ export TMP_DIR=/tmp/meteor_build
 rm -rf $TMP_DIR
 rm -rf $RELEASE_DIR
 cd $DEVEL_DIR
-meteor build $TMP_DIR --server http://ingenio.cubestudio.com
+meteor build $TMP_DIR --server http://test.ingenio-promocionales.comm
 
 cd $TMP_DIR
 tar xfz ingenio_devel.tar.gz
@@ -22,8 +22,8 @@ pkill -9 node
 
 cd $RELEASE_DIR
 export HOSTNAME=`hostname`
-export ROOT_URL=http://ingenio.cubestudio.co
-export MONGO_URL=mongodb://ingenio.cubestudio.co:27017/ingenio
+export ROOT_URL=http://test.ingenio-promocionales.com
+export MONGO_URL=mongodb://test.ingenio-promocionales.com:27017/ingenio
 export PORT=80
 
 nohup node main.js &> /var/log/node.log &
