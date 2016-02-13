@@ -1,7 +1,58 @@
 <template name="productCategoryIndexList">
-    <ul>
-        {{#each globalDbProductCategories}}
-        <li class="dropdown">
+  <div class="col-xs-6 col-xs-offset-2 col-md-6 cont-categoria p">
+    <!-- <div class="col-xs-12 categoria ">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>
+    <div class="col-xs-12 categoria">
+      <a href="">Bolsos</a>
+    </div>-->
+
+  </div>
+  <ul class="col-xs-10 col-xs-offset-1">
+       {{#each globalDbProductCategories}}
+        <li class="col-xs-12 dropdown">
             <a class="productCategoryMenuOption dropdown-toggle" data-id={{this._id}} data-toggle="dropdown" role="button">
                     {{this.nameSpa}}
                     <span class="caret"></span>
@@ -15,5 +66,5 @@
             </ul>
         </li>
         {{/each}}
-    </ul>
+  </ul>
 </template>

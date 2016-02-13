@@ -3,13 +3,13 @@
 </template>
 
 <template name="showProductListByCategory">
-    <div class="row" style="margin-top:10px;">
+    <div class="row">
         {{#if areThereAnyProducts getProductList}}
             {{#each getProductList}}
             <div class="col-md-3 col-xs-6" style="text-align:center;">
                 <a href="/product/{{this.friendlyUrl}}">
                     {{#each getImages this}}
-                        <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
+                    <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
                     {{/each}}
                 </a>
                 <br>

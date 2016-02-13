@@ -4,10 +4,8 @@
 
 <template name="showProduct">
     <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-12">
-
-        </div>
-        <div class="col-lg-5">
+      <!-- ............. slider ............ -->
+        <div class="col-xs-12 col-md-6 col-lg-7">
             <div id="product-gallery" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
                 <div class="slides"></div>
                 <a class="prev">‹</a>
@@ -15,29 +13,62 @@
                 <ol class="indicator"></ol>
             </div>
         </div>
-        <div class="col-lg-4">
-            <h2>{{getCurrent.nameSpa}}</h2>
-            <p>{{{getCurrent.descriptionSpa}}}</p>
+        <!-- ........................ detalles .......... -->
+        <div class="col-xs-12 col-md-6 col-lg-5">
+            <div class="col-xs-9 ">
+              <h2>{{getCurrent.nameSpa}}</h2>
+              <p>{{{getCurrent.descriptionSpa}}}</p>
+            </div>
+            <!-- ........... Categorias relacionadas............ -->
+            <div class="col-xs-12 col-md-3">
+              <h4 class="m">Categorias a las que pertenece:</h4>
+              <table class="table table-hover">
+                  <tbody>
+                      {{#each getCurrent.categories}}
+                      <tr>
+                          <td>
+                              <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
+                          </td>
+                      </tr>
+                      {{/each}}
+                  </tbody>
+              </table>
+            </div>
+        </div>
+        <div class="col-xs-5">
             {{#if isProductInShoppingCart getCurrent}} Ya usted agregó este producto a su lista de cotización {{else}}
-            <h3>Cotizador Automático</h3>
-            <h4>con la Marca incluida</h4>
-            <form class="add-product" role="form">
+            <div class="col-xs-9 ">
+              <h3 class="m">Cotizador Automático</h3>
+              <h4>con la Marca incluida</h4>
+            </div>
+            <div class="col-xs-3 ">
+              Condiciones y <br>Restriciones
+            </div>
+            <form class=" col-xs-12 add-product" role="form">
                 <input type="hidden" value="{{getCurrent._id}}" name="productId" id="productId">
                 <input type="hidden" value="{{getCurrent.price}}" name="productPrice" id="productPrice">
-                <div class="form-group">
-                    <label for="">Cantidad</label>
-                    <input class="form-control" type="text" name="quantity" id="quantity">
+                <div class="col-xs-3">
+                    <label for="">Cantidad de<br>Artículos</label>
+                    <input class="" type="text" name="quantity" id="quantity">
                 </div>
-                <div class="form-group">
-                    <label for="">Precio Unitario</label>
-                    <input class="form-control" type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
+                <div class="col-xs-3">
+                    <label for="">Precio <br> Unitario</label>
+                    <input class="" type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
                 </div>
-                <input type="submit" class="btn btn-success" value="Agregar">
+                <div class="col-xs-3">
+                    <label for="">Valor Total <br> Antes del I.V.A.</label>
+                    <input class="" type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
+                </div>
+                <div class="col-xs-3">
+                  <label for="">Agregar a lista de  <br>Productos a Cotizar</label>
+                  <input type="submit" class="btn btn-success" value="Agregar">
+                </div>
             </form>
-            El precio puede variar sin previo aviso, estos articulos estan sujeto a inventario, este precio es antes de IVA.
-            <br> La marcación que incluye esta definida bajo parámetros estándares de acuerdo al producto.
-            <h5>Recomendación</h5>
-            <ol>
+            <p class="col-xs-12 ro text-center">
+              El precio puede variar sin previo aviso, estos articulos estan sujeto a inventario, este precio es antes de IVA. <br>
+              La marcación que incluye esta definida bajo parámetros estándares de acuerdo al producto.
+            </p>
+            <!-- <ol class="col-xs-12">
                 <li>
                     Solicite su cotización formal, para que podamos verificar el inventario en el color requerido y el precio.
                 </li>
@@ -49,7 +80,7 @@
                     En caso de tener alguna duda comuníquese con su asesora, en caso de que seas cliente nuevo, llámanos y te asignaremos una
                     asesoria.
                 </li>
-            </ol>
+            </ol> -->
             {{/if}}
             <!--<h4>Información del Proveedor</h4>
             <table class="table table-striped">
@@ -74,18 +105,7 @@
             </table>-->
         </div>
         <div class="col-lg-3">
-            <h4>Categorias a las que pertenece:</h4>
-            <table class="table table-hover">
-                <tbody>
-                    {{#each getCurrent.categories}}
-                    <tr>
-                        <td>
-                            <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
-                        </td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+
             {{#if isLoggedIn}}
             <table class="table table-hover">
                 <caption>Lista de Productos a cotizar</caption>
@@ -101,7 +121,7 @@
                     <tr>
                         <td colspan="3">No hay ningún producto para cotizar</td>
                     </tr>
-                    {{else}} 
+                    {{else}}
                         {{#each getShoppingCart}}
                         <tr>
                             <td>{{productId.nameSpa}}</td>
@@ -110,7 +130,7 @@
                             </td>
                             <td>{{productId.price}}</td>
                         </tr>
-                        {{/each}} 
+                        {{/each}}
                     {{/if}}
                 </tbody>
             </table>

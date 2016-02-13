@@ -2,17 +2,50 @@
     <!-- Define todos los diálogos modales desde el principio para evitar bloqueos -->
     {{> defineWelcomeDialog}} {{> defineUserRegistrationModalDialog}} {{> defineWrongUserAccessModalDialog}} {{> defineUserPasswordResetFeedbackModalDialog}}
     <!-- Fin de la definición de diálogos modales -->
-    <div id="headerArea">
-        <div id="headerMenuBar" class="container-fluid navbar navbar-fixed-top homeheader">
-            <a id="headerMenuBarLogoLink" href="/">
+    <div class="container-fluid" id="headerArea">
+        <div class="rowp ">
+          <div class="col-xs-6 col-sm-4 col-md-2 logo"> <!--............... LOGO-->
+            <a class="inicio" id="headerMenuBarLogoLink" href="/">
                 <img src={{resourceUrl "/images/ingenioHeaderLogo.png"}} alt="LogoIngenio">
             </a>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/products">Productos</a></li>
-                <li><a href="/faq">Preguntas Frecuentes</a></li>
-                <li><a href="/contact">Contáctenos</a></li>
-                {{#if globalIsUserLoggedIn}}
+          </div>
+          <div class="col-sm-8 col-md-4 col-lg-3 telefonos p">
+            <div class="tele-a">
+              <p class="m"><span class="glyphicon glyphicon-phone-alt"></span> (1) 478 1125  <span  class="glyphicon glyphicon-envelope"></span>Comercial@ingenio-publicidad.com</p>
+              <p class="m"><span class="glyphicon glyphicon-phone-alt"></span>(1)4778174 <span class="glyphicon glyphicon-phone"></span>310 2176316 Bogotá-Colombia</p><br>
+            </div>
+          </div>
+          <nav class="col-xs-12 col-md-6 col-lg-7">
+            <div class="col-xs-12">
+              <div class="col-xs-12 menu p">
+                <div class="col-xs-4 btn-menu"><a href="/products">PRODUCTOS</a></div>
+                <div class="col-xs-4 btn-menu btn-lineas"><a href="/faq">PREGUNTAS FRECUENTES</a></div>
+                <div class="col-xs-4 btn-menu"><a href="/contact">CONTÁCTENOS</a></div>
+                <div class="col-xs-12 sesion-buscar p">
+                    <div class="col-xs-6 sesion "><!-- ............... SESION.. -->
+                      {{#if globalIsUserLoggedIn}}
+                      <p>Bienvenido(a)<br> {{globalGetCurrentLoggedUsername}}</p>
+                      {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                      <a href="/adminPanel">Administrar</a>
+                      {{/if}}
+                      <a href="#" id="logoutUser">Cerrar sesión</a>
+                      {{else}}
+                      <a href="#" id="registerNewUser" data-toggle="dropdown">Regístrate</a>
+                      {{> loginDropDownMenuItem}} {{/if}}
+                    </div>
+                    <div class="col-xs-6 buscar">
+                      <form action="" class="" role="form">
+                          <div class="buscar-campo">
+                              <input class="col-xs-11" type="text" name="searchBarName" id="searchBarName" placeholder="Ingrese el nombre del producto">
+                              <button class="col-xs-1 btn-buscar p" type="submit"><span class=" glyphicon glyphicon-search"></span></button>
+                           </div>
+                      </form>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+                <!-- {{#if globalIsUserLoggedIn}}
                 <li>
                     <p>Bienvenido(a)
                         <br> {{globalGetCurrentLoggedUsername}}</p>
@@ -25,16 +58,8 @@
                 <li>
                     <a href="#" id="registerNewUser" class="dropdown-toggle" data-toggle="dropdown">Regístrate</a>
                 </li>
-                {{> loginDropDownMenuItem}} {{/if}}
-            </ul>
-        </div>
-        <div id="searchBar" class="container-fluid">
-            <form action="" class="searhBarForm form-inline pull-right" role="form">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="searchBarName" id="searchBarName" placeholder="Ingrese el nombre del producto">
-                    <input type="submit" id="searchBarButton" class="btn btn-primary" value="Buscar">
-                </div>
-            </form>
+                {{> loginDropDownMenuItem}} {{/if}} -->
+
         </div>
     </div>
 </template>
@@ -45,7 +70,7 @@ Plantilla privada
 <template name="loginDropDownMenuItem">
     <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button">
-            Ingresar 
+            Ingresar
             <span class="caret"></span>
         </a>
         <ul id="loginPopup" class="dropdown-menu" role="menu">

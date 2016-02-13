@@ -6,6 +6,9 @@ en HTML sin diseño.
 h1 {
 	color: #ff0000 !important;
 }
+.ro{
+	border: 1px solid red;
+}
 
 #headerBar {
 	color: #ffffff;
@@ -14,6 +17,7 @@ h1 {
 
 #headerBar img {
 	vertical-align: top;
+	border: 1x solid blue;
 }
 
 #searchBar {

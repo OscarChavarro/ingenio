@@ -16,7 +16,6 @@ twbs:bootstrap             # Usado en estilos CSS de Bootstrap
 http
 
 
-npm-container
 cfs:standard-packages
 cfs:filesystem
 aldeed:simple-schema
@@ -25,3 +24,6 @@ aldeed:autoform
 aldeed:delete-button
 claudiojulio:blueimp-gallery
 manuel:reactivearray
+
+
+npm-container

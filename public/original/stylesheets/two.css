@@ -11,25 +11,108 @@ Referencias:
 /**
 Se utiliza la etiqueta !important para redefinir los valores de Bootstrap
 */
-h1 {
-	color: #ff0000 !important;
+*{
+	border: 0;
+	margin: 0;
+	padding: 0;
 }
-
-body {
+.m{
+	margin: 0;
+}
+.p{
+	padding-right: 0px!important;
+  padding-left: 0px!important;
+}
+body,html {
 	line-height: 1.42857143; /* Igual que en Bootstrap */
 	z-index: 1;
+	height: 100
 }
+.inicio{
+	width: 100%;
+	display: block;
+	height:auto;
+}
+.inicio img{
+	width: 100%;
+	height: auto;
+}
+.btn-menu{
+	text-align: center;
+	background-color:#00aeef;
+	color: white;
+	transition: all 500ms cubic-bezier(0.030, 0.450, 0.070, 0.955);
+}
+.btn-menu:hover{
+	background-color: white;
+}
+.btn-menu a{
+	display: block;
+	padding:10px 0;
+	text-align: center;
+	font-size: 1em;
+	color: white;
+	text-decoration:none;
+}
+.btn-menu a:hover{
+text-decoration: none;
+}
+.btn-lineas{
+	border:1px solid white;
+	border-top: none;
+	border bottom: none;
+}
+.tele-a p{
+	font-weight:bold;
+	font-size: 1.1em;
+}
+span{
+	color:#00aeef;
+	margin:0 10x;
+	padding: 10px;
+}
+.sesion-buscar{
+	padding: 10px;
+}
+.sesion{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-end;
+	align-items: center;
+	font-weight: bold;
+	color:#00aeef;
+	list-style: none;
+	text-decoration: none;
+	font-size: 1.2em;
+}
+.sesion a{
+	margin: 10px;
+		color:#00aeef;
+}
+.buscar-campo{
+	text-align: right;
 
-/*==========================================================================*/
-
-#searchBar {
-	margin: 84px 0px 0px 0px;	/* top right bottom left, top es el alto de la imagen de logo */
-	padding: 0px 0px 0px 0px;	/* top right bottom left */
+}
+.btn-buscar{
+	background-color: #00aeef;
+	color white;
+	height: 40px;
+}
+.btn-buscar span{
+	color: white;
+}
+.buscar input{
+width: 90%;
+height: 40px;
+margin: 0;
+border: 1px solid #00aeef;
+}
+.cont-categoria{
 	background-color: #00aeef;
 }
-
-#searchBarButton {
-	float:right;
+.categoria{
+	padding: 10px 0;
+	border-bottom: 1px solid white;
 }
 
 #centralArea {
@@ -54,7 +137,7 @@ body {
 /**
 étodo dudoso para centrar la lista en el centro
 verticalmente respecto a su padre - por revisar position,
-top y transform. 
+top y transform.
 
 Ver [.wW3SC2015a].
 */
@@ -82,7 +165,7 @@ Ver [.wW3SC2015a]
 	display: block;
 	text-decoration: none;
 	text-align: center;
-	padding: 0px 2px 0px 2px;	
+	padding: 0px 2px 0px 2px;
 	border: 1px solid #00aeef;
 	/*
 	vertical-align: middle;
@@ -192,7 +275,6 @@ Ver [.wW3SC2015a].
 #productCategoryIndexArea ul {
 	margin: 0px 0px 0px 0px;  /* top right bottom left */
 	padding: 1px 0px 1px 0px; /* top right bottom left */
-	background-color:#ff0000;
 
 	/** Pendientes por probar */
 	/*
@@ -208,8 +290,7 @@ Ver [.wW3SC2015a].
 Ver [.wW3SC2015a]
 */
 #productCategoryIndexArea li {
-    background-color: #00aeef;
-	border: 1px solid #ffffff;
+	background-color: #00aeef;
 	text-align: center;
 	padding: 5px 10px 5px 10px;	/* top right bottom left */
 	margin: 1px 1px 1px 1px;	/* top right bottom left */
@@ -221,6 +302,9 @@ Ver [.wW3SC2015a]
     display: block;
 	text-decoration: none;
     */
+}
+.ro{
+	border: 1px solid red;
 }
 
 /**
