@@ -11,10 +11,10 @@ Template.productCategoryIndexList.events({
         Meteor.call("getSubcategoriesByCategoryId", catId, function (error, children) {
             if (!valid(error) && valid(children)) {
                 var html = "";
-                html += '<ul>';
+                html += '<ul class="sub-cat">';
                 var i;
                 for (i in children) {
-                    html += '<li><a href="/' + children[i].friendlyUrl + '">' + children[i].nameSpa + '</a></li>';
+                    html += '<li><a class="link-a" href="/' + children[i].friendlyUrl + '">' + children[i].nameSpa + '</a></li>';
                 }
                 html += '</ul>';
                 document.getElementById(catId).innerHTML = html;

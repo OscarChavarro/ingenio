@@ -53,17 +53,16 @@
   <ul class="col-xs-12 cont-cate p">
        {{#each globalDbProductCategories}}
         <li class="col-xs-12 dropdown cate ">
-            <a class="productCategoryMenuOption dropdown-toggle" data-id={{this._id}} data-toggle="dropdown" role="button">
-                    {{this.nameSpa}}
-                    <!-- <span class="caret"></span> -->
-                </a>
-            <ul class="dropdown-menu" role="menu">
-                <li class="loginPopupItem">
-                    <div id={{this._id}}>
-                        Cargando...
-                    </div>
-                </li>
-            </ul>
+              <a class="productCategoryMenuOption alexis" data-id={{this._id}} data-toggle="dropdown" role="button">
+                {{this.nameSpa}}
+                <!-- <span class="caret"></span> -->
+              </a>
+              <div id={{this._id}}>
+                  <!-- Cargando... -->
+              </div>
+
+
+
         </li>
         {{/each}}
   </ul>
