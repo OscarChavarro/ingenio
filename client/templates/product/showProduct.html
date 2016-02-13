@@ -5,7 +5,7 @@
 <template name="showProduct">
     <div class="row">
       <!-- ............. slider ............ -->
-        <div class="col-xs-12 col-md-6 col-lg-7">
+        <div class="col-xs-12 col-md-12 col-lg-7">
             <div id="product-gallery" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
                 <div class="slides"></div>
                 <a class="prev">‹</a>
@@ -14,13 +14,13 @@
             </div>
         </div>
         <!-- ........................ detalles .......... -->
-        <div class="col-xs-12 col-md-6 col-lg-5">
-            <div class="col-xs-9 ">
+        <div class="col-xs-12 col-md-12 col-lg-5">
+            <div class="col-xs-8 ">
               <h2>{{getCurrent.nameSpa}}</h2>
               <p>{{{getCurrent.descriptionSpa}}}</p>
             </div>
             <!-- ........... Categorias relacionadas............ -->
-            <div class="col-xs-12 col-md-3">
+            <div class="col-xs-4 ">
               <h4 class="m">Categorias a las que pertenece:</h4>
               <table class="table table-hover">
                   <tbody>
@@ -64,8 +64,8 @@
                   <input type="submit" class="btn btn-success" value="Agregar">
                 </div>
             </form>
-            <p class="col-xs-12 ro text-center">
-              El precio puede variar sin previo aviso, estos articulos estan sujeto a inventario, este precio es antes de IVA. <br>
+            <p class="col-xs-12 text-center">
+              El precio puede variar sin previo aviso, estos articulos estan sujeto a inventario, este precio es antes de IVA.
               La marcación que incluye esta definida bajo parámetros estándares de acuerdo al producto.
             </p>
             <!-- <ol class="col-xs-12">
