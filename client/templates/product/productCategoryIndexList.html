@@ -52,14 +52,14 @@
   </div>
   <ul class="col-xs-12 cont-cate p">
        {{#each globalDbProductCategories}}
-        <li class="col-xs-12 dropdown cate ">
+        <li class="col-xs-12 cate">
               <a class="productCategoryMenuOption alexis" data-id={{this._id}} data-toggle="dropdown" role="button">
                 {{this.nameSpa}}
               </a>
-              <div id={{this._id}}>
-                  <ul>
+              <div  class="con-sub-cat" id={{this._id}}>
+                  <ul class="col-xs-12">
                       {{#each dbProductByCategoryId ..}}
-                          <li><a href="{{url}}">{{name}}</a></li>
+                          <li><a class="link-a" href="{{url}}">{{name}}</a></li>
                       {{/each}}
                   </ul>
               </div>
