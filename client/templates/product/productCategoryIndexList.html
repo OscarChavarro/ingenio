@@ -55,14 +55,14 @@
         <li class="col-xs-12 dropdown cate ">
               <a class="productCategoryMenuOption alexis" data-id={{this._id}} data-toggle="dropdown" role="button">
                 {{this.nameSpa}}
-                <!-- <span class="caret"></span> -->
               </a>
               <div id={{this._id}}>
-                  <!-- Cargando... --> cargando
+                  <ul>
+                      {{#each dbProductByCategoryId ..}}
+                          <li><a href="{{url}}">{{name}}</a></li>
+                      {{/each}}
+                  </ul>
               </div>
-
-
-
         </li>
         {{/each}}
   </ul>
