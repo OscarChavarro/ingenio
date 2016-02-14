@@ -5,6 +5,8 @@ Template.productCategoryIndexList.helpers({
 });
 
 Template.productCategoryIndexList.events({
+     // Desactivado por solicitud de Alexis
+    /*
     "click .productCategoryMenuOption": function (event, template) {
         event.preventDefault();
         var catId = ("" + event.target.getAttribute("data-id"));
@@ -23,4 +25,5 @@ Template.productCategoryIndexList.events({
             }
         });
     }
+    */
 });
