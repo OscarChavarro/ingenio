@@ -1,3 +1,51 @@
+var fs = Npm.require('fs');
+var path = Npm.require('path');
+
+var createWorkbook = function(excel)
+{
+    var wb = {}
+    wb.Sheets = {};
+    wb.Props = {};
+    wb.SSF = {};
+    wb.SheetNames = [];
+
+    /* create worksheet: */
+    var ws = {}
+
+    /* the range object is used to keep track of the range of the sheet */
+    var range = {s: {c:0, r:0}, e: {c:1, r:1 }};
+
+    /* Iterate through each element in the structure */
+    var data = [["A", "B"], ["C", "D"]];
+    for( var R = 0; R != data.length; R++ ) {
+      if(range.e.r < R) range.e.r = R;
+      for(var C = 0; C != data[R].length; C++ ) {
+        if(range.e.c < C) range.e.c = C;
+
+        /* create cell object: .v is the actual data */
+        var cell = { v: data[R][C] };
+        if ( cell.v == null ) continue;
+
+        /* create the correct cell reference */
+        var cell_ref = excel.utils.encode_cell({c:C,r:R});
+
+        /* determine the cell type */
+        if(typeof cell.v === 'number') cell.t = 'n';
+        else if(typeof cell.v === 'boolean') cell.t = 'b';
+        else cell.t = 's';
+
+        /* add to structure */
+        ws[cell_ref] = cell;
+      }
+    }
+    ws['!ref'] = excel.utils.encode_range(range);
+
+    /* add worksheet to workbook */
+    wb.SheetNames.push("Ingenio");
+    wb.Sheets["Ingenio"] = ws;
+    return wb;
+}
+
 Meteor.startup(function () {
     Meteor.methods({
         /**
@@ -5,6 +53,13 @@ Meteor.startup(function () {
         exportDatabaseToExcel(catId)
         {
             console.log("- EXPORTANDO A EXCEL -");
+            var path = "c:/home/tmp";
+
+            var excel = new Excel("xls");
+            var workbook = createWorkbook(excel);
+
+            excel.writeFile(workbook, "test.xls");
+            
             return "Ok";
         },
         /**
