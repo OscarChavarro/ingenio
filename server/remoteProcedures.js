@@ -54,12 +54,12 @@ Meteor.startup(function () {
         exportDatabaseToExcel(catId)
         {
             console.log("- EXPORTANDO A EXCEL -");
-            var path = "c:/home/tmp";
+            var path = "/tmp";
 
             var workbook;
 
-            //workbook = createWorkbook(excel);
-            workbook = excel.readFile(path + "/ejemplo.xlsx");
+            workbook = createWorkbook(excel);
+            //workbook = excel.readFile(path + "/ejemplo.xlsx");
             
             console.log("Nombre de hoja " + workbook.SheetNames[0]);
             excel.writeFile(workbook, path + "/test.xls");
