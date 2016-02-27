@@ -1,5 +1,6 @@
 var fs = Npm.require('fs');
 var path = Npm.require('path');
+var excel = Npm.require('xlsx');
 
 var createWorkbook = function(excel)
 {
@@ -55,11 +56,14 @@ Meteor.startup(function () {
             console.log("- EXPORTANDO A EXCEL -");
             var path = "c:/home/tmp";
 
-            var excel = new Excel("xls");
-            var workbook = createWorkbook(excel);
+            var workbook;
 
-            excel.writeFile(workbook, "test.xls");
+            //workbook = createWorkbook(excel);
+            workbook = excel.readFile(path + "/ejemplo.xlsx");
             
+            console.log("Nombre de hoja " + workbook.SheetNames[0]);
+            excel.writeFile(workbook, path + "/test.xls");
+
             return "Ok";
         },
         /**
