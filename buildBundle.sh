@@ -18,7 +18,7 @@ cd $RELEASE_DIR
 
 cat << EOF > $RELEASE_DIR/run.sh
 
-pkill -9 node
+npm install xls xlsx
 
 cd $RELEASE_DIR
 export HOSTNAME=`hostname`
@@ -26,6 +26,7 @@ export ROOT_URL=http://test.ingenio-promocionales.com
 export MONGO_URL=mongodb://test.ingenio-promocionales.com:27017/ingenio
 export PORT=80
 
+pkill -9 node
 nohup node main.js &> /var/log/node.log &
 disown
 
