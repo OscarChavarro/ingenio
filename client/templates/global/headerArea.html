@@ -3,16 +3,23 @@
     {{> defineWelcomeDialog}} {{> defineUserRegistrationModalDialog}} {{> defineWrongUserAccessModalDialog}} {{> defineUserPasswordResetFeedbackModalDialog}}
     <!-- Fin de la definición de diálogos modales -->
     <div class="container-fluid" id="headerArea">
-        <div class="rowp ">
-          <div class="col-xs-4 col-xs-offset-4 col-sm-3 col-sm-offset-0 col-lg-2 logo"> <!--............... LOGO-->
-            <a class="inicio" id="headerMenuBarLogoLink" href="/">
-                <img src={{resourceUrl "/images/logo.svg"}} alt="LogoIngenio">
-            </a>
+        <div class="row p ">
+          <div class="col-xs-4 col-xs-offset-4 col-sm-3 col-sm-offset-0 col-lg-2 logo">
+             <!--............... LOGO-->
+             <div class="cont-logo">
+                 <a class="inicio" id="headerMenuBarLogoLink" href="/">
+                     <img src={{resourceUrl "/images/logo.svg"}} alt="LogoIngenio">
+                 </a>
+             </div>
           </div>
           <div class="col-xs-12 col-sm-9 col-lg-3 telefonos p">
-            <div class="tele-a">
-              <p class="m"><span class="glyphicon glyphicon-phone-alt"></span> (1) 478 1125  <span  class="glyphicon glyphicon-envelope"></span>Comercial@ingenio-publicidad.com</p>
-              <p class="m"><span class="glyphicon glyphicon-phone-alt"></span>(1)4778174 <span class="glyphicon glyphicon-phone"></span>310 2176316 Bogotá-Colombia</p><br>
+            <div class="col-xs-12 tele-a ">
+                <div class="cont-tel">
+                    <p class="m"><span class="glyphicon glyphicon-phone-alt"></span> (1) 478 1125</p>
+                    <p class="m"><span  class="glyphicon glyphicon-envelope"></span>Comercial@ingenio-publicidad.com</p>
+                    <p class="m"><span class="glyphicon glyphicon-phone-alt"></span>(1)4778174</p>
+                    <p class="m"><span class="glyphicon glyphicon-phone"></span>310 2176316 Bogotá-Colombia</p><br>
+                </div>
             </div>
           </div>
           <nav class="col-xs-12 col-lg-7">

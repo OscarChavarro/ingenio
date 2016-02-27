@@ -50,6 +50,20 @@ body,html {
 	width: 100%;
 	height: auto;
 }
+.cont-logo{
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	min-height: 100px;
+}
+.cont-tel{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: center;
+}
 .btn-menu{
 	text-align: center;
 	background-color:#00aeef;
@@ -245,7 +259,6 @@ padding-left: 10px;
 }
 input[type="text"]{
 	padding: 15px;
-	border:1px solid #bdbdbd;
 }
 .cotizador{
 	padding-top:40px;
