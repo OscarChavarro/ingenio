@@ -62,7 +62,7 @@ Meteor.startup(function () {
             //workbook = excel.readFile(path + "/ejemplo.xlsx");
             
             console.log("Nombre de hoja " + workbook.SheetNames[0]);
-            excel.writeFile(workbook, path + "/test.xls");
+            excel.writeFile(workbook, path + "/test.xlsx");
 
             return "Ok";
         },
