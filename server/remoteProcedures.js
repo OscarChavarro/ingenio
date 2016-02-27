@@ -2,6 +2,13 @@ Meteor.startup(function () {
     Meteor.methods({
         /**
         */
+        exportDatabaseToExcel(catId)
+        {
+            console.log("- EXPORTANDO A EXCEL -");
+            return "Ok";
+        },
+        /**
+        */
         getSubcategoriesByCategoryId(catId)
         {
             var productCategory = global["productCategory"];
