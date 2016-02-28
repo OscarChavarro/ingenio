@@ -2,46 +2,57 @@ var fs = Npm.require('fs');
 var path = Npm.require('path');
 var excel = Npm.require('xlsx');
 
-var createWorkbook = function(excel)
+var createWorkbook = function(excel, data)
 {
+    // 1. Create workbook
     var wb = {}
     wb.Sheets = {};
     wb.Props = {};
     wb.SSF = {};
     wb.SheetNames = [];
 
-    /* create worksheet: */
+    // Create worksheet
     var ws = {}
 
-    /* the range object is used to keep track of the range of the sheet */
-    var range = {s: {c:0, r:0}, e: {c:1, r:1 }};
+    // The range object is used to keep track of the range of the sheet 
+    var range = {s: {c:0, r:0}, e: {c:2, r:2}};
 
-    /* Iterate through each element in the structure */
-    var data = [["A", "B"], ["C", "D"]];
-    for( var R = 0; R != data.length; R++ ) {
-      if(range.e.r < R) range.e.r = R;
-      for(var C = 0; C != data[R].length; C++ ) {
-        if(range.e.c < C) range.e.c = C;
+    var row;
+    for( row = 0; row != data.length; row++ ) {
+        if ( range.e.r < row ) {
+            range.e.r = row;
+        }
+        var column;
+        for ( column = 0; column != data[row].length; column++ ) {
+            if ( range.e.c < column ) {
+                range.e.c = column;
+            }
 
-        /* create cell object: .v is the actual data */
-        var cell = { v: data[R][C] };
-        if ( cell.v == null ) continue;
+            // Create cell object: .v is the actual data */
+            var cell = { v: data[row][column] };
+            if ( cell.v == null ) {
+                continue;
+            }
 
-        /* create the correct cell reference */
-        var cell_ref = excel.utils.encode_cell({c:C,r:R});
+            // Determine the cell type
+            if ( typeof cell.v === 'number' ) {
+                cell.t = 'n';
+            }
+            else if ( typeof cell.v === 'boolean' ) {
+                cell.t = 'b';
+            }
+            else {
+                cell.t = 's';
+            }
 
-        /* determine the cell type */
-        if(typeof cell.v === 'number') cell.t = 'n';
-        else if(typeof cell.v === 'boolean') cell.t = 'b';
-        else cell.t = 's';
-
-        /* add to structure */
-        ws[cell_ref] = cell;
-      }
+            // Write cell
+            var cellIndex = excel.utils.encode_cell({c:column, r:row});
+            ws[cellIndex] = cell;
+        }
     }
     ws['!ref'] = excel.utils.encode_range(range);
 
-    /* add worksheet to workbook */
+    // Add worksheet to workbook
     wb.SheetNames.push("Ingenio");
     wb.Sheets["Ingenio"] = ws;
     return wb;
@@ -55,15 +66,11 @@ Meteor.startup(function () {
         {
             console.log("- EXPORTANDO A EXCEL -");
             var path = "/tmp";
-
             var workbook;
-
-            workbook = createWorkbook(excel);
-            //workbook = excel.readFile(path + "/ejemplo.xlsx");
-            
+            var data = [["A", "B"], ["C", "D"]];
+            workbook = createWorkbook(excel, data);
             console.log("Nombre de hoja " + workbook.SheetNames[0]);
             excel.writeFile(workbook, path + "/test.xlsx");
-
             return "Ok";
         },
         /**
