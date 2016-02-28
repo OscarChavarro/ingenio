@@ -27,6 +27,19 @@ var addRowToWorksheet = function(ws, data, range, row)
             cell.t = 's';
         }
 
+        // Format cell
+        cell.s =  { 
+            fill: {
+                patternType: "solid",
+                fgColor: "FFFF0000",
+                bgColor: "FF000000" 
+            },
+            border: {
+                top: {style: "thick", color: "FFFFFF00"}
+            }
+        };
+        cell.c = "huy";
+
         // Write cell
         var cellIndex = excel.utils.encode_cell({c:column, r:row});
         ws[cellIndex] = cell;
@@ -184,7 +197,6 @@ var createWorkbookFromMarpicoData = function(excel)
         data.push("REFERENCIA COLOR INGENIO " + "(" + (i+1) + ")");
         data.push("CANTIDAD EN INVENTARIO" + "(" + (i+1) + ")");
     }
-    data.push("Variantes: " + maxNumberOfVariants);
     addRowToWorksheet(ws, data, range, row);
     row++;
 
@@ -202,10 +214,35 @@ var createWorkbookFromMarpicoData = function(excel)
         data.push("ING" + (1000+row-1));
         data.push("ING" + (1000+row-1) + " " + getName(p.name));
         data.push(web2utf(p.description));
+
+        data.push("Marcación");
+        data.push("Catp");
+        data.push("Subcat");
+        data.push("Cat ing");
+        data.push("Subcat (1)");
+        data.push("Subcat (2)");
+        data.push("Subcat (3)");
+        data.push("no sabemos");
+        data.push("Precio");
+        data.push("0%");
+        data.push("?");
+        data.push("20");
+        data.push("50");
+        data.push("100");
+        data.push("200");
+        data.push("300");
+        data.push("500");
+        data.push("1000");
+        data.push("2000");
+        data.push("3000");
+        data.push("4000");
+        data.push("5000");
+        data.push("10000");
+
         for ( i = 0; i < p.arrayOfVariants.length; i++ ) {
             var v = p.arrayOfVariants[i];
             data.push(v.reference);
-            data.push(web2utf(v.description);
+            data.push(web2utf(v.description));
             data.push("ING" + (1000+row-1) + "_" + (i+1));
             data.push(v.quantityTotal);
         }
@@ -214,6 +251,22 @@ var createWorkbookFromMarpicoData = function(excel)
         row++;
     });
     ws['!ref'] = excel.utils.encode_range(range);
+    
+    var wscols = [
+        {wch:9},
+        {wch:7},
+        {wch:30},
+        {wch:6},
+        {wch:27},
+        {wch:22}
+    ];
+    ws['!cols'] = wscols;
+
+    var json;
+    json = excel.utils.sheet_to_json(ws);
+    console.log("JSON: " + json.length);
+    console.log(json[0]);
+
 
     // Add worksheet to workbook
     wb.SheetNames.push("Ingenio");
@@ -228,11 +281,14 @@ Meteor.startup(function () {
         exportDatabaseToExcel(catId)
         {
             console.log("- EXPORTANDO A EXCEL -");
-            var path = "c:/home/tmp";
+            var path = "/tmp";
             var workbook;
             workbook = createWorkbookFromMarpicoData(excel);
             console.log("Nombre de hoja " + workbook.SheetNames[0]);
-            excel.writeFile(workbook, path + "/test.xlsx");
+            excel.writeFile(
+                workbook, 
+                path + "/testWithFormat.xlsx", 
+                {cellStyles: true, bookSST:true});
             return "Ok";
         },
         /**
