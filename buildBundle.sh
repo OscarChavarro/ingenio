@@ -20,7 +20,7 @@ cat << EOF > $RELEASE_DIR/run.sh
 
 cd $RELEASE_DIR
 
-npm install xls xlsx
+npm install xlsjs xlsx
 
 export HOSTNAME=`hostname`
 export ROOT_URL=http://test.ingenio-promocionales.com

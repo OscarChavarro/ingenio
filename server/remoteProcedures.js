@@ -29,14 +29,10 @@ var addRowToWorksheet = function(ws, data, range, row)
 
         // Format cell
         cell.s =  { 
-            fill: {
-                patternType: "solid",
-                fgColor: "FFFF0000",
-                bgColor: "FF000000" 
-            },
-            border: {
-                top: {style: "thick", color: "FFFFFF00"}
-            }
+            patternType: "solid",
+            fgColor: "FFFF0000",
+            bgColor: "FF000000" ,
+            top: {style: "thick", color: "FFFFFF00"}
         };
         cell.c = "huy";
 
@@ -288,7 +284,7 @@ Meteor.startup(function () {
             excel.writeFile(
                 workbook, 
                 path + "/testWithFormat.xlsx", 
-                {cellStyles: true, bookSST:true});
+                {bookSST:true});
             return "Ok";
         },
         /**
