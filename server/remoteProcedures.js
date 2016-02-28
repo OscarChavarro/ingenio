@@ -2,8 +2,16 @@ var fs = Npm.require('fs');
 var path = Npm.require('path');
 var excel = Npm.require('xlsx');
 
-var createWorkbook = function(excel, data)
+var createWorkbookFromMarpicoData = function(excel)
 {
+    // Access database
+    var marPicoProduct = global["marPicoProduct"];
+    var marPicoCategory = global["marPicoCategory"];
+
+    var cursor = marPicoProduct.find();
+
+    console.log("Exporting to Excel: " + cursor.count());
+
     // 1. Create workbook
     var wb = {}
     wb.Sheets = {};
@@ -14,22 +22,28 @@ var createWorkbook = function(excel, data)
     // Create worksheet
     var ws = {}
 
-    // The range object is used to keep track of the range of the sheet 
-    var range = {s: {c:0, r:0}, e: {c:2, r:2}};
+    // Range will keep growing to fit complete data
+    var range = {s: {c:0, r:0}, e: {c:0, r:0}};
 
-    var row;
-    for( row = 0; row != data.length; row++ ) {
+    var row = 0;
+    cursor.forEach(function(p) {
+        console.log("  - Product: " + p.name);
         if ( range.e.r < row ) {
             range.e.r = row;
         }
+
         var column;
-        for ( column = 0; column != data[row].length; column++ ) {
+        var data = [];
+        data.push(p._id);
+        data.push(p.name);
+        data.push(p.description);
+        for ( column = 0; column != data.length; column++ ) {
             if ( range.e.c < column ) {
                 range.e.c = column;
             }
 
             // Create cell object: .v is the actual data */
-            var cell = { v: data[row][column] };
+            var cell = { v: data[column] };
             if ( cell.v == null ) {
                 continue;
             }
@@ -49,7 +63,8 @@ var createWorkbook = function(excel, data)
             var cellIndex = excel.utils.encode_cell({c:column, r:row});
             ws[cellIndex] = cell;
         }
-    }
+        row++;
+    });
     ws['!ref'] = excel.utils.encode_range(range);
 
     // Add worksheet to workbook
@@ -65,10 +80,9 @@ Meteor.startup(function () {
         exportDatabaseToExcel(catId)
         {
             console.log("- EXPORTANDO A EXCEL -");
-            var path = "/tmp";
+            var path = "c:/home/tmp";
             var workbook;
-            var data = [["A", "B"], ["C", "D"]];
-            workbook = createWorkbook(excel, data);
+            workbook = createWorkbookFromMarpicoData(excel);
             console.log("Nombre de hoja " + workbook.SheetNames[0]);
             excel.writeFile(workbook, path + "/test.xlsx");
             return "Ok";
