@@ -18,9 +18,10 @@ cd $RELEASE_DIR
 
 cat << EOF > $RELEASE_DIR/run.sh
 
+cd $RELEASE_DIR
+
 npm install xls xlsx
 
-cd $RELEASE_DIR
 export HOSTNAME=`hostname`
 export ROOT_URL=http://test.ingenio-promocionales.com
 export MONGO_URL=mongodb://test.ingenio-promocionales.com:27017/ingenio
