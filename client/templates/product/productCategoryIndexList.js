@@ -29,27 +29,36 @@ Template.productCategoryIndexList.events({
 });
 
 Template.productCategoryIndexList.helpers({
-    dbProductByCategoryId: function(parent) {
-        var arr = [
-            {name: "Producto 1", url: "http://www.google.com"},
-            {name: "Producto 2", url: "http://www.youtube.com"}
-        ];
-        /*
-        var catId = parent._id;
-        Meteor.call("getSubcategoriesByCategoryId", catId, function (error, children) {
-            if (!valid(error) && valid(children)) {
+    dbProductByCategoryId: function(currentCategory) {
+        if ( !valid(currentCategory) ) {
+            return [{name: "No hay subcategorias", url: "http://www.google.com"}];
+        }
+
+        var menuName = "menu_" + currentCategory._id;
+        var m = Session.get(menuName);
+        if ( valid(m) ) {
+            return m;
+        }
+
+        Meteor.call("getSubcategoriesByCategoryId", currentCategory._id, function (error, response) {
+            var myarr = [];
+            if ( !valid(error) && valid(response) ) {
                 var i;
-                console.log("Tengo hijos: " + children.length);
-                for ( i in children ) {
-                    console.log("  - " + children[i]);
+                for ( i in response.children ) {
+                    var c = response.children[i];
+                    myarr.push({name: c.nameSpa, url: c.friendlyUrl});
                 }
+                myarr.push({name: "Todos", url: "http://pendiente"});
             }
             else {
-                var arr = [{name: "No se encontraron productos", url: "http://www.google.com"}];
+                myarr = [{name: "No se encontraron subcategorias", url: "http://www.google.com"}];
             }
+            Session.set(response.menuName, myarr);
         });
-        */
 
+        var arr = [
+            {name: "Cargando subcategorias", url: "http://www.google.com"}
+        ];
         return arr;
     }
 });

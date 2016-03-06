@@ -30,8 +30,7 @@ Meteor.startup(function () {
             
             //var oid = "ObjectID(\"" + catId + "\")";
             var children = productCategory.find({parentCategoryId: catId}).fetch();
-            console.log(children);
-            return children;
+            return {menuName: "menu_" + catId, children: children};
         },
         /**
         */
@@ -181,8 +180,7 @@ Meteor.startup(function () {
         */
         importMarpicoProducts()
         {
-            console.log("IMPORTANDO PRODUCTOS MARPICO");
-            return "Ok";
+            return importMarPicoCollectionsToIngenioCollections();
         }
     })
 });

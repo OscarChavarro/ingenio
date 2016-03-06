@@ -38,7 +38,7 @@ var addRowToWorksheet = function(ws, data, range, row)
     }
 }
 
-var getReferenceFromName = function(n)
+getReferenceFromName = function(n)
 {
     var i;
     var r = "";
@@ -54,7 +54,7 @@ var getReferenceFromName = function(n)
     return n.substring(0, 4);
 }
 
-var web2utf = function(w)
+web2utf = function(w)
 {
     var u = w.trim();
     u = u.replace("&aacute;", "á");
@@ -72,7 +72,7 @@ var web2utf = function(w)
     return u;
 }
 
-var getName = function(nw)
+getName = function(nw)
 {
     var n = web2utf(nw);
     var i;
