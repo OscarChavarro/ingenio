@@ -8,9 +8,15 @@ importMarPicoCollectionsToIngenioCollections = function()
 {
     console.log("**** IMPORTING MARPICO ELEMENTS ****");
     var marPicoCategory = global["marPicoCategory"];
+    var marPicoProduct = global["marPicoProduct"];
     var productCategory = global["productCategory"];
+    var product2category = global["product2category"];
+    var product = global["product"];
+    var supplier = global["supplier"];
 
-    if ( !valid(marPicoCategory) || !valid(productCategory) ) {
+    if ( !valid(marPicoCategory) || !valid(productCategory) || 
+    	 !valid(marPicoProduct) || !valid(product) ||
+    	 !valid(product2category) ) {
         return "Error: no se encuentran las colecciones";
     }
 
@@ -28,6 +34,7 @@ importMarPicoCollectionsToIngenioCollections = function()
     var options = {sort: [["nameSpa", "asc"]]};
     var sourceTopCategoriesArray = marPicoCategory.find(filter, options).fetch();
     var i;
+    var categoryHashTable = {};
 
     for ( i in sourceTopCategoriesArray ) {
     	var mpc;
@@ -43,6 +50,7 @@ importMarPicoCollectionsToIngenioCollections = function()
                 return "Error insertando categoria";
             }
         }
+        categoryHashTable[mpc.id] = ic._id;
 
         var filter = {parentCategoryId: mpc.id};
         var options = {sort: [["nameSpa", "asc"]]};
@@ -64,8 +72,45 @@ importMarPicoCollectionsToIngenioCollections = function()
 	                return "Error insertando subcategoria";
 	            }
 	        }
+            categoryHashTable[mpsc.id] = isc._id;
         }
     }
+
+    console.log("2. Importando productos:");
+    var cursor = marPicoProduct.find();
+    var provider = supplier.findOne({name: "MarPico"});
+    if ( !valid(provider) ) {
+    	return "Error: no esta el proveedor MarPico";
+    }
+
+    var count = 1;
+    cursor.forEach(function(mpp) {
+    	console.log("  - " + mpp.name);
+    	var ip;
+    	ip = {
+            nameSpa: web2utf(getName(mpp.name)),
+            supplierId: provider._id,
+            supplierReference: web2utf(getReferenceFromName(mpp.name)),
+            internalIngenioReference: "ING" + count,
+            descriptionSpa: mpp.description,
+            price: mpp.price,
+            friendlyUrl: "ING" + count
+    	};
+        var ipid = product.insert(ip);
+
+        if ( valid(ipid) ) {
+	        for( i in mpp.arrayOfparentCategoriesId ) {
+	        	var mpcid = mpp.arrayOfparentCategoriesId[i];
+	            if ( valid(categoryHashTable[mpcid]) ) {
+                    product2category.insert({
+                    	productId: ipid,
+                    	categoryId: categoryHashTable[mpcid]
+                    });
+	            }
+	        }
+	    }
+        count++;
+    });
 
     return "Ok";
 }
