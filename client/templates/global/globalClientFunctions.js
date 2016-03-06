@@ -60,7 +60,7 @@ globalCheckUserRole = function(uid, desiredRole)
     else if ( valid(uid) && valid(roleArr) ) {
         var i;
         for ( i in roleArr ) {
-            if ( roleArr[i].nameC === desiredRole ) {
+            if ( roleArr[i] === desiredRole ) {
                 return true;
             }
         }
