@@ -16,6 +16,8 @@ importMarPicoCollectionsToIngenioCollections = function()
     var product2category = global["product2category"];
     var product = global["product"];
     var supplier = global["supplier"];
+    var cfs = global["multimediaElementRaw"];
+    var product2multimediaElement = global["product2multimediaElement"];
 
     if ( !valid(marPicoCategory) || !valid(productCategory) || 
     	 !valid(marPicoProduct) || !valid(product) ||
@@ -38,6 +40,7 @@ importMarPicoCollectionsToIngenioCollections = function()
     var sourceTopCategoriesArray = marPicoCategory.find(filter, options).fetch();
     var i;
     var categoryHashTable = {};
+    var productHashTable = {};
 
     for ( i in sourceTopCategoriesArray ) {
     	var mpc;
@@ -111,6 +114,7 @@ importMarPicoCollectionsToIngenioCollections = function()
 	    }
 
         if ( valid(ipid) ) {
+        	productHashTable[mpp.id] = ipid;
 	        for( i in mpp.arrayOfparentCategoriesId ) {
 	        	var mpcid = mpp.arrayOfparentCategoriesId[i];
 	            if ( valid(categoryHashTable[mpcid]) ) {
@@ -123,6 +127,60 @@ importMarPicoCollectionsToIngenioCollections = function()
 	    }
         count++;
     });
+
+    console.log("3. Importando imagenes:");
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
+
+    var folderArr = fs.readdirSync(path);
+    for ( i in folderArr ) {
+        console.log("  - " + folderArr[i]);
+
+        var marPicoProductId = parseInt(folderArr[i]);
+
+		var mpp = marPicoProduct.findOne({id: marPicoProductId});        
+		if ( valid(mpp) ) {
+	        var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
+	        var j;
+	        for ( j in fileArr ) {
+	            var date = new Date();
+	            var me = cfs.insert({uploadedAt: date});
+
+	            if ( valid(me) ) {
+		            var fileSize;
+		            var filename = path + "/" + folderArr[i] + "/" + fileArr[j];
+		            var fileInfo = fs.lstatSync(filename);
+		            fileSize = fileInfo.size;
+		            var o = {
+		            	name: fileArr[j],
+		            	updatedAt: date,
+		            	size: fileSize,
+		            	type: "image/jpeg"
+		            };
+		            var destinationName = "multimediaElement-" + me + "-" + fileArr[j];
+		            var c = {multimediaElement: {
+		            	name: fileArr[j],
+		            	type: "image/jpeg",
+		            	size: fileSize,
+		            	key: destinationName,
+		            	updatedAt: date,
+		            	createdAt: date
+		            }};
+		            cfs.update({_id: me}, {$set: {original: o, copies: c}});
+
+                    if ( !fs.existsSync(destinationPath + "/" + destinationName) ) {
+		                fs.link(filename, destinationPath + "/" + destinationName);
+		            }
+
+                    product2multimediaElement.insert(
+                    	{
+                    		productId: productHashTable[marPicoProductId],
+                    		multimediaElementId: me
+                    	});
+	            }
+	        }
+	    }
+    }
 
     return "Ok";
 }
