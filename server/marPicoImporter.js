@@ -1,3 +1,6 @@
+var fs = Npm.require('fs');
+//var path = Npm.require('path');
+
 var computeFriendlyUrl = function(name)
 {
 	return "" + name;
@@ -87,16 +90,25 @@ importMarPicoCollectionsToIngenioCollections = function()
     cursor.forEach(function(mpp) {
     	console.log("  - " + mpp.name);
     	var ip;
-    	ip = {
-            nameSpa: web2utf(getName(mpp.name)),
-            supplierId: provider._id,
-            supplierReference: web2utf(getReferenceFromName(mpp.name)),
-            internalIngenioReference: "ING" + count,
-            descriptionSpa: mpp.description,
-            price: mpp.price,
-            friendlyUrl: "ING" + count
-    	};
-        var ipid = product.insert(ip);
+
+    	ip = product.findOne({marPicoProductId: mpp.id});
+    	var ipid;
+    	if ( !valid(ip) ) {
+	    	ip = {
+	            nameSpa: web2utf(getName(mpp.name)),
+	            supplierId: provider._id,
+	            supplierReference: web2utf(getReferenceFromName(mpp.name)),
+	            internalIngenioReference: "ING" + count,
+	            descriptionSpa: mpp.description,
+	            price: mpp.price,
+	            friendlyUrl: "ING" + count,
+	            marPicoProductId: mpp.id
+	    	};
+	    	ipid = product.insert(ip);
+	    }
+	    else {
+	    	ipid = ip._id;
+	    }
 
         if ( valid(ipid) ) {
 	        for( i in mpp.arrayOfparentCategoriesId ) {

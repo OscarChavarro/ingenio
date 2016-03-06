@@ -1,4 +1,4 @@
-var addRowToWorksheet = function(ws, data, range, row)
+var addRowToWorksheet = function(ws, data, range, row, excel)
 {
     var column;
     for ( column = 0; column != data.length; column++ ) {
@@ -150,7 +150,7 @@ createWorkbookFromMarpicoData = function(excel)
     // Fill header
     data = [];
     data.push("LISTADO DE PRODUCTOS GENERADO AUTOMÁTICAMENTE http://test.ingenio-promocionales.com/exportDatabaseToExcel");
-    addRowToWorksheet(ws, data, range, row);
+    addRowToWorksheet(ws, data, range, row, excel);
     row++;
 
     data = [];
@@ -189,7 +189,7 @@ createWorkbookFromMarpicoData = function(excel)
         data.push("REFERENCIA COLOR INGENIO " + "(" + (i+1) + ")");
         data.push("CANTIDAD EN INVENTARIO" + "(" + (i+1) + ")");
     }
-    addRowToWorksheet(ws, data, range, row);
+    addRowToWorksheet(ws, data, range, row, excel);
     row++;
 
     // Fill data
@@ -239,7 +239,7 @@ createWorkbookFromMarpicoData = function(excel)
             data.push(v.quantityTotal);
         }
 
-        addRowToWorksheet(ws, data, range, row);
+        addRowToWorksheet(ws, data, range, row, excel);
         row++;
     });
     ws['!ref'] = excel.utils.encode_range(range);
