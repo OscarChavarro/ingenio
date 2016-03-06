@@ -23,42 +23,42 @@ Router.route('/userAccess', {
 });
 
 Template.userAccess.helpers({
-	/**
-	Retorna una de tres respuetas:
-	  - false: usuario no encontrado
-	  - "NEW": usuario nuevo
-	  - "EXISTING": usuario que ya estaba validado
-	*/
-	getUidGivenAtUrl: function() {
-		var userSet = Session.get("activeUser");
+    /**
+    Retorna una de tres respuetas:
+      - false: usuario no encontrado
+      - "NEW": usuario nuevo
+      - "EXISTING": usuario que ya estaba validado
+    */
+    getUidGivenAtUrl: function() {
+        var userSet = Session.get("activeUser");
 
-		if ( !valid(userSet) || !valid(userSet.length) || userSet.length != 1 ) {
-			return false;
-		}
+        if ( !valid(userSet) || !valid(userSet.length) || userSet.length != 1 ) {
+            return false;
+        }
 
-		var u = userSet[0];
+        var u = userSet[0];
         activeUserEmail = u.profile.email;
 
         if ( valid(u) && valid(u.profile) && valid(u.profile.validatedEmail) && u.profile.validatedEmail == true ) {
-	    	Router.go("/");
-        	return "EXISTING";
+            Router.go("/");
+            return "EXISTING";
         }
 
         console.log("Nuevo usuario validado!");
         users.update(u._id, {$set: {"profile.validatedEmail": true}});
 
         document.getElementById("welcomeemail").innerHTML = activeUserEmail;
-    	$("#userActiveModalDialog").modal("show");
-    	Router.go("/");
+        $("#userActiveModalDialog").modal("show");
+        Router.go("/");
 
-		return "NEW";
-	}
+        return "NEW";
+    }
 });
 
 Template.defineWelcomeDialog.events({
     "submit #login": function(event, template) {
-    	event.preventDefault();
-		var email = activeUserEmail;
+        event.preventDefault();
+        var email = activeUserEmail;
         var password = event.target.password.value;
 
         console.log("email: [" + email + "]");
@@ -72,7 +72,7 @@ Template.defineWelcomeDialog.events({
                     //$("#...ModalDialog").modal("show");
                 }
                 else {
-                	$("#userActiveModalDialog").modal("toggle");
+                    $("#userActiveModalDialog").modal("toggle");
                 }
             }
         );

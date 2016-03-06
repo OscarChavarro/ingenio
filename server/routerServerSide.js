@@ -6,9 +6,9 @@ var fail = function(response) {
 };
 
 var dataFile = function() {
-	console.log("Enviando archivo para: ");
-	console.log("  - Campaña:" + this.params.campaignId);
-	console.log("  - Usuario:" + this.params.userId);
+    console.log("Enviando archivo para: ");
+    console.log("  - Campaña:" + this.params.campaignId);
+    console.log("  - Usuario:" + this.params.userId);
     var file = "/home/jedilink/usr/ingenio/campaigns/flyer001_02.jpg";
 
     var stat = null;
