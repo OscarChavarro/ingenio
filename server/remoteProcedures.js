@@ -156,7 +156,6 @@ Meteor.startup(function () {
             var users = global["users"];
             var arr = [];
             
-            console.log("Solicitando los roles del usuario " + uid);
             if ( valid(users) ) {
                 var u;
                 u = users.findOne({_id: uid});
@@ -177,6 +176,13 @@ Meteor.startup(function () {
         */
         setUserPassword: function(userId, newPassword) {
             Accounts.setPassword(userId, newPassword);
+        },
+        /**
+        */
+        importMarpicoProducts()
+        {
+            console.log("IMPORTANDO PRODUCTOS MARPICO");
+            return "Ok";
         }
     })
 });
