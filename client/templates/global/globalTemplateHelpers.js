@@ -8,6 +8,16 @@ Template.registerHelper("resourceUrl", function(urlSegment)
     }
 );
 
+Template.registerHelper("globalDbProductCategoriesIsEmpty", function()
+    {
+        var arr = Session.get("topLevelProductCategoriesArray");
+        if ( !valid(arr) || !valid(arr.length) || arr.length <= 0 ) {
+            return true;
+        }
+        return false;
+    }
+);
+
 Template.registerHelper("globalDbProductCategories", function()
     {
         return Session.get("topLevelProductCategoriesArray");
