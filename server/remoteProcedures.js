@@ -22,27 +22,29 @@ Meteor.startup(function () {
                     var p = product.findOne({_id: p2c.productId});
                     var pn = "[Nombre desconocido]";
                     var pp = "?";
+                    var fu = "ING176";
                     if ( valid(p) ) {
                         pn = p.nameSpa;
                         pp = "$" + p.price;
+                        fu = p.friendlyUrl;
                     }
                     var p2me;
                     p2me = product2multimediaElement.findOne({productId: p._id});
 
                     // No deberia ser esta si no una de "no hay imagen"
-                    var imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
+                    var imageUrl = "http://test.ingenio-promocionales.com/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
                     if ( valid(p2me) ) {
                         var me;
                         me = multimediaElement.findOne({_id: p2me.multimediaElementId});
                         if ( valid(me) ) {
-                            imageUrl = "/cfs/files/multimediaElement/" + me._id + "/" + 
+                            imageUrl = "http://test.ingenio-promocionales.com/cfs/files/multimediaElement/" + me._id + "/" + 
                                 me.copies.multimediaElement.name;
                         }
                     }
                     array.push({
                         i: imageUrl,
                         n: pn,
-                        u: "ING176",
+                        u: fu,
                         p: pp
                     });
                 });
