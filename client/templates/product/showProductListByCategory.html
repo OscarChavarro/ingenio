@@ -1,23 +1,31 @@
-<template name="showProductListByCategoryLoading">
-    Cargando lista de productos...
-</template>
+<!-- 
+Plantilla pública.
 
+Muestra una matriz de productos para la categoría seleccionada en el parámetro
+dado en la ruta raíz.
+-->
 <template name="showProductListByCategory">
     <div class="row">
-        {{#if areThereAnyProducts getProductList}}
+        {{#if hasProducts}}
             {{#each getProductList}}
-            <div class="col-md-3 col-xs-6" style="text-align:center;">
-                <a href="/product/{{this.friendlyUrl}}">
-                    {{#each getImages this}}
-                    <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
-                    {{/each}}
-                </a>
-                <br>
-                <a href="/product/{{this.friendlyUrl}}">{{this.nameSpa}}</a>
-            </div>
+                <div class="col-md-2 col-xs-6" style="text-align:center;">
+                    <a href={{u}}>
+                        <img
+                            src={{this.i}}
+                            alt={{n}}
+                            class="img-responsive">
+                    </a>
+                    <br>
+                    <a href={{u}}>{{n}}</a>
+                    <br>
+                    <b>{{p}}</b>
+                </div>
             {{/each}}
         {{else}}
-            <h3>No se encontraron productos para mostrar.</h3>
+            <h3>
+                No se encontraron productos para mostrar en la categoría con URL 
+                <b>{{getCurrentCategoryFriendlyUrl}}</b>.
+            </h3>
         {{/if}}
     </div>
 </template>

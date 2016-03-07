@@ -1,55 +1,63 @@
 Router.route("/:friendlyUrl", {
     name: "showProductListByCategory",
-    loadingTemplate: "showProductListByCategoryLoading",
     data: function () {
-        return this.params.friendlyUrl;
-    },
-    waitOn: function () {
-        return Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("productCategory") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement");
+        categoryFriendlyUrl = this.params.friendlyUrl
+        return categoryFriendlyUrl;
     }
 });
 
-Template.showProductListByCategory.helpers({
-    //SE OBTIENEN TODOS LOS PRODUCTOS DE LA CATEGORIA ACTUAL
-    getProductList: function () {
-        var productList = [];
-        var category = productCategory.findOne({ friendlyUrl: Template.currentData() });
-        product2category.find({ categoryId: (typeof category != "undefined" ? category._id : null) }).fetch().forEach(function (element, index, array) {
-            if (element.productId) {
-                //SE OBTIENE LA INFORMACION GENERAL
-                var productInfo = product.findOne({ _id: element.productId });
-                productList.push(productInfo);
+/**
+*/
+var getProductIndexArrayForCategoryId = function(catFriendlyUrl)
+{
+    var array;
+    var name = "categoryIndexData_" + catFriendlyUrl;
+    array = Session.get(name);
+
+    if ( valid(array) ) {
+        return array;
+    }
+
+    Meteor.call("getProductIndexArrayForCategoryFriendlyUrl", catFriendlyUrl,
+        function(error, response) {
+            if ( valid(error) ) {
+                console.log("Error: " + error);
             }
-        });
-        return productList;
-    },
-    //SE OBTIENE LA INFORMACION DE LA CATEGORIA ACTUAL
-    getCurrentCategory: function () {
-        return currentCategory = productCategory.findOne({ _id: Template.currentData() });
-    },
-    getImages: function (product) {
-        //SE OBTIENEN LOS ELEMENTOS MULTIMEDIA CORRESPONDIENTE A CADA PRODUCTO
-        var resources = [];
-        var i = 0;
-        if (typeof product != 'undefined') {
-            product2multimediaElement.find({ productId: product._id }, { sort: { order: 1 }, limit: 1 }).forEach(function (element, index, array) {
-                if (element.multimediaElementId) {
-                    var multimedia = multimediaElement.findOne({ _id: element.multimediaElementId });
-                    if (multimedia) {
-                        if (multimedia.copies) {
-                            if (multimedia.copies.multimediaElement) {
-                                resources.push(multimedia);
-                                resources[i].order = multimedia.order;
-                                i++;
-                            }
-                        }
-                    }
-                }
-            });
-            return resources;
+            else if ( valid(response) ) {
+                var n;
+                n = "categoryIndexData_" + response.catFriendlyUrl;
+                Session.set(n, response.array);
+            }
         }
+    );
+
+    return [];
+}
+
+Template.showProductListByCategory.helpers({
+    /**
+    Se retorna la URL amigable de la categoria actual
+    */
+    getCurrentCategoryFriendlyUrl: function() {
+        return categoryFriendlyUrl;
     },
-    areThereAnyProducts: function (list) {
-        return (list.length > 0);
+    /**
+    Se obtienen un indice de productos para la categoria actual
+    */
+    getProductList: function () {
+        return getProductIndexArrayForCategoryId(categoryFriendlyUrl);
+    },
+    /**
+    Returna true si hay productos en la categoria actual y false si no
+    */
+    hasProducts: function() {
+        var indexArray;
+
+        indexArray = getProductIndexArrayForCategoryId(categoryFriendlyUrl);
+
+        if ( indexArray.length > 0 ) {
+            return true;
+        }
+        return false;
     }
 });

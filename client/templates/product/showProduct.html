@@ -4,9 +4,11 @@
 
 <template name="showProduct">
     <div class="row">
-      <!-- ............. slider ............ -->
+        <!-- ............. slider ............ -->
         <div class="col-xs-12 col-md-12 col-lg-6">
-            <div id="product-gallery" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
+            <div 
+                id="product-gallery" 
+                class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel">
                 <div class="slides"></div>
                 <a class="prev">‹</a>
                 <a class="next">›</a>
@@ -16,50 +18,49 @@
         <!-- ........................ detalles .......... -->
         <div class="col-xs-12 col-md-12 col-lg-6 ">
             <div class="col-xs-8">
-              <h2>{{getCurrent.nameSpa}}</h2>
-              <p>{{{getCurrent.descriptionSpa}}}</p>
-              <div class="col-xs-8 btn-deseaver p m">
-                <div class="cont-btn01">
-                  <div class="icono">
-                    <img src={{resourceUrl "/images/question.svg"}} alt="LogoIngenio">
-                  </div>
-                  <p>Desea ver una muestra en físico</p>
+                <h2>{{getCurrent.nameSpa}}</h2>
+                <p>{{{getCurrent.descriptionSpa}}}</p>
+                <div class="col-xs-8 btn-deseaver p m">
+                    <div class="cont-btn01">
+                        <div class="icono">
+                            <img src={{resourceUrl "/images/question.svg"}} alt="LogoIngenio">
+                        </div>
+                        <p>Desea ver una muestra en físico</p>
+                    </div>
                 </div>
-              </div>
-
-
             </div>
 
             <!-- ........... Categorias relacionadas............ -->
             <div class="col-xs-4 m cate-rela p">
-              <div class="col-xs-12 cate-rela-titu m ">
-                <h4>Categorias a las que pertenece:</h4>
-              </div>
-              <table class="table table-hover">
-                  <tbody>
-                      {{#each getCurrent.categories}}
-                      <tr>
-                          <td>
-                              <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
-                          </td>
-                      </tr>
-                      {{/each}}
-                  </tbody>
-              </table>
+                <div class="col-xs-12 cate-rela-titu m ">
+                    <h4>Categorias a las que pertenece:</h4>
+                </div>
+                <table class="table table-hover">
+                    <tbody>
+                        {{#each getCurrent.categories}}
+                        <tr>
+                            <td>
+                                <a href="../{{friendlyUrl}}">{{nameSpa}}</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
             </div>
         </div>
+
         <!-- .................... COTIZADOR ....................... -->
         <div class="col-xs-12 col-lg-6 cotizador">
             {{#if isProductInShoppingCart getCurrent}} Ya usted agregó este producto a su lista de cotización {{else}}
             <div class="col-xs-8">
-              <h2 class="m azul">Cotizador Automático</h2>
-              <h3 class="m rojo">con la Marca incluida <br><br></h3>
+                <h2 class="m azul">Cotizador Automático</h2>
+                <h3 class="m rojo">con la Marca incluida <br><br></h3>
             </div>
             <div class="col-xs-4 p m">
-              <div class="cont-btn02">
-                <p class="col-xs-9">Condiciones y <br>Restriciones</p>
-                <div class="icono02"><img src={{resourceUrl "/images/like.svg"}} alt=""></div>
-              </div>
+                <div class="cont-btn02">
+                    <p class="col-xs-9">Condiciones y <br>Restriciones</p>
+                    <div class="icono02"><img src={{resourceUrl "/images/like.svg"}} alt=""></div>
+                </div>
             </div>
             <div class="col-xs-12"></div>
             <form class="col-xs-12 p m add-product" role="form">
@@ -138,37 +139,43 @@
         </div>
       </div>
       <div class="col-xs-12 col-md-8">
-          <!-- {{#if isLoggedIn}} -->
-          <div class="col-xs-12 cabeza"><h3>LISTA DE PRODUCTOS A COTIZAR</h3></div>
-          <div class="col-xs-12 titu">
-            <div class="col-xs-1 text-center"><p>Item</p></div>
-            <div class="col-xs-5 text-center "><p>Nombre</p></div>
-            <div class="col-xs-2 text-center"><p>Cant.</p></div>
-            <div class="col-xs-2 text-center"><p>Precio unid.</p></div>
-            <div class="col-xs-2 text-center">Valor total antes de iva</div>
-          </div>
+            <!-- {{#if isLoggedIn}} -->
+            <div class="col-xs-12 cabeza"><h3>LISTA DE PRODUCTOS A COTIZAR</h3></div>
+            <div class="col-xs-12 titu">
+                <div class="col-xs-1 text-center"><p>Item</p></div>
+                <div class="col-xs-5 text-center "><p>Nombre</p></div>
+                <div class="col-xs-2 text-center"><p>Cant.</p></div>
+                <div class="col-xs-2 text-center"><p>Precio unid.</p></div>
+                <div class="col-xs-2 text-center">Valor total antes de iva</div>
+            </div>
 
-                  <!-- {{#if isShoppingCartEmpty getShoppingCart}} -->
-              <div class="col-xs-12"><h3>No hay ningún producto para cotizar</h3></div>
+            <!-- {{#if isShoppingCartEmpty getShoppingCart}} -->
+            <div class="col-xs-12"><h3>No hay ningún producto para cotizar</h3></div>
                   <!-- {{else}} -->
                       <!-- {{#each getShoppingCart}} -->
 
                             <!-- {{productId.nameSpa}} -->
 
-                              <input type="text" class="cart-amount form-control" data-id="{{_id}}" value="{{quantity}}">
+                                <input 
+                                    type="text" 
+                                    class="cart-amount form-control" 
+                                    data-id="{{_id}}" 
+                                    value="{{quantity}}">
 
                             <!-- {{productId.price}} -->
 
                       <!-- {{/each}} -->
                   <!-- {{/if}} -->
 
-          <!-- {{#unless isShoppingCartEmpty getShoppingCart}} -->
-          <div class="col-xs-12 final-coti p">
-            <p class="col-xs-8 text-right"> Ya no voy a agregar más productos y requiero que me envien la cotización</p>
-            <div class="col-xs-4 btn03 p"><button class="col-xs-12 agrega">Generar Solicitud de Cotización</button></div>
-          </div>
+            <!-- {{#unless isShoppingCartEmpty getShoppingCart}} -->
+            <div class="col-xs-12 final-coti p">
+                <p class="col-xs-8 text-right">
+                    Ya no voy a agregar más productos y requiero que me envien la cotización</p>
+              <div class="col-xs-4 btn03 p">
+                  <button class="col-xs-12 agrega">Generar Solicitud de Cotización</button>
+              </div>
+            </div>
 
-          <!-- {{/unless}} {{/if}} -->
       </div>
     </div>
 </template>

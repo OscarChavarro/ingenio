@@ -1,12 +1,57 @@
-//var fs = Npm.require('fs');
-//var path = Npm.require('path');
 var excel = Npm.require('xlsx');
 
 Meteor.startup(function () {
     Meteor.methods({
         /**
         */
-        exportDatabaseToExcel(catId)
+        getProductIndexArrayForCategoryFriendlyUrl: function(furl)
+        {
+            var productCategory = global["productCategory"];
+            var product2category = global["product2category"];
+            var product = global["product"];
+            var product2multimediaElement = global["product2multimediaElement"];
+            var multimediaElement = global["multimediaElement"];
+            var c = productCategory.findOne({friendlyUrl: "" + furl});
+
+            if ( valid(c) ) {
+                var cursorp2c = product2category.find({categoryId: c._id});
+
+                array = [];
+
+                cursorp2c.forEach(function(p2c) {
+                    var p = product.findOne({_id: p2c.productId});
+                    var pn = "[Nombre desconocido]";
+                    var pp = "?";
+                    if ( valid(p) ) {
+                        pn = p.nameSpa;
+                        pp = "$" + p.price;
+                    }
+                    var p2me;
+                    p2me = product2multimediaElement.findOne({productId: p._id});
+
+                    // No deberia ser esta si no una de "no hay imagen"
+                    var imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
+                    if ( valid(p2me) ) {
+                        var me;
+                        me = multimediaElement.findOne({_id: p2me.multimediaElementId});
+                        if ( valid(me) ) {
+                            imageUrl = "/cfs/files/multimediaElement/" + me._id + "/" + 
+                                me.copies.multimediaElement.name;
+                        }
+                    }
+                    array.push({
+                        i: imageUrl,
+                        n: pn,
+                        u: "ING176",
+                        p: pp
+                    });
+                });
+            }
+            return {catFriendlyUrl: furl, array: array};
+        },
+        /**
+        */
+        exportDatabaseToExcel: function(catId)
         {
             console.log("- EXPORTANDO A EXCEL -");
             var path = "/tmp";
@@ -21,7 +66,7 @@ Meteor.startup(function () {
         },
         /**
         */
-        getSubcategoriesByCategoryId(catId)
+        getSubcategoriesByCategoryId: function(catId)
         {
             var productCategory = global["productCategory"];
             if ( !valid(productCategory) || !valid(catId) || catId === "null" ) {

@@ -6,7 +6,15 @@ Router.route("/manageProduct", {
         productCursor = product.find({}, options);
     },
     waitOn: function () {
-        return Meteor.subscribe("productCategory") && Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("supplier") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement") && Meteor.subscribe("productEquivalence");
+        // ESTO NO SE PUEDE HACER ACA CON LAS COLECCIONES GRANDES!
+        return 
+            Meteor.subscribe("productCategory") && 
+            Meteor.subscribe("product") && 
+            Meteor.subscribe("product2category") && 
+            Meteor.subscribe("supplier") && 
+            Meteor.subscribe("multimediaElement") && 
+            Meteor.subscribe("product2multimediaElement") && 
+            Meteor.subscribe("productEquivalence");
     }
 });
 

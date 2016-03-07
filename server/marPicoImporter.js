@@ -129,10 +129,10 @@ importMarPicoCollectionsToIngenioCollections = function()
     });
 
     console.log("3. Importando imagenes:");
-    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    var path = "/home/jedilink/images";
-    //var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
-    var destinationPath = "/var/www/cfs/files/multimediaElement";
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/images";
+    var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
+    //var destinationPath = "/var/www/cfs/files/multimediaElement";
 
     var folderArr = fs.readdirSync(path);
     for ( i in folderArr ) {
