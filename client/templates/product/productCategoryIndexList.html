@@ -23,7 +23,9 @@ productos.
                     <ul class="col-xs-12">
                         {{#each dbProductByCategoryId this}}
                             <li>
-                                <a class="link-a" href="{{url}}">{{name}}</a>
+                                <a class="link-a" href="/{{url}}">
+                                    {{name}}
+                                </a>
                             </li>
                         {{/each}}
                     </ul>

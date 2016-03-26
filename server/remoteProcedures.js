@@ -49,7 +49,7 @@ Meteor.startup(function () {
                     array.push({
                         i: imageUrl,
                         n: pn,
-                        u: "/product/" + fu,
+                        u: fu,
                         p: pp
                     });
                 });

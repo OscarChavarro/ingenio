@@ -8,7 +8,7 @@ if [ $HOSTNAME == "test.ingenio-promocionales.com" ]; then
 else
     echo RUNNING APPLICATION IN DEVELOPMENT MODE
     export ROOT_URL=http://localhost:3000
-    export MONGO_URL=mongodb://localhost:27018/ingenio
+    export MONGO_URL=mongodb://localhost:27017/ingenio
     meteor --port 3000 run
 fi
 

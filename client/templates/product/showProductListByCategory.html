@@ -9,14 +9,14 @@ dado en la ruta raíz.
         {{#if hasProducts}}
             {{#each getProductList}}
                 <div class="col-md-2 col-xs-6" style="text-align:center;">
-                    <a href={{u}}>
+                    <a href="/product/{{u}}">
                         <img
                             src={{this.i}}
                             alt={{n}}
                             class="img-responsive">
                     </a>
                     <br>
-                    <a href="{{u}}">{{n}}</a>
+                    <a href="/product/{{u}}">{{n}}</a>
                     <br>
                     <b>{{p}}</b>
                 </div>

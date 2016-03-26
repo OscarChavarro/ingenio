@@ -122,39 +122,25 @@ importMarPicoCollectionsToIngenioCollections = function()
 
         if ( valid(ipid) ) {
         	productHashTable[mpp.id] = ipid;
-            if ( ip.nameSpa.indexOf("Termo") != -1 ) {
-                console.log("******************************************");
-            }
 	        for( i in mpp.arrayOfparentCategoriesId ) {
 	        	var mpcid = mpp.arrayOfparentCategoriesId[i];
-                if ( ip.nameSpa.indexOf("Termo") != -1 ) {
-                    console.log("  - Categoria contenedora: " + mpcid);
-                }
 
 	            if ( valid(categoryHashTable[mpcid]) ) {
-                    if ( ip.nameSpa.indexOf("Termo") != -1 ) {
-                        console.log("    . Insertando " + categoryHashTable[mpcid]);
-                    }
                     product2category.insert({
                     	productId: ipid,
                     	categoryId: categoryHashTable[mpcid]
                     });
 	            }
-                else {
-                    if ( ip.nameSpa.indexOf("Termo") != -1 ) {
-                        console.log("    . ERROR! No encontrada");
-                    }
-                }
 	        }
 	    }
         count++;
     });
 
     console.log("3. Importando imagenes:");
-    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
-    //var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
-    var destinationPath = "/var/www/cfs/files/multimediaElement";
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
+    //var destinationPath = "/var/www/cfs/files/multimediaElement";
 
     var folderArr = fs.readdirSync(path);
     if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
