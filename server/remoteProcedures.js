@@ -3,21 +3,25 @@ var excel = Npm.require('xlsx');
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        Dada la direccion amigable "furl" para una categoria, este metodo retorna
+        un arreglo con los productos de esa categoria.
         */
         getProductIndexArrayForCategoryFriendlyUrl: function(furl)
         {
+            // Data access
             var productCategory = global["productCategory"];
             var product2category = global["product2category"];
             var product = global["product"];
             var product2multimediaElement = global["product2multimediaElement"];
             var multimediaElement = global["multimediaElement"];
+
+            // Query over categories
             var c = productCategory.findOne({friendlyUrl: "" + furl});
 
+            var array = [];
             if ( valid(c) ) {
-                console.log("  - Buscando productos para la categoria " + c._id);
+                //console.log("  - Buscando productos para la categoria " + c._id);
                 var cursorp2c = product2category.find({categoryId: c._id});
-
-                array = [];
 
                 cursorp2c.forEach(function(p2c) {
                     var p = product.findOne({_id: p2c.productId});
@@ -51,8 +55,8 @@ Meteor.startup(function () {
                 });
             }
 
-            console.log("  - Retornando arreglo para la categoria " + furl);
-            console.log("  - Elementos en el arreglo: " + array.length);
+            //console.log("  - Retornando arreglo para la categoria " + furl);
+            //console.log("  - Elementos en el arreglo: " + array.length);
             return {catFriendlyUrl: furl, array: array};
         },
         /**

@@ -7,6 +7,10 @@ Router.route("/:friendlyUrl", {
 });
 
 /**
+Dada una direccion URL amigable para la categoria deseada, catFriendlyUrl,
+este metodo busca el arreglo de productos que corresponden a esa categoria
+llamando al metodo getProductIndexArrayForCategoryFriendlyUrl del lado
+del servidor.
 */
 var getProductIndexArrayForCategoryId = function(catFriendlyUrl)
 {
