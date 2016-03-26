@@ -3,6 +3,37 @@ var excel = Npm.require('xlsx');
 Meteor.startup(function () {
     Meteor.methods({
         /**
+        */
+        getProductFromFriendlyUrl(friendlyUrl)
+        {
+            var p;
+            var product = global["product"];
+            var product2category = global["product2category"];
+
+            if ( !valid(product) || !valid(product2category) ) {
+                return {u: friendlyUrl, p: null, s: "No se puede conectar a la base de datos"};
+            }
+
+            p = product.findOne({ friendlyUrl: friendlyUrl });
+
+            if ( !valid(p) ) {
+                return {u: friendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + friendlyUrl};
+            }
+
+            console.log("Consultando producto " + p._id);
+
+            p.supplierId = supplier.findOne({ _id: p.supplierId });
+            p.categories = [];
+            var p2c = product2category.find({ productId: p._id }).fetch();
+            p2c.forEach(function (element, index, array) {
+                if ( element.categoryId ) {
+                    p.categories.push(productCategory.findOne({ _id: element.categoryId }));
+                }
+            });
+
+            return {u: friendlyUrl, p: p, s: "Ok"};
+        },
+        /**
         Dada la direccion amigable "furl" para una categoria, este metodo retorna
         un arreglo con los productos de esa categoria.
         */

@@ -2,6 +2,10 @@ Router.route("/product/:friendlyUrl", {
     name: "showProduct",
     loadingTemplate: "showProductLoading",
     data: function () {
+        // Variables globales a esta plantilla
+        productFriendlyUrl = this.params.friendlyUrl
+
+        // Retorno: deprecated.
         return this.params.friendlyUrl;
     },
     waitOn: function () {
@@ -16,22 +20,54 @@ Router.route("/product/:friendlyUrl", {
 });
 
 Template.showProduct.helpers({
-    // SE OBTIENE TODA LA INFORMACION DEL PRODUCTO
+    /**
+    Retorna un objeto que contiene informacion del producto especificado en la URL amistosa,
+    con un arreglo de categorias agregado como un arreglo en el atributo "categories".
+    PRE: Template.currentData() contiene la URL amigable de un producto.
+    */
     getCurrent: function () {
-        var productInfo = {};
+        var productInfo;
+        var name = "product_" + productFriendlyUrl;
+        var productInfo = Session.get(name);
 
-        productInfo = product.findOne({ friendlyUrl: Template.currentData() });
-        productInfo.supplierId = supplier.findOne({ _id: productInfo.supplierId });
+        if ( valid(productInfo) ) {
+            return productInfo;
+        }
+        else {
+            // Valor vacio
+            productInfo = {
+                _id: "000000000000000000000000",
+                nameSpa: "Producto cargando de la base de datos",
+                supplierId: "000000000000000000000000",
+                supplierReference: "PENDING_FROM_DB",
+                internalIngenioReference: "0000",
+                descriptionSpa: "La informacion del producto solicitado se esta cargando a partir de la base de datos.",
+                price: 666,
+                friendlyUrl: Template.currentData(),
+                marPicoProductId: 0,
+                categories: []
+            };
+            Session.set(name, productInfo);
 
-        // SE OBTIENEN LAS CATEGORIAS A LAS QUE PERTENECE EL PRODUCTO (PUEDEN SER VARIAS)
-        productInfo.categories = [];
-        var thisProduct2category = product2category.find({ productId: productInfo._id }).fetch();
-        thisProduct2category.forEach(function (element, index, array) {
-            if (element.categoryId) {
-                productInfo.categories.push(productCategory.findOne({ _id: element.categoryId }));
-            }
-        });
-        // SE DEVUELVE LA INFORMACION DEL PRODUCTO
+            // Obtener informacion de la base de datos de manera reactiva
+            Meteor.call("getProductFromFriendlyUrl", productFriendlyUrl, function(e, v) {
+                console.log("Recibiendo respuesta de RPC");
+                if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.p) ) {
+                    var msg = "Error llamando al procedimiento remoto getProductFromFriendlyUrl";
+                    if ( valid(v.s) ) {
+                        msg = msg + v.s;
+                    }
+                    console.log(msg);
+                }
+                else {
+                    var n = "product_" + v.u;
+                    console.log("  - Obtiene: [" + n + "]");
+                    console.log(v.p);
+                    Session.set(n, v.p);
+                }
+            });
+        }
+
         return productInfo;
     },
     getImages: function (product) {
