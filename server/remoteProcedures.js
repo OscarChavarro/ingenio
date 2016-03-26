@@ -37,19 +37,19 @@ Meteor.startup(function () {
                     p2me = product2multimediaElement.findOne({productId: p._id});
 
                     // No deberia ser esta si no una de "no hay imagen"
-                    var imageUrl = "http://test.ingenio-promocionales.com/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
+                    var imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
                     if ( valid(p2me) ) {
                         var me;
                         me = multimediaElement.findOne({_id: p2me.multimediaElementId});
                         if ( valid(me) ) {
-                            imageUrl = "http://test.ingenio-promocionales.com/cfs/files/multimediaElement/" + me._id + "/" + 
+                            imageUrl = "/cfs/files/multimediaElement/" + me._id + "/" + 
                                 me.copies.multimediaElement.name;
                         }
                     }
                     array.push({
                         i: imageUrl,
                         n: pn,
-                        u: fu,
+                        u: "/product/" + fu,
                         p: pp
                     });
                 });

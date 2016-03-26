@@ -1,7 +1,6 @@
 accounts-facebook
 accounts-password          # Usado para autenticar usuarios
 blaze-html-templates       # Compile .html files into Meteor Blaze views
-ecmascript                 # Enable ECMAScript2015+ syntax in app code
 insecure                   # Allow all DB writes from clients (for prototyping)
 iron:router                # Elemento fundamental del sistema
 jquery                     # Helpful client-side library
@@ -29,3 +28,4 @@ manuel:reactivearray
 npm-container
 mdg:validation-error
 momentjs:moment
+ecmascript
