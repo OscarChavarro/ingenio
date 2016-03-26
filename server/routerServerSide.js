@@ -29,4 +29,4 @@ var dataFile = function() {
     fs.createReadStream(file).pipe(this.response);
 };
 
-Router.route("/c/:campaignId/:userId", dataFile, {where: 'server'});
+//Router.route("/c/:campaignId/:userId", dataFile, {where: 'server'});

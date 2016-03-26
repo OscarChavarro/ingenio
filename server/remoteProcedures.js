@@ -14,6 +14,7 @@ Meteor.startup(function () {
             var c = productCategory.findOne({friendlyUrl: "" + furl});
 
             if ( valid(c) ) {
+                console.log("  - Buscando productos para la categoria " + c._id);
                 var cursorp2c = product2category.find({categoryId: c._id});
 
                 array = [];
@@ -49,6 +50,9 @@ Meteor.startup(function () {
                     });
                 });
             }
+
+            console.log("  - Retornando arreglo para la categoria " + furl);
+            console.log("  - Elementos en el arreglo: " + array.length);
             return {catFriendlyUrl: furl, array: array};
         },
         /**

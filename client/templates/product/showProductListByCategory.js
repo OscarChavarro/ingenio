@@ -14,10 +14,14 @@ var getProductIndexArrayForCategoryId = function(catFriendlyUrl)
     var name = "categoryIndexData_" + catFriendlyUrl;
     array = Session.get(name);
 
+    console.log("Buscando indice de productos para la categoria " + catFriendlyUrl);
+
     if ( valid(array) ) {
+        console.log("  - Retornando arreglo en cache: " + array.length);
         return array;
     }
 
+    console.log("  - Solicitando arreglo al servidor");
     Meteor.call("getProductIndexArrayForCategoryFriendlyUrl", catFriendlyUrl,
         function(error, response) {
             if ( valid(error) ) {
@@ -26,11 +30,19 @@ var getProductIndexArrayForCategoryId = function(catFriendlyUrl)
             else if ( valid(response) ) {
                 var n;
                 n = "categoryIndexData_" + response.catFriendlyUrl;
-                Session.set(n, response.array);
+
+                if ( valid(response.array) && valid(response.array.length) && response.array.length > 0 ) {
+                    console.log("  - Redefiniendo arreglo en cache: " + response.array.length);
+                    Session.set(n, response.array);
+                }
+                else {
+                    console.log("  - Error: Arreglo invalido o vacio");
+                }
             }
         }
     );
 
+    console.log("  - Retornando arreglo vacio");
     return [];
 }
 
