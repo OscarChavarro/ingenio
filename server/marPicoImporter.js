@@ -214,6 +214,11 @@ importMarPicoCollectionsToIngenioCollections = function()
 	            supplierReference: web2utf(getReferenceFromName(mpp.name)),
 	            internalIngenioReference: "ING" + count,
 	            descriptionSpa: web2utf(mpp.description),
+                materialSpa: web2utf(mpp.material),
+                markingSupportedSpa: web2utf(mpp.markingSupported),
+                measures: web2utf(mpp.measures),
+                printAreaSpa: web2utf(mpp.printArea),
+                packingSpa: web2utf(mpp.packing),
 	            price: mpp.price,
 	            friendlyUrl: "ING" + count,
 	            marPicoProductId: mpp.id
