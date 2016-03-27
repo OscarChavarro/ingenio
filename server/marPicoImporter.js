@@ -7,6 +7,43 @@ var computeFriendlyUrl = function(name)
     //return name.replace(" ", "-");
 }
 
+var importImagesToProducts = function(marPicoProduct, productHashTable, product)
+{
+    console.log("3. Importando imagenes:");    
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+
+    var folderArr = fs.readdirSync(path);
+    if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
+        console.log("  - ERROR: no se encontraron imágenes de producto. Revisar ruta " + path);
+        return;
+    }
+
+    for ( i in folderArr ) {
+        console.log("  - Procesando imágenes para el producto de id MarPico " + folderArr[i]);
+        var marPicoProductId = parseInt(folderArr[i]);
+        var mpp = marPicoProduct.findOne({id: marPicoProductId});        
+        var pid = productHashTable[marPicoProductId];
+        var p;
+        p = product.findOne({_id: pid});
+        if ( !valid(p) ) {
+            console.log("         -> NO SE ENCUENTRA PRODUCTO");
+            continue;
+        }
+
+        if ( valid(mpp) ) {
+            var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
+            var j;
+            var multimediaElementsArr = [];
+            for ( j in fileArr ) {
+                var filename = folderArr[i] + "/" + fileArr[j];
+                console.log("    . " + filename);
+                multimediaElementsArr.push(filename);
+            }
+            product.update({_id: pid}, {$set: {multimediaElementsArr: multimediaElementsArr}});
+        }
+    }
+}
+
 var importImagesToCfs = function(marPicoProduct, productHashTable)
 {
     var cfs = global["multimediaElementRaw"];
@@ -203,7 +240,8 @@ importMarPicoCollectionsToIngenioCollections = function()
         count++;
     });
 
-    importImagesToCfs(marPicoProduct, productHashTable);
+    //importImagesToCfs(marPicoProduct, productHashTable);
+    importImagesToProducts(marPicoProduct, productHashTable, product);
     
     return "Ok";
 }

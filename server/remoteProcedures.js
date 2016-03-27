@@ -7,6 +7,25 @@ Meteor.startup(function () {
         getProductImageSetFromFriendlyUrl(productFriendlyUrl)
         {
             var product = global["product"];
+
+            if ( !valid(product) ) {
+                return {u: productFriendlyUrl, a: null, s: "No se puede conectar a la base de datos"};
+            }
+
+            var p;
+            p = product.findOne({ friendlyUrl: productFriendlyUrl });
+            if ( !valid(p) || !valid(p.multimediaElementsArr) ) {
+                return {u: productFriendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + productFriendlyUrl};
+            }
+
+            var i;
+            var imgs = [];
+            for ( i in p.multimediaElementsArr ) {
+                imgs.push({u: p.multimediaElementsArr[i]});
+            }
+            return {u: productFriendlyUrl, a: imgs, s: "Ok"};
+
+            /*
             var product2multimediaElement = global["product2multimediaElement"];
             var multimediaElement = global["multimediaElement"];
 
@@ -29,6 +48,7 @@ Meteor.startup(function () {
                 imgs.push({u: img.url()});
             });
             return {u: productFriendlyUrl, a: imgs, s: "Ok"};
+            */
         },
         /**
         */
@@ -69,8 +89,8 @@ Meteor.startup(function () {
             var productCategory = global["productCategory"];
             var product2category = global["product2category"];
             var product = global["product"];
-            var product2multimediaElement = global["product2multimediaElement"];
-            var multimediaElement = global["multimediaElement"];
+            //var product2multimediaElement = global["product2multimediaElement"];
+            //var multimediaElement = global["multimediaElement"];
 
             // Query over categories
             var c = productCategory.findOne({friendlyUrl: "" + furl});
@@ -90,19 +110,24 @@ Meteor.startup(function () {
                         pp = "$" + p.price;
                         fu = p.friendlyUrl;
                     }
-                    var p2me;
-                    p2me = product2multimediaElement.findOne({productId: p._id});
+
+                    var imageUrl;
+                    //var p2me;
+                    //p2me = product2multimediaElement.findOne({productId: p._id});
 
                     // No deberia ser esta si no una de "no hay imagen"
-                    var imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
-                    if ( valid(p2me) ) {
-                        var me;
-                        me = multimediaElement.findOne({_id: p2me.multimediaElementId});
-                        if ( valid(me) ) {
-                            imageUrl = "/cfs/files/multimediaElement/" + me._id + "/" + 
-                                me.copies.multimediaElement.name;
-                        }
-                    }
+                    // imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
+                    //if ( valid(p2me) ) {
+                    //    var me;
+                    //    me = multimediaElement.findOne({_id: p2me.multimediaElementId});
+                    //    if ( valid(me) ) {
+                    //        imageUrl = "/cfs/files/multimediaElement/" + me._id + "/" + 
+                    //            me.copies.multimediaElement.name;
+                    //    }
+                    //}
+
+                    imageUrl = "/original/productImages/" + p.multimediaElementsArr[0];
+
                     array.push({
                         i: imageUrl,
                         n: pn,

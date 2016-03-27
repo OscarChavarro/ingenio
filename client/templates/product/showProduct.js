@@ -138,11 +138,12 @@ var loadImages = function(imgs)
     // Call to blueimp carousel functionality
     var carouselLinks = [];
     imgs.forEach(function (element, index, array) {
+        var url = "/original/productImages/" + element.u;
         carouselLinks.push({
             title: 'Título de la Imagen',
-            href: element.u,
+            href: url,
             type: 'image/jpeg',
-            thumbnail: element.u,
+            thumbnail: url,
             description: 'Descripción de la Imagen'
         });
     });
