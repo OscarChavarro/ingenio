@@ -49,10 +49,10 @@ importMarPicoCollectionsToIngenioCollections = function()
         
         var furl;
         furl = web2utf(computeFriendlyUrl(mpc.id));
-        var ic = productCategory.findOne({nameSpa: mpc.nameSpa});
+        var ic = productCategory.findOne({nameSpa: web2utf(mpc.nameSpa)});
         if ( !valid(ic) ) {
-            productCategory.insert({nameSpa: mpc.nameSpa, parentCategoryId: iRootC._id, friendlyUrl: furl});
-            ic = productCategory.findOne({nameSpa: mpc.nameSpa});
+            productCategory.insert({nameSpa: web2utf(mpc.nameSpa), parentCategoryId: iRootC._id, friendlyUrl: furl});
+            ic = productCategory.findOne({nameSpa: web2utf(mpc.nameSpa)});
             if ( !valid(ic) ) {
                 return "Error insertando categoria";
             }
@@ -71,12 +71,12 @@ importMarPicoCollectionsToIngenioCollections = function()
 
             var isc;
             isc = productCategory.findOne(
-            	{parentCategoryId: ic._id, nameSpa: mpsc.nameSpa});
+            	{parentCategoryId: ic._id, nameSpa: web2utf(mpsc.nameSpa)});
             var ncid;
             if ( !valid(isc) ) {
             	furl = web2utf(computeFriendlyUrl(mpsc.id));
 	            ncid = productCategory.insert(
-                    {nameSpa: mpsc.nameSpa, parentCategoryId: ic._id, friendlyUrl: furl});
+                    {nameSpa: web2utf(mpsc.nameSpa), parentCategoryId: ic._id, friendlyUrl: furl});
 	            if ( !valid(ncid) ) {
 	                return "Error insertando subcategoria";
 	            }
@@ -85,7 +85,7 @@ importMarPicoCollectionsToIngenioCollections = function()
                 ncid = isc._id;
             }
             categoryHashTable[mpsc.id] = ncid;
-            console.log("    *****. " + mpsc.nameSpa + " (" + mpsc.id + " -> " + ncid + ")");
+            console.log("    . " + web2utf(mpsc.nameSpa) + " (" + mpsc.id + " -> " + ncid + ")");
         }
     }
     
