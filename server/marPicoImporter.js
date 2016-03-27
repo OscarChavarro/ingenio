@@ -7,6 +7,75 @@ var computeFriendlyUrl = function(name)
     //return name.replace(" ", "-");
 }
 
+var importImagesToCfs = function(marPicoProduct, productHashTable)
+{
+    var cfs = global["multimediaElementRaw"];
+    var product2multimediaElement = global["product2multimediaElement"];
+
+    console.log("3. Importando imagenes:");
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
+    //var destinationPath = "/var/www/cfs/files/multimediaElement";
+
+    var folderArr = fs.readdirSync(path);
+    if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
+        console.log("  - ERROR: no se encontraron imágenes de producto. Revisar ruta " + path);
+        return;
+    }
+
+    for ( i in folderArr ) {
+        console.log("  - Procesando imágenes para el producto de id " + folderArr[i]);
+
+        var marPicoProductId = parseInt(folderArr[i]);
+
+        var mpp = marPicoProduct.findOne({id: marPicoProductId});        
+        if ( valid(mpp) ) {
+            var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
+            var j;
+            for ( j in fileArr ) {
+                var date = new Date();
+                var me = cfs.insert({uploadedAt: date});
+
+                if ( valid(me) ) {
+                    var fileSize;
+                    var filename = path + "/" + folderArr[i] + "/" + fileArr[j];
+                    var fileInfo = fs.lstatSync(filename);
+                    fileSize = fileInfo.size;
+                    var o = {
+                        name: fileArr[j],
+                        updatedAt: date,
+                        size: fileSize,
+                        type: "image/jpeg"
+                    };
+                    var destinationName = "multimediaElement-" + me + "-" + fileArr[j];
+                    var c = {multimediaElement: {
+                        name: fileArr[j],
+                        type: "image/jpeg",
+                        size: fileSize,
+                        key: destinationName,
+                        updatedAt: date,
+                        createdAt: date
+                    }};
+                    cfs.update({_id: me}, {$set: {original: o, copies: c}});
+
+                    if ( !fs.existsSync(destinationPath + "/" + destinationName) ) {
+                        fs.link(filename, destinationPath + "/" + destinationName);
+                    }
+
+                    product2multimediaElement.insert(
+                        {
+                            productId: productHashTable[marPicoProductId],
+                            multimediaElementId: me
+                        });
+                }
+            }
+        }
+    }
+    //oldcfs.drop();
+    //csf.rename("cfs.multimediaElement.filerecord", function(e, c){});
+}
+
 importMarPicoCollectionsToIngenioCollections = function()
 {
     console.log("**** IMPORTANDO ELEMENTOS MARPICO ****");
@@ -17,8 +86,6 @@ importMarPicoCollectionsToIngenioCollections = function()
     var product = global["product"];
     var supplier = global["supplier"];
     var oldcfs = global["multimediaElementRaw"];
-    var cfs = global["multimediaElementRaw"];
-    var product2multimediaElement = global["product2multimediaElement"];
 
     if ( !valid(marPicoCategory) || !valid(productCategory) || 
     	 !valid(marPicoProduct) || !valid(product) ||
@@ -136,69 +203,7 @@ importMarPicoCollectionsToIngenioCollections = function()
         count++;
     });
 
-    console.log("3. Importando imagenes:");
-    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
-    //var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
-    var destinationPath = "/var/www/cfs/files/multimediaElement";
-
-    var folderArr = fs.readdirSync(path);
-    if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
-        console.log("  - ERROR: no se encontraron imágenes de producto. Revisar ruta " + path);
-        return;
-    }
-
-    for ( i in folderArr ) {
-        console.log("  - Procesando imágenes para el producto de id " + folderArr[i]);
-
-        var marPicoProductId = parseInt(folderArr[i]);
-
-		var mpp = marPicoProduct.findOne({id: marPicoProductId});        
-		if ( valid(mpp) ) {
-	        var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
-	        var j;
-	        for ( j in fileArr ) {
-	            var date = new Date();
-	            var me = cfs.insert({uploadedAt: date});
-
-	            if ( valid(me) ) {
-		            var fileSize;
-		            var filename = path + "/" + folderArr[i] + "/" + fileArr[j];
-		            var fileInfo = fs.lstatSync(filename);
-		            fileSize = fileInfo.size;
-		            var o = {
-		            	name: fileArr[j],
-		            	updatedAt: date,
-		            	size: fileSize,
-		            	type: "image/jpeg"
-		            };
-		            var destinationName = "multimediaElement-" + me + "-" + fileArr[j];
-		            var c = {multimediaElement: {
-		            	name: fileArr[j],
-		            	type: "image/jpeg",
-		            	size: fileSize,
-		            	key: destinationName,
-		            	updatedAt: date,
-		            	createdAt: date
-		            }};
-		            cfs.update({_id: me}, {$set: {original: o, copies: c}});
-
-                    if ( !fs.existsSync(destinationPath + "/" + destinationName) ) {
-		                fs.link(filename, destinationPath + "/" + destinationName);
-		            }
-
-                    product2multimediaElement.insert(
-                    	{
-                    		productId: productHashTable[marPicoProductId],
-                    		multimediaElementId: me
-                    	});
-	            }
-	        }
-	    }
-    }
+    importImagesToCfs(marPicoProduct, productHashTable);
     
-    //oldcfs.drop();
-    //csf.rename("cfs.multimediaElement.filerecord", function(e, c){});
-
     return "Ok";
 }
