@@ -10,8 +10,8 @@ var computeFriendlyUrl = function(name)
 var importImagesToProducts = function(marPicoProduct, productHashTable, product)
 {
     console.log("3. Importando imagenes:");    
-    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
 
     var folderArr = fs.readdirSync(path);
     if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
@@ -37,7 +37,6 @@ var importImagesToProducts = function(marPicoProduct, productHashTable, product)
             var multimediaElementsArr = [];
             for ( j in fileArr ) {
                 var filename = folderArr[i] + "/" + fileArr[j];
-                console.log("    . " + filename);
                 multimediaElementsArr.push(filename);
             }
             product.update({_id: pid}, {$set: {multimediaElementsArr: multimediaElementsArr}});
