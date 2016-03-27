@@ -7,16 +7,13 @@ Router.route("/product/:friendlyUrl", {
 
         // Retorno: deprecated.
         return this.params.friendlyUrl;
-    },
+    }/*,
     waitOn: function () {
-        return  Meteor.subscribe("product") && 
-                Meteor.subscribe("product2category") && 
-                Meteor.subscribe("productCategory") && 
-                Meteor.subscribe("supplier") && 
+        return  Meteor.subscribe("product2multimediaElement") &&
                 Meteor.subscribe("multimediaElement") && 
-                Meteor.subscribe("product2multimediaElement") && 
+                Meteor.subscribe("product") &&
                 Meteor.subscribe("product2user");
-    }
+    }*/
 });
 
 Template.showProduct.helpers({
@@ -51,7 +48,6 @@ Template.showProduct.helpers({
 
             // Obtener informacion de la base de datos de manera reactiva
             Meteor.call("getProductFromFriendlyUrl", productFriendlyUrl, function(e, v) {
-                console.log("Recibiendo respuesta de RPC");
                 if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.p) ) {
                     var msg = "Error llamando al procedimiento remoto getProductFromFriendlyUrl";
                     if ( valid(v.s) ) {
@@ -61,8 +57,6 @@ Template.showProduct.helpers({
                 }
                 else {
                     var n = "product_" + v.u;
-                    console.log("  - Obtiene: [" + n + "]");
-                    console.log(v.p);
                     Session.set(n, v.p);
                 }
             });
@@ -70,31 +64,9 @@ Template.showProduct.helpers({
 
         return productInfo;
     },
-    getImages: function (product) {
-        //SE OBTIENEN LOS ELEMENTOS MULTIMEDIA CORRESPONDIENTE A CADA PRODUCTO
-        var resources = [];
-        var i = 0;
-        if (typeof product != 'undefined') {
-            product2multimediaElement.find({ productId: product._id }, { sort: { order: -1 }, limit: 8 }).forEach(function (element, index, array) {
-                if (element.multimediaElementId) {
-                    var multimedia = multimediaElement.findOne({ _id: element.multimediaElementId });
-                    if (multimedia) {
-                        if (multimedia.copies) {
-                            if (multimedia.copies.multimediaElement) {
-                                resources.push(multimedia);
-                                resources[i].order = element.order;
-                                i++;
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        return resources;
-    },
-    isFirstImage: function (image) {
+    /*isFirstImage: function (image) {
         return (image.order == 1);
-    },
+    },*/
     isLoggedIn: function () {
         return valid(Meteor.userId());
     },
@@ -161,27 +133,21 @@ Template.showProduct.events({
     }
 });
 
-Template.showProduct.onRendered(function () {
-    var datasetTest = product.findOne({ friendlyUrl: Template.currentData() });
-    var i = 0;
-    var producto2multimedia = product2multimediaElement.find({ productId: datasetTest._id });
-    var imgs = [];
-    producto2multimedia.forEach(function (element, index, array) {
-        var img = multimediaElement.findOne({ _id: element.multimediaElementId });
-        imgs.push(img);
-    });
-    datasetTest.resources = imgs;
+var loadImages = function(imgs)
+{
+    // Call to blueimp carousel functionality
     var carouselLinks = [];
-    datasetTest.resources.forEach(function (element, index, array) {
+    imgs.forEach(function (element, index, array) {
         carouselLinks.push({
             title: 'Título de la Imagen',
-            href: element.url(),
+            href: element.u,
             type: 'image/jpeg',
-            thumbnail: element.url(),
+            thumbnail: element.u,
             description: 'Descripción de la Imagen'
         });
     });
-    if ( datasetTest.resources.length > 0 ) {
+
+    if ( carouselLinks.length > 0 ) {
         var gallery = blueimp.Gallery(carouselLinks, {
             container: '#product-gallery',
             carousel: true,
@@ -195,6 +161,34 @@ Template.showProduct.onRendered(function () {
                 for (i = 0; i < thumbnails.length; i++) {
                     thumbnails[i].className = 'invisible';
                 }
+            }
+        });
+    }
+}
+
+Template.showProduct.onRendered(function () {
+    // Get image list for product reactively
+    var name = "imageSet_" + productFriendlyUrl;
+    var imgs = Session.get(name);
+
+    if ( valid(imgs) ) {
+        loadImages(imgs);
+    }
+    else {
+        Session.set(name, []);
+        // First time, define data set
+        Meteor.call("getProductImageSetFromFriendlyUrl", productFriendlyUrl, function(e, v) {
+            if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.a) ) {
+                var msg = "Error llamando al procedimiento remoto getProductImageSetFromFriendlyUrl.";
+                if ( valid(v.s) ) {
+                    msg = msg + " " + v.s;
+                }
+                console.log(msg);
+            }
+            else {
+                var n = "imageSet_" + v.u;
+                Session.set(n, v.a);
+                loadImages(v.a);
             }
         });
     }

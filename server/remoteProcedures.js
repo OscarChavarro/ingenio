@@ -4,23 +4,49 @@ Meteor.startup(function () {
     Meteor.methods({
         /**
         */
-        getProductFromFriendlyUrl(friendlyUrl)
+        getProductImageSetFromFriendlyUrl(productFriendlyUrl)
         {
+            var product = global["product"];
+            var product2multimediaElement = global["product2multimediaElement"];
+            var multimediaElement = global["multimediaElement"];
+
+            if ( !valid(product) || !valid(product2multimediaElement) ||
+                 !valid(multimediaElement) ) {
+                return {u: productFriendlyUrl, a: null, s: "No se puede conectar a la base de datos"};
+            }
+
             var p;
+            p = product.findOne({ friendlyUrl: productFriendlyUrl });
+            if ( !valid(p) ) {
+                return {u: productFriendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + productFriendlyUrl};
+            }
+
+            var i = 0;
+            var p2m = product2multimediaElement.find({ productId: p._id });
+            var imgs = [];
+            p2m.forEach(function (element, index, array) {
+                var img = multimediaElement.findOne({ _id: element.multimediaElementId });
+                imgs.push({u: img.url()});
+            });
+            return {u: productFriendlyUrl, a: imgs, s: "Ok"};
+        },
+        /**
+        */
+        getProductFromFriendlyUrl(productFriendlyUrl)
+        {
             var product = global["product"];
             var product2category = global["product2category"];
 
             if ( !valid(product) || !valid(product2category) ) {
-                return {u: friendlyUrl, p: null, s: "No se puede conectar a la base de datos"};
+                return {u: productFriendlyUrl, p: null, s: "No se puede conectar a la base de datos"};
             }
 
-            p = product.findOne({ friendlyUrl: friendlyUrl });
+            var p;
+            p = product.findOne({ friendlyUrl: productFriendlyUrl });
 
             if ( !valid(p) ) {
-                return {u: friendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + friendlyUrl};
+                return {u: productFriendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + productFriendlyUrl};
             }
-
-            console.log("Consultando producto " + p._id);
 
             p.supplierId = supplier.findOne({ _id: p.supplierId });
             p.categories = [];
@@ -31,7 +57,7 @@ Meteor.startup(function () {
                 }
             });
 
-            return {u: friendlyUrl, p: p, s: "Ok"};
+            return {u: productFriendlyUrl, p: p, s: "Ok"};
         },
         /**
         Dada la direccion amigable "furl" para una categoria, este metodo retorna
