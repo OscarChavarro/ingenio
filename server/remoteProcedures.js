@@ -112,9 +112,10 @@ Meteor.startup(function () {
                     }
 
                     var imageUrl;
+
+                    // Old version based on CFS module
                     //var p2me;
                     //p2me = product2multimediaElement.findOne({productId: p._id});
-
                     // No deberia ser esta si no una de "no hay imagen"
                     // imageUrl = "/cfs/files/multimediaElement/DkZG89qAKkkpThxMG/21021_3018967.jpg";
                     //if ( valid(p2me) ) {

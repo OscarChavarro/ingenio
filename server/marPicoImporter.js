@@ -10,7 +10,8 @@ var computeFriendlyUrl = function(name)
 var importImagesToProducts = function(marPicoProduct, productHashTable, product)
 {
     console.log("3. Importando imagenes:");    
-    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
 
     var folderArr = fs.readdirSync(path);
     if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
