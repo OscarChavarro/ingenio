@@ -42,7 +42,11 @@ Template.showProduct.helpers({
                 price: 666,
                 friendlyUrl: Template.currentData(),
                 marPicoProductId: 0,
-                categories: []
+                categories: [],
+                measures:"Medidas cargando de la base de datos",
+                printAreaSpa:"Área de impresión cargando de la base de datos",
+                packingSpa:"Empaque cargando de la base de datos",
+                markingSupportedSpa:"Marcado soportado cargando de la base de datos"
             };
             Session.set(name, productInfo);
 

@@ -29,35 +29,35 @@ Template.productCategoryIndexList.events({
 });
 
 Template.productCategoryIndexList.helpers({
-    dbProductByCategoryId: function(currentCategory) {
-        if ( !valid(currentCategory) ) {
-            return [{name: "No hay subcategorias", url: "http://www.google.com"}];
+    dbProductByCategoryId: function (currentCategory) {
+        if (!valid(currentCategory)) {
+            return [{ name: "No hay subcategorias", url: "http://www.google.com" }];
         }
 
         var menuName = "menu_" + currentCategory._id;
         var m = Session.get(menuName);
-        if ( valid(m) ) {
+        if (valid(m)) {
             return m;
         }
 
         Meteor.call("getSubcategoriesByCategoryId", currentCategory._id, function (error, response) {
             var myarr = [];
-            if ( !valid(error) && valid(response) ) {
+            if (!valid(error) && valid(response)) {
                 var i;
-                for ( i in response.children ) {
+                for (i in response.children) {
                     var c = response.children[i];
-                    myarr.push({name: c.nameSpa, url: c.friendlyUrl});
+                    myarr.push({ name: c.nameSpa, url: c.friendlyUrl });
                 }
-                myarr.push({name: "Todos", url: "http://pendiente"});
+                myarr.push({ name: "Todos", url: currentCategory.friendlyUrl });
             }
             else {
-                myarr = [{name: "No se encontraron subcategorias", url: "http://www.google.com"}];
+                myarr = [{ name: "No se encontraron subcategorias", url: "http://www.google.com" }];
             }
             Session.set(response.menuName, myarr);
         });
 
         var arr = [
-            {name: "Cargando subcategorias", url: "http://www.google.com"}
+            { name: "Cargando subcategorias", url: "http://www.google.com" }
         ];
         return arr;
     }
