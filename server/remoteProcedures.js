@@ -321,6 +321,17 @@ Meteor.startup(function () {
         */
         importMarpicoProducts() {
             return importMarPicoCollectionsToIngenioCollections();
+        },
+        /*
+        */
+        deleteShoppingCart: function () {
+            try{
+                product2user.remove({userId:Meteor.userId()});
+                return true;
+            }catch(ex){
+                return false;
+            }
+            
         }
     })
 });

@@ -80,8 +80,7 @@ Template.showProduct.helpers({
             for (var i = 0; i < products.length; i++) {
                 products[i].productId = product.findOne({ _id: products[i].productId });
             }
-        } 
-        else {
+        } else {
             return [];
         }
         return products;
@@ -134,6 +133,37 @@ Template.showProduct.events({
         });
 
         alert("El producto se ha agregado a la lista de cotización satisfactoriamente.");
+    },
+    "click #generar-solicitud":function(event, template){
+        var products = product2user.find({ userId: Meteor.userId() }).fetch();
+        if(valid(Meteor.user())){
+            if (valid(products)) {
+                var emailContent="<p>A continuación está la lista de cotización correspondiente al cliente "+Meteor.user().profile.name+" a nombre de la empresa "+Meteor.user().profile.corporation+"</p>";
+                emailContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
+                for (var i = 0; i < products.length; i++) {
+                    emailContent+="<tr><td>"+products[i].productId.supplierReference+"</td><td>"+products[i].productId.nameSpa+"</td><td>"+products[i].quantity+"</td><td>"+products[i].productId.price+"</td><td>"+(parseFloat(products[i].productId.price)*parseInt(products[i].quantity))+"</td><tr>";
+                    products[i].productId = product.findOne({ _id: products[i].productId });
+                }
+                emailContent+="</table>";
+                console.log(emailContent);
+                Meteor.call("deleteShoppingCart",function(err,result){
+                    if(!valid(err) && result){
+                        //SEND EMAIL HERE
+                        /*
+                        
+                        */
+                        alert("Cotización enviada con éxito.");
+                        console.log(emailContent);
+                    }else{
+                        alert("Ocurrió un error enviando la cotización. Por favor inténtelo de nuevo más tarde.");
+                    }
+                });
+            } else {
+                alert("No ha registrado ningún producto para cotizar.");
+            }
+        }else{
+            alert("Debe haber iniciado sesión para realizar esta acción.");
+        }
     }
 });
 
