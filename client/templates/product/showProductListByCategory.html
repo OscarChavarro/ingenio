@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Plantilla pública.
 
 Muestra una matriz de productos para la categoría seleccionada en el parámetro
@@ -6,26 +6,31 @@ dado en la ruta raíz.
 -->
 <template name="showProductListByCategory">
     <div class="row">
-        {{#if hasProducts}}
-            {{#each getProductList}}
-                <div class="col-md-2 col-xs-6" style="text-align:center;height:225px;">
-                    <a href="/product/{{u}}">
-                        <img
-                            src={{this.i}}
-                            alt={{n}}
-                            class="img-responsive">
-                    </a>
-                    <br>
-                    <a href="/product/{{u}}">{{n}}</a>
-                    <br>
-                    <b>{{p}}</b>
-                </div>
-            {{/each}}
-        {{else}}
-            <h3>
-                No se encontraron productos para mostrar en la categoría con URL 
-                <b>{{getCurrentCategoryFriendlyUrl}}</b>.
-            </h3>
-        {{/if}}
+        <div class="cont-productos">
+            {{#if hasProducts}}
+                <h1 class="titu-cate">Nombre de la Categoría</h1>
+                {{#each getProductList}}
+                    <div class="producto" style="text-align:center;">
+                        <a href="/product/{{u}}">
+                            <img
+                                src={{this.i}}
+                                alt={{n}}
+                                class="img-responsive">
+                        </a>
+                        <br>
+                        <a href="/product/{{u}}">{{n}}</a>
+                        <br>
+                        <b>{{p}}</b>
+                    </div>
+                {{/each}}
+            {{else}}
+                <h3>
+                    No se encontraron productos para mostrar en la categoría con URL
+                    <b>{{getCurrentCategoryFriendlyUrl}}</b>.
+                </h3>
+            {{/if}}
+        </div>
+        <br>
+
     </div>
 </template>

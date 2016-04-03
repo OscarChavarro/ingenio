@@ -13,7 +13,7 @@
              </div>
           </div>
           <div class="col-xs-12 col-sm-9 col-lg-3 telefonos p">
-            <div class="col-xs-12 tele-a ">
+            <div class="col-xs-12 tele-a p">
                 <div class="cont-tel">
                     <p class="m"><span class="glyphicon glyphicon-phone-alt"></span> (1) 478 1125</p>
                     <p class="m"><span  class="glyphicon glyphicon-envelope"></span>Comercial@ingenio-publicidad.com</p>
@@ -29,18 +29,20 @@
                 <div class="col-xs-4 btn-menu btn-lineas"><a href="/faq">PREGUNTAS FRECUENTES</a></div>
                 <div class="col-xs-4 btn-menu"><a href="/contact">CONTÁCTENOS</a></div>
                 <div class="col-xs-12 sesion-buscar p">
-                    <div class="col-xs-6 sesion "><!-- ............... SESION.. -->
-                      {{#if globalIsUserLoggedIn}}
-                      <p>Bienvenido(a)<br> {{globalGetCurrentLoggedUsername}}</p>
-                      {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
-                      <a href="/adminPanel">Administrar</a>
-                      {{/if}}
-                      <a href="#" id="logoutUser">Cerrar sesión</a>
-                      {{else}}
-                      <a href="#" id="registerNewUser" data-toggle="dropdown">Regístrate</a>
-                      {{> loginDropDownMenuItem}} {{/if}}
+                    <div class="col-xs-6 sesion"><!-- ............... SESION.. -->
+                        <div class="cont-usuario">
+                            {{#if globalIsUserLoggedIn}}
+                            <p class="usuario" >Bienvenido(a) {{globalGetCurrentLoggedUsername}}</p>
+                            {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                            <a href="/adminPanel">Administrar</a>
+                            {{/if}}
+                            <a href="#" id="logoutUser" class="cs">Cerrar sesión</a>
+                            {{else}}
+                            <a href="#" id="registerNewUser" data-toggle="dropdown" class="registrarse">Regístrate</a>
+                            {{> loginDropDownMenuItem}} {{/if}}
+                        </div>
                     </div>
-                    <div class="col-xs-6 buscar">
+                    <div class="col-xs-6 buscar p">
                       <form action="" class="col-xs-12 p" role="form">
                           <div class="col-xs-12 buscar-campo p">
                               <input class="col-xs-10" type="text" name="searchBarName" id="searchBarName" placeholder="Ingrese el nombre del producto">
