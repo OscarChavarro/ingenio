@@ -7,14 +7,32 @@ Router.route("/product/:friendlyUrl", {
 
         // Retorno: deprecated.
         return this.params.friendlyUrl;
-    }/*,
+    },
     waitOn: function () {
-        return  Meteor.subscribe("product2multimediaElement") &&
+        /*return  Meteor.subscribe("product2multimediaElement") &&
                 Meteor.subscribe("multimediaElement") && 
                 Meteor.subscribe("product") &&
-                Meteor.subscribe("product2user");
-    }*/
+                Meteor.subscribe("product2user", Meteor.userId());*/
+    },
+    onAfterAction: function () {
+        Session.set("productAdded", undefined);
+    }
 });
+
+var sendQuotationList = function (productList) {
+    var t = new Date();
+    var subject = "Cotización desde el Sistema Automatizado de Ingenio";
+    var htmlContent = "<html><body><p>A continuación está la lista de cotización correspondiente al cliente " + Meteor.user().profile.name + " a nombre de la empresa " + Meteor.user().profile.corporation + "</p>";
+    htmlContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
+    for (var i = 0; i < productList.length; i++) {
+        htmlContent += "<tr><td>" + productList[i].productId.supplierReference + "</td><td>" + productList[i].productId.nameSpa + "</td><td>" + productList[i].quantity + "</td><td>" + productList[i].productId.price + "</td><td>" + (parseFloat(productList[i].productId.price) * parseInt(productList[i].quantity)) + "</td><tr>";
+    }
+    htmlContent += "</table></body></html>";
+    var senderEmail = "ingenio@cubestudio.co";
+    var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
+
+    sendMandrillMail(Meteor.user().profile.email, subject, htmlContent, senderEmail, senderName);
+}
 
 Template.showProduct.helpers({
     /**
@@ -27,7 +45,7 @@ Template.showProduct.helpers({
         var name = "product_" + productFriendlyUrl;
         var productInfo = Session.get(name);
 
-        if ( valid(productInfo) ) {
+        if (valid(productInfo)) {
             return productInfo;
         }
         else {
@@ -43,18 +61,18 @@ Template.showProduct.helpers({
                 friendlyUrl: Template.currentData(),
                 marPicoProductId: 0,
                 categories: [],
-                measures:"Medidas cargando de la base de datos",
-                printAreaSpa:"Área de impresión cargando de la base de datos",
-                packingSpa:"Empaque cargando de la base de datos",
-                markingSupportedSpa:"Marcado soportado cargando de la base de datos"
+                measures: "Medidas cargando de la base de datos",
+                printAreaSpa: "Área de impresión cargando de la base de datos",
+                packingSpa: "Empaque cargando de la base de datos",
+                markingSupportedSpa: "Marcado soportado cargando de la base de datos"
             };
             Session.set(name, productInfo);
 
             // Obtener informacion de la base de datos de manera reactiva
-            Meteor.call("getProductFromFriendlyUrl", productFriendlyUrl, function(e, v) {
-                if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.p) ) {
+            Meteor.call("getProductFromFriendlyUrl", productFriendlyUrl, function (e, v) {
+                if (valid(e) || !valid(v) || !valid(v.u) || !valid(v.p)) {
                     var msg = "Error llamando al procedimiento remoto getProductFromFriendlyUrl";
-                    if ( valid(v.s) ) {
+                    if (valid(v.s)) {
                         msg = msg + v.s;
                     }
                     console.log(msg);
@@ -75,21 +93,48 @@ Template.showProduct.helpers({
         return valid(Meteor.userId());
     },
     getShoppingCart: function () {
-        var products = product2user.find({ userId: Meteor.userId() }).fetch();
-        if ( valid(products) ) {
-            for (var i = 0; i < products.length; i++) {
-                products[i].productId = product.findOne({ _id: products[i].productId });
-            }
-        } else {
-            return [];
+        if (!valid(Session.get("shoppingCart"))) {
+            Meteor.call("getShoppingCart", Meteor.userId(), function (err, result) {
+                if (!valid(err)) {
+                    Session.set("shoppingCart", result);
+                } else {
+                    Session.set("shoppingCart", []);
+                }
+            });
         }
-        return products;
+        return Session.get("shoppingCart");
     },
     isShoppingCartEmpty: function (ShoppingCart) {
-        return !valid(ShoppingCart) || ShoppingCart.length <= 0
+        if (valid(ShoppingCart)) {
+            if (ShoppingCart.length > 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
     },
     isProductInShoppingCart: function (currentProduct) {
-        return (typeof product2user.findOne({ productId: currentProduct._id, userId: Meteor.userId() }) != "undefined");
+        if (!valid(Session.get("productAdded"))) {
+            Meteor.call("isProductInShoppingCart", currentProduct, function (err, result) {
+                if (!valid(err)) {
+                    Session.set("productAdded", result);
+                } else {
+                    Session.set("productAdded", true);
+                }
+            });
+        }
+        return Session.get("productAdded");
+    },
+    getSubtotal: function (price, quantity) {
+        return (parseFloat(price) * parseInt(quantity));
+    },
+    isLoading: function (object) {
+        return !valid(object);
+    },
+    isShoppingCartLoading: function () {
+        return !valid(Session.get("shoppingCart"));
     }
 });
 
@@ -133,42 +178,33 @@ Template.showProduct.events({
         });
 
         alert("El producto se ha agregado a la lista de cotización satisfactoriamente.");
+        Session.set("shoppingCart", undefined);
+        Session.set("productAdded", true);
     },
-    "click #generar-solicitud":function(event, template){
-        var products = product2user.find({ userId: Meteor.userId() }).fetch();
-        if(valid(Meteor.user())){
+    "click #generar-solicitud": function (event, template) {
+        var products = Session.get("shoppingCart");
+        if (valid(Meteor.user())) {
             if (valid(products)) {
-                var emailContent="<p>A continuación está la lista de cotización correspondiente al cliente "+Meteor.user().profile.name+" a nombre de la empresa "+Meteor.user().profile.corporation+"</p>";
-                emailContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
-                for (var i = 0; i < products.length; i++) {
-                    emailContent+="<tr><td>"+products[i].productId.supplierReference+"</td><td>"+products[i].productId.nameSpa+"</td><td>"+products[i].quantity+"</td><td>"+products[i].productId.price+"</td><td>"+(parseFloat(products[i].productId.price)*parseInt(products[i].quantity))+"</td><tr>";
-                    products[i].productId = product.findOne({ _id: products[i].productId });
-                }
-                emailContent+="</table>";
-                console.log(emailContent);
-                Meteor.call("deleteShoppingCart",function(err,result){
-                    if(!valid(err) && result){
-                        //SEND EMAIL HERE
-                        /*
-                        
-                        */
+                Meteor.call("deleteShoppingCart", function (err, result) {
+                    if (!valid(err) && result) {
+                        sendQuotationList(products);
                         alert("Cotización enviada con éxito.");
-                        console.log(emailContent);
-                    }else{
+                        Session.set("productAdded", false);
+                        Session.set("shoppingCart", undefined);
+                    } else {
                         alert("Ocurrió un error enviando la cotización. Por favor inténtelo de nuevo más tarde.");
                     }
                 });
             } else {
                 alert("No ha registrado ningún producto para cotizar.");
             }
-        }else{
+        } else {
             alert("Debe haber iniciado sesión para realizar esta acción.");
         }
     }
 });
 
-var loadImages = function(imgs)
-{
+var loadImages = function (imgs) {
     // Call to blueimp carousel functionality
     var carouselLinks = [];
     imgs.forEach(function (element, index, array) {
@@ -182,7 +218,7 @@ var loadImages = function(imgs)
         });
     });
 
-    if ( carouselLinks.length > 0 ) {
+    if (carouselLinks.length > 0) {
         var gallery = blueimp.Gallery(carouselLinks, {
             container: '#product-gallery',
             carousel: true,
@@ -206,16 +242,16 @@ Template.showProduct.onRendered(function () {
     var name = "imageSet_" + productFriendlyUrl;
     var imgs = Session.get(name);
 
-    if ( valid(imgs) ) {
+    if (valid(imgs)) {
         loadImages(imgs);
     }
     else {
         Session.set(name, []);
         // First time, define data set
-        Meteor.call("getProductImageSetFromFriendlyUrl", productFriendlyUrl, function(e, v) {
-            if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.a) ) {
+        Meteor.call("getProductImageSetFromFriendlyUrl", productFriendlyUrl, function (e, v) {
+            if (valid(e) || !valid(v) || !valid(v.u) || !valid(v.a)) {
                 var msg = "Error llamando al procedimiento remoto getProductImageSetFromFriendlyUrl.";
-                if ( valid(v.s) ) {
+                if (valid(v.s)) {
                     msg = msg + " " + v.s;
                 }
                 console.log(msg);

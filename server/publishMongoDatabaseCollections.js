@@ -67,7 +67,7 @@ Meteor.publish(
     );
 
 Meteor.publish(
-    "product2user", function () {
-        return product2user.find();
+    "product2user", function (userId) {
+        return product2user.find({ userId: userId });
     }
     );

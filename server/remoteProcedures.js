@@ -97,6 +97,7 @@ Meteor.startup(function () {
                 var categories = [];
                 //Check if specified category belongs to the root (is category) or not (is sub-category)
                 if (c.parentCategoryId == productCategory.findOne({ nameSpa: "/" })._id) {
+                    categories.push(c);
                     var subcategories = productCategory.find({ parentCategoryId: c._id }).fetch();
                     subcategories.forEach(function (item) {
                         categories.push(item);
@@ -325,13 +326,33 @@ Meteor.startup(function () {
         /*
         */
         deleteShoppingCart: function () {
-            try{
-                product2user.remove({userId:Meteor.userId()});
+            try {
+                product2user.remove({ userId: Meteor.userId() });
                 return true;
-            }catch(ex){
+            } catch (ex) {
                 return false;
             }
-            
+
+        },
+        getShoppingCart: function (userId) {
+            console.log(userId);
+            var products = product2user.find({ userId: userId }).fetch();
+            console.log(products);
+            if (valid(products)) {
+                for (var i = 0; i < products.length; i++) {
+                    products[i].productId = product.findOne({ _id: products[i].productId });
+                }
+            } else {
+                return [];
+            }
+            return products;
+        },
+        isProductInShoppingCart: function (product) {
+            if (valid(product)) {
+                return (valid(product2user.findOne({ productId: product._id, userId: Meteor.userId() })));
+            } else {
+                return true;
+            }
         }
     })
 });

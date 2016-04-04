@@ -14,7 +14,6 @@ tracker                    # Meteor's client-side reactive programming library
 twbs:bootstrap             # Usado en estilos CSS de Bootstrap
 http
 
-
 cfs:standard-packages
 cfs:filesystem
 aldeed:simple-schema
@@ -24,10 +23,9 @@ aldeed:delete-button
 claudiojulio:blueimp-gallery
 manuel:reactivearray
 
-
 mdg:validation-error
 momentjs:moment
 ecmascript
 
-
 npm-container
+simple:reactive-method
