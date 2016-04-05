@@ -21,7 +21,13 @@ var sendPasswordResetEmail = function (uid, recipient) {
     var senderEmail = "ingenio@cubestudio.co";
     var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
 
-    sendMandrillMail(recipient, subject, htmlContent, senderEmail, senderName);
+    sendMandrillMail([
+        {
+            "email": recipient,
+            //"name": "",
+            "type": "to"
+        }
+    ], subject, htmlContent, senderEmail, senderName);
 }
 
 var sendWelcomeAndRegistrationCodeEmail = function (uid, recipient, name) {
@@ -47,7 +53,13 @@ var sendWelcomeAndRegistrationCodeEmail = function (uid, recipient, name) {
     var senderEmail = "ingenio@cubestudio.co";
     var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
 
-    sendMandrillMail(recipient, subject, htmlContent, senderEmail, senderName);
+    sendMandrillMail([
+        {
+            "email": recipient,
+            //"name": "",
+            "type": "to"
+        }
+    ], subject, htmlContent, senderEmail, senderName);
 }
 
 

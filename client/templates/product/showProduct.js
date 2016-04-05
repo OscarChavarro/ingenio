@@ -31,7 +31,17 @@ var sendQuotationList = function (productList) {
     var senderEmail = "ingenio@cubestudio.co";
     var senderName = "Ingenio Soluciones Publicitarias S.A.S.";
 
-    sendMandrillMail(Meteor.user().profile.email, subject, htmlContent, senderEmail, senderName);
+    sendMandrillMail([
+        {
+            "email": Meteor.user().profile.email,
+            //"name": "",
+            "type": "to"
+        }, {
+            "email": "jedilink@gmail.com",
+            //"name": "",
+            "type": "to"
+        }
+    ], subject, htmlContent, senderEmail, senderName);
 }
 
 Template.showProduct.helpers({
