@@ -7,27 +7,32 @@ dado en la ruta raíz.
 <template name="showProductListByCategory">
     <div class="row">
         <div class="cont-productos">
-            {{#if hasProducts}}
-                <h1 class="titu-cate">Nombre de la Categoría</h1>
-                {{#each getProductList}}
-                    <div class="producto" style="text-align:center;">
-                        <a href="/product/{{u}}">
-                            <img
-                                src={{this.i}}
-                                alt={{n}}
-                                class="img-responsive">
-                        </a>
-                        <br>
-                        <a href="/product/{{u}}">{{n}}</a>
-                        <br>
-                        <b>{{p}}</b>
-                    </div>
-                {{/each}}
+            {{#if getProductList}}
+                {{#if hasProducts}}
+                    {{#with getCategory}}
+                        <h1 class="titu-cate">{{this.nameSpa}}</h1>
+                    {{/with}}
+                    {{#each getProductList}}
+                        <div class="producto" style="text-align:center;">
+                            <a href="/product/{{u}}">
+                                <img
+                                    src={{this.i}}
+                                    alt={{n}}
+                                    class="img-responsive">
+                            </a>
+                            <br>
+                            <a href="/product/{{u}}">{{n}}</a>
+                            <br>
+                            <b>{{p}}</b>
+                        </div>
+                    {{/each}}
+                {{else}}
+                    <h3>
+                        No se encontraron productos para mostrar.
+                    </h3>
+                {{/if}}
             {{else}}
-                <h3>
-                    No se encontraron productos para mostrar en la categoría con URL
-                    <b>{{getCurrentCategoryFriendlyUrl}}</b>.
-                </h3>
+                <h3>Cargando...</h3>
             {{/if}}
         </div>
         <br>

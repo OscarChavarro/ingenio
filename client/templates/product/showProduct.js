@@ -215,36 +215,42 @@ Template.showProduct.events({
 });
 
 var loadImages = function (imgs) {
-    // Call to blueimp carousel functionality
-    var carouselLinks = [];
-    imgs.forEach(function (element, index, array) {
-        var url = "/original/productImages/" + element.u;
-        carouselLinks.push({
-            title: 'Título de la Imagen',
-            href: url,
-            type: 'image/jpeg',
-            thumbnail: url,
-            description: 'Descripción de la Imagen'
-        });
-    });
+    $("#photo-gallery").html("")
 
-    if (carouselLinks.length > 0) {
-        var gallery = blueimp.Gallery(carouselLinks, {
-            container: '#product-gallery',
-            carousel: true,
-            startSlideshow: true,
-            fullScreen: false,
-                
-            //callback executed at gallery init, sets all thumbnails to invisible
-            onopen: function () {
-                var thumbnails = document.getElementsByClassName('indicator')[0].querySelectorAll('li');
-                console.log(thumbnails);
-                for (i = 0; i < thumbnails.length; i++) {
-                    thumbnails[i].className = 'invisible';
+    if (imgs.length > 0) {
+        var galleries = $('.ad-gallery').adGallery({
+            slideshow: {
+                enable: true,
+                autostart: true,
+                speed: 5000,
+                start_label: 'Iniciar',
+                stop_label: 'Detener',
+                // Should the slideshow stop if the user scrolls the thumb list?
+                stop_on_scroll: true, 
+                // Wrap around the countdown
+                countdown_prefix: '(',
+                countdown_sufix: ')',
+                onStart: function () {
+                    // Do something wild when the slideshow starts
+                },
+                onStop: function () {
+                    // Do something wild when the slideshow stops
                 }
-            }
+            },
+            // or 'slide-vert', 'resize', 'fade', 'none' or false
+            effect: 'slide-hori', 
+            // Move to next/previous image with keyboard arrows?
+            enable_keyboard_move: true, 
+            // If set to false, you can't go from the last image to the first, and vice versa
+            cycle: true
         });
+        console.log(galleries);
     }
+    $(".ad-loader").remove();
+    imgs.forEach(function (element, index, array) {
+        galleries[0].addImage("/resized/resized_128/" + element.u, "/original/productImages/" + element.u);
+    });
+    $(galleries[0].next_link[0]).click();
 }
 
 Template.showProduct.onRendered(function () {

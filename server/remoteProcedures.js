@@ -353,6 +353,9 @@ Meteor.startup(function () {
             } else {
                 return true;
             }
+        },
+        getCategoryForCategoryId: function (categoryFriendlyUrl) {
+            return productCategory.findOne({ friendlyUrl: categoryFriendlyUrl });
         }
     })
 });
