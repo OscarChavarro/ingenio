@@ -1,10 +1,10 @@
 <template name="layout">
     {{> headerArea}}
-    <div id="centralArea" class="row">
-        <div id="productCategoryIndexArea" class="col-xs-6 col-sm-4 col-md-3 col-lg-2 cate01 ">
+    <div id="centralArea" class="f01 contenedor-main">
+        <div id="productCategoryIndexArea" class="cate01">
             {{> productCategoryIndexList}}
         </div>
-        <div id="contentArea" class="col-xs-6 col-sm-7 col-md-10 col-lg-10" style="min-height:70vh;">
+        <div id="contentArea" class="contenedor" style="min-height:70vh;">
             <!-- yield template is managed by iron route manager.
                 From current route, content is selected (check route.js table) -->
             {{> yield}}

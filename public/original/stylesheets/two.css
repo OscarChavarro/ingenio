@@ -15,8 +15,13 @@ Se utiliza la etiqueta !important para redefinir los valores de Bootstrap
 	border: 0;
 	margin: 0;
 	padding: 0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
 }
 body,html{
+	width: 100%;
 	height: 100%;
 	font-family: 'Montserrat', sans-serif!important;
 }
@@ -40,6 +45,18 @@ body,html {
 	line-height: 1.42857143; /* Igual que en Bootstrap */
 	z-index: 1;
 	height: 100
+}
+.f01{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+}
+.f02{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
 }
 .inicio{
 	width: 100%;
@@ -200,8 +217,21 @@ padding-left: 10px;
 }
 
 .cate01{
+	width:20%;
+	min-width: 200px;
+	max-width: 280px;
 	position: relative;
 	z-index: 100;
+}
+.contenedor-main{
+	flex-flow: row nowrap;
+	align-items: stretch;
+	justify-content: flex-start;
+	width: 100vw;
+}
+.contenedor{
+	position: relative;
+	width: 75%;
 }
 .cat02{
 	background-color: white;
@@ -474,6 +504,26 @@ opacity: 0;
 .btn-enviar:hover{
 	background-color: #337ab7;
 }
+/*==========================================
+///////////////////////////// medias queries
+============================================*/
+@media only screen and (min-width: 425px){
+
+
+}
+@media only screen and (min-width: 425px){
+
+
+}
+@media only screen and (min-width: 425px){
+
+
+}
+@media only screen and (min-width: 425px){
+
+
+}
+
 /*=========================================
 ................... Categorias ..........
 ==========================================*/
