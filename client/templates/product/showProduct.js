@@ -244,9 +244,9 @@ var loadImages = function (imgs) {
             // If set to false, you can't go from the last image to the first, and vice versa
             cycle: true
         });
-        console.log(galleries);
     }
     $(".ad-loader").remove();
+    $(".ad-prev").remove();
     imgs.forEach(function (element, index, array) {
         galleries[0].addImage("/resized/resized_128/" + element.u, "/original/productImages/" + element.u);
     });
