@@ -1,16 +1,26 @@
 <template name="layout">
-    {{> headerArea}}
-    <div id="centralArea" class="f01 contenedor-main">
-        <div id="productCategoryIndexArea" class="cate01">
-            {{> productCategoryIndexList}}
+    <div class="f02 cuerpo ">
+        <div class="header">
+            {{> headerArea}}
+            <div id="productCategoryIndexArea" class="cate01">
+                {{> productCategoryIndexList}}
+            </div>
         </div>
-        <div id="contentArea" class="contenedor" style="min-height:70vh;">
-            <!-- yield template is managed by iron route manager.
-                From current route, content is selected (check route.js table) -->
-            {{> yield}}
-            <!-- end of iron router managed yield template -->
+        <div id="centralArea" class="f01 contenedor-main">
+
+            <div id="contentArea" class="contenedor">
+                <!-- yield template is managed by iron route manager.
+                    From current route, content is selected (check route.js table) -->
+                <div class="contenido ">
+                    {{> yield}}
+                </div>
+                <br><br>
+                <!-- end of iron router managed yield template -->
+                <div class="footer">
+                {{> footerArea}}
+                </div>
+            </div>
         </div>
     </div>
-    <br><br>
-    {{> footerArea}}
+
 </template>

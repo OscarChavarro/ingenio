@@ -44,7 +44,10 @@ h1{
 body,html {
 	line-height: 1.42857143; /* Igual que en Bootstrap */
 	z-index: 1;
-	height: 100
+	height: 100%;
+}
+.border-azul{
+	border: 1px solid #00aeef;
 }
 .f01{
 	display: flex;
@@ -54,9 +57,50 @@ body,html {
 }
 .f02{
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: column wrap;
 	justify-content: center;
 	align-items: center;
+}
+.cuerpo{
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: auto;
+	align-items: stretch;
+}
+.header{
+	position:fixed;
+	height: auto;
+	background: white;
+	z-index: 1000;
+}
+.cabecera-fijada{
+	position: relative;
+	margin: 10px;
+}
+.contenedor-main{
+	height: 100%;
+	top: 150px;
+	position: relative;
+	align-items: stretch;
+	width: 100%;
+
+	justify-content: flex-end;
+}
+.contenedor{
+	width: 80%;
+}
+.contenido{
+	min-height: 50vh;
+	width: 100%;
+	padding: 15px;
+}
+.cate01{
+	min-width: 280px;
+	position: absolute;
+	height: aito;
+	padding-left: 15px;
 }
 .inicio{
 	width: 100%;
@@ -177,16 +221,13 @@ margin: 0;
 border: 1px solid #00aeef;
 padding-left: 10px;
 }
-.buscar inut:
 /*=========================================
 ................... Categorias ..........
 ==========================================*/
-
-.con-cate{
-	list-style: none;
-	position: fixed!important;
-	top: 150px;
-	left: 15px;
+.menu-cate{
+	height:100%;
+	width: 250px;
+	justify-content: flex-start;
 }
 .categoria{
 	padding: 10px 0;
@@ -216,24 +257,7 @@ padding-left: 10px;
 	text-decoration: none;
 }
 
-.cate01{
-	width:20%;
-	min-width: 200px;
-	max-width: 280px;
-	position: relative;
-	z-index: 100;
-	padding-left: 15px;
-}
-.contenedor-main{
-	flex-flow: row nowrap;
-	align-items: stretch;
-	justify-content: flex-start;
-	width: 100vw;
-}
-.contenedor{
-	position: relative;
-	width: 75%;
-}
+
 .cat02{
 	background-color: white;
 	position: relative;
@@ -532,6 +556,9 @@ opacity: 0;
 /*=========================================
 ................... footer ..........
 ==========================================*/
+.footer{
+	padding: 15px;
+}
 .firma {
 	font-weight: bold;
 	font-size: 1.2em;

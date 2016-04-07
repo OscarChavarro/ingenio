@@ -5,32 +5,33 @@ Esta plantilla genera el menú lateral que muestra las categorías, subcategorí
 productos.
 -->
 <template name="productCategoryIndexList">
-    <div class="col-xs-6 col-xs-offset-2 col-md-6 cont-categoria p"></div>
-    <ul class="col-xs-12 cont-cate p" style="position:fixed; max-width:220px; max-height:80vh;">
-        {{#if globalDbProductCategoriesIsEmpty}}
-            NO HAY PRODUCTOS EN LA BASE DE DATOS
-        {{/if}}
-        {{#each globalDbProductCategories}}
-            <li class="col-xs-12 cate">
-                <a
-                    class="productCategoryMenuOption alexis"
-                    data-id={{this._id}}
-                    data-toggle="dropdown"
-                    role="button">
-                    {{this.nameSpa}}
-                </a>
-                <div class="con-sub-cat" id={{this._id}}>
-                    <ul class="col-xs-12 p">
-                        {{#each dbProductByCategoryId this}}
-                            <li>
-                                <a class="link-a" href="/{{url}}">
-                                    {{name}}
-                                </a>
-                            </li>
-                        {{/each}}
-                    </ul>
-                </div>
-            </li>
-        {{/each}}
-    </ul>
+    <div class="menu-cate f02">
+        <ul class="alexis001 ">
+            {{#if globalDbProductCategoriesIsEmpty}}
+                NO HAY PRODUCTOS EN LA BASE DE DATOS
+            {{/if}}
+            {{#each globalDbProductCategories}}
+                <li class="col-xs-12 cate">
+                    <a
+                        class="productCategoryMenuOption alexis"
+                        data-id={{this._id}}
+                        data-toggle="dropdown"
+                        role="button">
+                        {{this.nameSpa}}
+                    </a>
+                    <div class="con-sub-cat" id={{this._id}}>
+                        <ul class="col-xs-12 p">
+                            {{#each dbProductByCategoryId this}}
+                                <li>
+                                    <a class="link-a" href="/{{url}}">
+                                        {{name}}
+                                    </a>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
 </template>
