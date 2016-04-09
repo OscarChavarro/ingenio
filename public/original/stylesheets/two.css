@@ -356,8 +356,26 @@ padding-left: 10px;
 input[type="text"]{
 	padding: 15px;
 }
+.contenedor-cotizador{
+ background: white;
+ padding: 15px;
+}
 .cotizador{
-	padding-top:40px;
+	padding:5px 0 !important;
+	position: relative;
+	overflow: hidden;
+}
+.cotizador>img{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	opacity: .5;
+}
+.re01{
+	animation: resaltador 5s linear infinite normal;
+}
+.re02{
+animation: resaltador02 5s linear infinite normal;
 }
 .peque{
 	color: #999;
@@ -744,3 +762,67 @@ Ver [.wW3SC2015a]
 }
 
 /*==========================================================================*/
+@-webkit-keyframes resaltador{
+	from{
+		left:0;
+	}
+	to{
+		left: 100%;
+	}
+}
+@-moz-keyframes resaltador{
+	from{
+		left:0;
+	}
+	to{
+		left: 100%;
+	}
+}
+@-ms-keyframes resaltador{
+	from{
+		left:0;
+	}
+	to{
+		left: 100%;
+	}
+}
+@keyframes resaltador{
+	from{
+		left:0;
+	}
+	to{
+		left: 100%;
+	}
+}
+@-webkit-keyframes resaltador02{
+	from{
+		left:-100%;
+	}
+	to{
+		left:0%;
+	}
+}
+@-ms-keyframes resaltador02{
+	from{
+		left:-100%;
+	}
+	to{
+		left:0%;
+	}
+}
+@-moz-keyframes resaltador02{
+	from{
+		left:-100%;
+	}
+	to{
+		left:0%;
+	}
+}
+@keyframes resaltador02{
+	from{
+		left:-100%;
+	}
+	to{
+		left:0%;
+	}
+}
