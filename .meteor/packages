@@ -9,7 +9,6 @@ meteorhacks:inject-initial # Usado del lado del servidor para seleccionar dinám
 meteorhacks:npm            # Usado para el envío de correos Mandrill / Ajax del lado del servidor
 mongo                      # The database Meteor supports right now
 session                    # Client-side reactive dictionary for your app
-standard-minifiers         # Compilador uglify y simplificador de JavaScript para modo de producción
 tracker                    # Meteor's client-side reactive programming library
 twbs:bootstrap             # Usado en estilos CSS de Bootstrap
 http
@@ -27,5 +26,9 @@ mdg:validation-error
 momentjs:moment
 ecmascript
 
-npm-container
 simple:reactive-method
+standard-minifier-css
+standard-minifier-js
+
+
+npm-container
