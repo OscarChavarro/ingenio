@@ -81,25 +81,35 @@ body,html {
 }
 .contenedor-main{
     height: 100%;
+    flex-flow: row nowrap;
     top: 150px;
     position: relative;
-    align-items: stretch;
+    align-items:flex-start;;
     width: 100%;
-
-    justify-content: flex-end;
+    justify-content: center;
 }
 .contenedor{
-    width: 80%;
+  width: auto;
+  align-self: stretch;
+  justify-content: flex-start;
+}
+.footer{
+width: 100%;
+}
+.espacio{
+  min-width: 240px;
+  width: 20%;
+  height: 100px;
 }
 .contenido{
-    min-height: 50vh;
-    width: 100%;
+    min-height: 60vh;
+    width:100%;
     padding: 15px;
 }
 .cate01{
     min-width: 280px;
     position: absolute;
-    height: aito;
+    height: auto;
     padding-left: 15px;
 }
 .inicio{
@@ -120,6 +130,7 @@ body,html {
     min-height: 100px;
 }
 .cont-tel{
+    padding: 10px 0;
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
@@ -171,6 +182,7 @@ span{
     justify-content: flex-end;
     align-items: center;
     color:#00aeef;
+		padding: 10px 0;
     list-style: none;
     text-decoration: none;
     font-size: 1.2em;
@@ -226,7 +238,7 @@ padding-left: 10px;
 ==========================================*/
 .menu-cate{
     height:100%;
-    width: 250px;
+    width: 200px;
     justify-content: flex-start;
 }
 .categoria{
@@ -239,21 +251,24 @@ padding-left: 10px;
     text-align: left!important;
     transform-origin: 0 50%;
     transform:scale(1);
-    padding: 10px;
+    padding: 8px 10px;
     background-color: #00aeef;
     list-style: none;
     border-bottom: 1px solid white;
     cursor: pointer;
-    position: relative;
     z-index: 2;
+    font-weight: 300!important;
+    line-height: .9em!important;
     transition: all 500ms cubic-bezier(0.030, 0.705, 0.150, 0.995);
 }
-.cate a{
+.cate>a{
     color:white;
+    font-weight: 300!important;
+    line-height: .5em!important;
     text-decoration: none;
     font-size: .95em!important;
 }
-.cate:hover a{
+.cate:hover>a{
     text-decoration: none;
 }
 
@@ -278,6 +293,7 @@ padding-left: 10px;
     padding: 15px;
     border-left: 2px solid white;
     opacity: 0;
+    font-size: .8em!important;
     transition: all 1000ms cubic-bezier(0.605, 0.380, 0.000, 1.005);
 }
 
@@ -295,6 +311,7 @@ padding-left: 10px;
     position: absolute;
     top: 0;
     left: 0;
+    height: 100%;
     min-width: 100%;
     width: auto;
     border: 1px solid green;
@@ -329,13 +346,14 @@ padding-left: 10px;
     margin: 1px 0;
     min-width: 100%;
     display: block;
-    font-size: 1em!important;
-    font-weight: 300;
+    font-size: .8em!important;
+    font-weight: 300!important;
     transition: all 500ms cubic-bezier(0.005, 0.910, 0.275, 0.980);
 }
 .link-a:hover{
     background-color: #078cd0;
     color: white;
+    text-decoration: none;
 }
 
 .cate-rela{
@@ -576,6 +594,7 @@ opacity: 0;
 ==========================================*/
 .footer{
     padding: 15px;
+
 }
 .firma {
     font-weight: bold;
