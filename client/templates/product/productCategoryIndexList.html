@@ -1,20 +1,23 @@
 <!--
 Plantilla pública.
 
-Esta plantilla genera el menú lateral que muestra las categorías, subcategorías y
-productos.
+Esta plantilla genera el menú lateral que muestra las categorías, 
+subcategorías y productos.
 -->
 <template name="productCategoryIndexList">
     <div class="menu-cate f02">
-        <ul class="alexis001 ">
+        <ul class="alexis001">
             {{#if globalDbProductCategoriesIsEmpty}}
                 NO HAY PRODUCTOS EN LA BASE DE DATOS
             {{/if}}
             {{#each globalDbProductCategories}}
-                <li class="col-xs-12 cate">
+                <li
+                    class="productCategoryMenuOptionContainer col-xs-12 cate"
+                    friendlyUrl={{this.friendlyUrl}}>
                     <a
                         class="productCategoryMenuOption alexis"
                         data-id={{this._id}}
+                        friendlyUrl={{this.friendlyUrl}}
                         data-toggle="dropdown"
                         role="button">
                         {{this.nameSpa}}

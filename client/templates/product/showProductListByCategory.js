@@ -17,10 +17,10 @@ var getProductIndexArrayForCategoryId = function (catFriendlyUrl) {
     var name = "categoryIndexData_" + catFriendlyUrl;
     array = Session.get(name);
 
-    console.log("Buscando indice de productos para la categoria " + catFriendlyUrl);
+    //console.log("Buscando indice de productos para la categoria " + catFriendlyUrl);
 
-    if (valid(array)) {
-        console.log("  - Retornando arreglo en cache: " + array.length);
+    if ( valid(array) ) {
+        //console.log("  - Retornando arreglo en cache: " + array.length);
         return array;
     }
 
