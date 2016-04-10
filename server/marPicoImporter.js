@@ -3,15 +3,15 @@ var fs = Npm.require('fs');
 
 var computeFriendlyUrl = function(name)
 {
-	return "" + name;
+    return "" + name;
     //return name.replace(" ", "-");
 }
 
 var importImagesToProducts = function(marPicoProduct, productHashTable, product)
 {
     console.log("3. Importando imagenes:");    
-    //var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
 
     var folderArr = fs.readdirSync(path);
     if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
@@ -20,17 +20,23 @@ var importImagesToProducts = function(marPicoProduct, productHashTable, product)
     }
 
     for ( i in folderArr ) {
-        console.log("  - Procesando imágenes para el producto de id MarPico " + folderArr[i]);
+        //console.log(
+        //"  - Procesando imágenes para el producto de id MarPico " +
+        //folderArr[i]);
         var marPicoProductId = parseInt(folderArr[i]);
         var mpp = marPicoProduct.findOne({id: marPicoProductId});        
-        var pid = productHashTable[marPicoProductId];
-        var p;
-        p = product.findOne({_id: pid});
-        if ( !valid(p) ) {
-            console.log("         -> NO SE ENCUENTRA PRODUCTO");
+        if ( !valid(mpp) ) {
+            console.log("         -> NO SE ENCUENTRA PRODUCTO MPP: " +
+                marPicoProductId);
             continue;
         }
-
+        var pid = productHashTable[marPicoProductId];
+        var p = product.findOne({_id: pid});
+        if ( !valid(p) ) {
+            console.log("         -> NO SE ENCUENTRA PRODUCTO P: " +
+                mpp.name);
+            continue;
+        }
         if ( valid(mpp) ) {
             var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
             var j;
@@ -39,7 +45,25 @@ var importImagesToProducts = function(marPicoProduct, productHashTable, product)
                 var filename = folderArr[i] + "/" + fileArr[j];
                 multimediaElementsArr.push(filename);
             }
-            product.update({_id: pid}, {$set: {multimediaElementsArr: multimediaElementsArr}});
+            product.update(
+                {_id: pid},
+                {$set: {multimediaElementsArr: multimediaElementsArr}}
+            );
+            var arrVc = [];
+            var arrVd = [];
+            var arrVq = [];
+            for ( j in mpp.arrayOfVariants ) {
+                var mpa = mpp.arrayOfVariants[j];
+                arrVc.push(mpa.reference);
+                arrVd.push(mpa.description);
+                arrVq.push(mpa.quantityTotal);
+            }
+            product.update(
+                {_id: pid}, {$set: {variantCodesArr: arrVc}});
+            product.update(
+                {_id: pid}, {$set: {variantDescriptionsArr: arrVd}});
+            product.update(
+                {_id: pid}, {$set: {variantQuantitiesArr: arrVq}});
         }
     }
 }
@@ -125,17 +149,18 @@ importMarPicoCollectionsToIngenioCollections = function()
     var oldcfs = global["multimediaElementRaw"];
 
     if ( !valid(marPicoCategory) || !valid(productCategory) || 
-    	 !valid(marPicoProduct) || !valid(product) ||
-    	 !valid(product2category) ) {
+         !valid(marPicoProduct) || !valid(product) ||
+         !valid(product2category) ) {
         return "Error: no se encuentran las colecciones";
     }
 
     var iRootC = productCategory.findOne({nameSpa: "/"});
     if ( !valid(iRootC) ) {
-        productCategory.insert({nameSpa: "/", parentCategoryId: null, friendlyUrl: "root"});
+        productCategory.insert(
+	    {nameSpa: "/", parentCategoryId: null, friendlyUrl: "root"});
         iRootC = productCategory.findOne({nameSpa: "/"});
         if ( !valid(iRootC) ) {
-        	return "Error: No se puede crear la categoria raiz";
+            return "Error: No se puede crear la categoria raiz";
         }
     }
 
@@ -148,8 +173,8 @@ importMarPicoCollectionsToIngenioCollections = function()
     var productHashTable = {};
 
     for ( i in sourceTopCategoriesArray ) {
-    	var mpc;
-    	mpc = sourceTopCategoriesArray[i];
+        var mpc;
+        mpc = sourceTopCategoriesArray[i];
         
         var furl;
         furl = web2utf(computeFriendlyUrl(mpc.id));
@@ -170,21 +195,21 @@ importMarPicoCollectionsToIngenioCollections = function()
         var j;
 
         for ( j in mpscArray ) {
-        	var mpsc = mpscArray[j];
+            var mpsc = mpscArray[j];
             furl = web2utf(computeFriendlyUrl(mpsc.id));
 
             var isc;
             isc = productCategory.findOne(
-            	{parentCategoryId: ic._id, nameSpa: web2utf(mpsc.nameSpa)});
+                {parentCategoryId: ic._id, nameSpa: web2utf(mpsc.nameSpa)});
             var ncid;
             if ( !valid(isc) ) {
-            	furl = web2utf(computeFriendlyUrl(mpsc.id));
-	            ncid = productCategory.insert(
+                furl = web2utf(computeFriendlyUrl(mpsc.id));
+                ncid = productCategory.insert(
                     {nameSpa: web2utf(mpsc.nameSpa), parentCategoryId: ic._id, friendlyUrl: furl});
-	            if ( !valid(ncid) ) {
-	                return "Error insertando subcategoria";
-	            }
-	        }
+                if ( !valid(ncid) ) {
+                    return "Error insertando subcategoria";
+                }
+            }
             else {
                 ncid = isc._id;
             }
@@ -197,51 +222,53 @@ importMarPicoCollectionsToIngenioCollections = function()
     var cursor = marPicoProduct.find();
     var provider = supplier.findOne({name: "MarPico"});
     if ( !valid(provider) ) {
-    	return "Error: no esta el proveedor MarPico";
+        return "Error: no esta el proveedor MarPico";
     }
 
     var count = 1;
     cursor.forEach(function(mpp) {
-    	console.log("  - " + mpp.name);
-    	var ip;
+	if ( mpp.name.indexOf("Antiestr") > -1 ) {
+            console.log("  - " + web2utf(mpp.name));
+	}
+        var ip;
 
-    	ip = product.findOne({marPicoProductId: mpp.id});
-    	var ipid;
-    	if ( !valid(ip) ) {
-	    	ip = {
-	            nameSpa: web2utf(getName(mpp.name)),
-	            supplierId: provider._id,
-	            supplierReference: web2utf(getReferenceFromName(mpp.name)),
-	            internalIngenioReference: "ING" + count,
-	            descriptionSpa: web2utf(mpp.description),
+        ip = product.findOne({marPicoProductId: mpp.id});
+        var ipid;
+        if ( !valid(ip) ) {
+            ip = {
+                nameSpa: web2utf(getName(mpp.name)),
+                supplierId: provider._id,
+                supplierReference: web2utf(getReferenceFromName(mpp.name)),
+                internalIngenioReference: "ING" + count,
+                descriptionSpa: web2utf(mpp.description),
                 materialSpa: web2utf(mpp.material),
                 markingSupportedSpa: web2utf(mpp.markingSupported),
                 measures: web2utf(mpp.measures),
                 printAreaSpa: web2utf(mpp.printArea),
                 packingSpa: web2utf(mpp.packing),
-	            price: mpp.price,
-	            friendlyUrl: "ING" + count,
-	            marPicoProductId: mpp.id
-	    	};
-	    	ipid = product.insert(ip);
-	    }
-	    else {
-	    	ipid = ip._id;
-	    }
+                price: mpp.price,
+                friendlyUrl: "ING" + count,
+                marPicoProductId: mpp.id
+            };
+            ipid = product.insert(ip);
+        }
+        else {
+            ipid = ip._id;
+        }
 
         if ( valid(ipid) ) {
-        	productHashTable[mpp.id] = ipid;
-	        for( i in mpp.arrayOfparentCategoriesId ) {
-	        	var mpcid = mpp.arrayOfparentCategoriesId[i];
+            productHashTable[mpp.id] = ipid;
+            for( i in mpp.arrayOfparentCategoriesId ) {
+                var mpcid = mpp.arrayOfparentCategoriesId[i];
 
-	            if ( valid(categoryHashTable[mpcid]) ) {
+                if ( valid(categoryHashTable[mpcid]) ) {
                     product2category.insert({
-                    	productId: ipid,
-                    	categoryId: categoryHashTable[mpcid]
+                        productId: ipid,
+                        categoryId: categoryHashTable[mpcid]
                     });
-	            }
-	        }
-	    }
+                }
+            }
+        }
         count++;
     });
 
