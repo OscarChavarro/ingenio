@@ -9,9 +9,15 @@ var computeFriendlyUrl = function(name)
 
 var importImagesToProducts = function(marPicoProduct, productHashTable, product)
 {
-    console.log("3. Importando imagenes:");    
-    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    console.log("3. Importando imagenes:");
+    var path;
+
+    if ( process.env.HOSTNAME === "test.ingenio-promocionales.com" ) {
+        path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
+    }
+    else {
+	path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
+    }
 
     var folderArr = fs.readdirSync(path);
     if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
@@ -27,7 +33,28 @@ var importImagesToProducts = function(marPicoProduct, productHashTable, product)
         var mpp = marPicoProduct.findOne({id: marPicoProductId});        
         if ( !valid(mpp) ) {
             console.log("         -> NO SE ENCUENTRA PRODUCTO MPP: " +
-                marPicoProductId);
+			marPicoProductId);
+	    // Esto ocurre normalmente cuando se tienen imagenes de
+	    // antiguos productos que MarPico ya no tiene en su inventario.
+	    // Por esa razón el comportamiento será mover la carpeta a
+	    // una carpeta de archivo histórico.
+	    var oldImagesPath = path + "/../oldImages";
+	    if ( !fs.existsSync(oldImagesPath) ) {
+		console.log("*****CREANDO: " + oldImagesPath);
+		fs.mkdir(oldImagesPath);
+	    }
+	    if ( !fs.existsSync(oldImagesPath) ) {
+                continue;
+	    }
+	    var stat = fs.statSync(oldImagesPath);
+	    if ( !stat.isDirectory() ) {
+		continue;
+	    }
+	    fs.mkdir(oldImagesPath + "/" + folderArr[i]);
+	    console.log("             - Moviendo carpeta de un lao pa otro");
+	    // Atención: Revisar si esto está borrando las cosas...
+	    //fs.renameSync(
+            //    path + "/" + folderArr[i], oldImagesPath + folderArr[i]);
             continue;
         }
         var pid = productHashTable[marPicoProductId];
@@ -274,6 +301,7 @@ importMarPicoCollectionsToIngenioCollections = function()
 
     //importImagesToCfs(marPicoProduct, productHashTable);
     importImagesToProducts(marPicoProduct, productHashTable, product);
+    console.log("==== IMPORTACION DE PRODUCTOS MARPICO LISTA ====");
     
     return "Ok";
 }
