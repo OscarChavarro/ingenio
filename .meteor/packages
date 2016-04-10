@@ -26,7 +26,6 @@ aldeed:collection2
 aldeed:autoform
 aldeed:delete-button
 meteorhacks:npm
-npm-container
 cfs:filesystem
 cfs:standard-packages
 claudiojulio:blueimp-gallery
@@ -34,3 +33,6 @@ manuel:reactivearray
 mdg:validation-error
 meteorhacks:inject-initial
 momentjs:moment
+
+
+npm-container

@@ -6,7 +6,7 @@ export TMP_DIR=/tmp/meteor_build
 rm -rf $TMP_DIR
 rm -rf $RELEASE_DIR
 cd $DEVEL_DIR
-meteor build --release 1.2.1 $TMP_DIR --server http://test.ingenio-promocionales.com
+meteor build --release 1.2.0.2 $TMP_DIR --server http://test.ingenio-promocionales.com
 
 cd $TMP_DIR
 tar xfz ingenio_devel.tar.gz
