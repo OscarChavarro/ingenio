@@ -86,7 +86,7 @@ body,html {
     position: relative;
     align-items:flex-start;;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
 }
 .contenedor{
   width: auto;
@@ -98,6 +98,7 @@ width: 100%;
 }
 .espacio{
   min-width: 240px;
+  max-width: 250px;
   width: 20%;
   height: 100px;
 }
