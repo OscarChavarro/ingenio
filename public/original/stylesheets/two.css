@@ -74,10 +74,12 @@ body,html {
     height: auto;
     background: white;
     z-index: 1000;
+    width: 100%;
 }
 .cabecera-fijada{
     position: relative;
     margin: 10px;
+    width: 100%;
 }
 .contenedor-main{
     height: 100%;
@@ -845,4 +847,14 @@ Ver [.wW3SC2015a]
     to{
         left:0%;
     }
+}
+.ad-image{
+  width: 100%!important;
+  height: auto!important;
+}
+
+
+.ad-image>img{
+  width: 100%!important;
+  height: auto!important;
 }
