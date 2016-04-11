@@ -13,9 +13,6 @@ Router.route("/product/:friendlyUrl", {
                 Meteor.subscribe("multimediaElement") && 
                 Meteor.subscribe("product") &&
                 Meteor.subscribe("product2user", Meteor.userId());*/
-    },
-    onAfterAction: function () {
-        Session.set("productAdded", undefined);
     }
 });
 
@@ -23,9 +20,9 @@ var sendQuotationList = function (productList) {
     var t = new Date();
     var subject = "Cotización desde el Sistema Automatizado de Ingenio";
     var htmlContent = "<html><body><p>A continuación está la lista de cotización correspondiente al cliente " + Meteor.user().profile.name + " a nombre de la empresa " + Meteor.user().profile.corporation + "</p>";
-    htmlContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
+    htmlContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Variante (Código / Descripción)</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
     for (var i = 0; i < productList.length; i++) {
-        htmlContent += "<tr><td>" + productList[i].productId.supplierReference + "</td><td>" + productList[i].productId.nameSpa + "</td><td>" + productList[i].quantity + "</td><td>" + productList[i].productId.price + "</td><td>" + (parseFloat(productList[i].productId.price) * parseInt(productList[i].quantity)) + "</td><tr>";
+        htmlContent += "<tr><td>" + productList[i].productId.supplierReference + "</td><td>" + productList[i].productId.nameSpa + "</td><td>" + (productList[i].variant.quantity = ! -1 ? productList[i].variant.code + " / " + productList[i].variant.description : "No Aplica") + "</td><td>" + productList[i].quantity + "</td><td>" + productList[i].productId.price + "</td><td>" + (parseFloat(productList[i].productId.price) * parseInt(productList[i].quantity)) + "</td><tr>";
     }
     htmlContent += "</table></body></html>";
     var senderEmail = "ingenio@cubestudio.co";
@@ -102,11 +99,75 @@ Template.showProduct.helpers({
     isLoggedIn: function () {
         return valid(Meteor.userId());
     },
+    getFirstVariant: function (variants) {
+        return valid(variants) && variants.length > 0 ? variants[0] : { code: -1, description: "No Aplica", quantity: -1 };
+    },
+    isProductInShoppingCart: function (product) {
+        var shoppingCart = Session.get("shoppingCart");
+        var matches = 0;
+        if (valid(shoppingCart) && valid(product)) {
+            shoppingCart.forEach(function (shoppingCartProduct, productIndex, productArray) {
+                if (product._id = shoppingCartProduct.productId._id) {
+                    if (valid(product.variantCodesArr) && shoppingCartProduct.variant != -1) {
+                        if (product.variantCodesArr.length <= 0) {
+                            matches++;
+                        } else {
+                            product.variantCodesArr.forEach(function (item, index, array) {
+                                if (shoppingCartProduct.variant.code == item) {
+                                    matches++;
+                                }
+                            });
+                        }
+                    } else {
+                        matches++;
+                    }
+                }
+            });
+            return (valid(product.variantCodesArr) && product.variantCodesArr.length > 0) ? matches >= product.variantCodesArr.length : matches > 0;
+        }
+        return false;
+    },
+    isVariantInShoppingCart: function (variant, shoppingCart) {
+        var matches = 0;
+
+        if (valid(shoppingCart)) {
+            shoppingCart.forEach(function (item, index, array) {
+                if (item.variant.code == variant.code) {
+                    matches++;
+                }
+            });
+        }
+
+        return matches > 0;
+    },
+    onShoppingCartItemSuccess: function () {
+        return function (result) {
+            Session.set("shoppingCart", undefined);
+        };
+    },
+    productVariants: function (product) {
+        var variants = [];
+        if (valid(product.variantCodesArr)) {
+            for (var i = 0; i < product.variantCodesArr.length; i++) {
+                variants.push({
+                    code: product.variantCodesArr[i],
+                    description: valid(product.variantDescriptionsArr[i]) ? product.variantDescriptionsArr[i] : "Sin Especificar",
+                    quantity: valid(product.variantQuantitiesArr[i]) ? product.variantQuantitiesArr[i] : "Sin Especificar"
+                });
+            }
+        }
+
+        return variants;
+    },
+    hasMoreThanOneVariant: function (variants) {
+        return variants.length > 1;
+    },
     getShoppingCart: function () {
         if (!valid(Session.get("shoppingCart"))) {
             Meteor.call("getShoppingCart", Meteor.userId(), function (err, result) {
                 if (!valid(err)) {
                     Session.set("shoppingCart", result);
+                    console.log(result);
                 } else {
                     Session.set("shoppingCart", []);
                 }
@@ -124,18 +185,6 @@ Template.showProduct.helpers({
         } else {
             return true;
         }
-    },
-    isProductInShoppingCart: function (currentProduct) {
-        if (!valid(Session.get("productAdded"))) {
-            Meteor.call("isProductInShoppingCart", currentProduct, function (err, result) {
-                if (!valid(err)) {
-                    Session.set("productAdded", result);
-                } else {
-                    Session.set("productAdded", true);
-                }
-            });
-        }
-        return Session.get("productAdded");
     },
     getSubtotal: function (price, quantity) {
         return (parseFloat(price) * parseInt(quantity));
@@ -172,8 +221,16 @@ Template.showProduct.events({
             alert("Ocurrió un error inesperado. Por favor refresque la página e intente de nuevo");
             return false;
         }
+        if (!valid(event.target.variant.value) || event.target.variant.value.length <= 0) {
+            alert("Debe especificar una variante.");
+            return false;
+        }
         if (!valid(Meteor.userId())) {
             alert("Debe haber iniciado sesión para realizar esta acción.");
+            return false;
+        }
+        if (!valid(event.target.quantity.value) || isNaN(event.target.quantity.value) || event.target.quantity.value.length <= 0) {
+            alert("La cantidad a cotizar ingresada es inválida.");
             return false;
         }
         if (!valid(event.target.quantity.value) || isNaN(event.target.quantity.value) || event.target.quantity.value.length <= 0) {
@@ -184,12 +241,12 @@ Template.showProduct.events({
         product2user.insert({
             userId: Meteor.userId(),
             productId: event.target.productId.value.trim(),
-            quantity: event.target.quantity.value
+            quantity: event.target.quantity.value,
+            variant: event.target.variant.value
         });
 
-        alert("El producto se ha agregado a la lista de cotización satisfactoriamente.");
         Session.set("shoppingCart", undefined);
-        Session.set("productAdded", true);
+        alert("El producto se ha agregado a la lista de cotización satisfactoriamente.");
     },
     "click #generar-solicitud": function (event, template) {
         var products = Session.get("shoppingCart");
@@ -199,7 +256,6 @@ Template.showProduct.events({
                     if (!valid(err) && result) {
                         sendQuotationList(products);
                         alert("Cotización enviada con éxito.");
-                        Session.set("productAdded", false);
                         Session.set("shoppingCart", undefined);
                     } else {
                         alert("Ocurrió un error enviando la cotización. Por favor inténtelo de nuevo más tarde.");

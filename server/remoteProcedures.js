@@ -335,12 +335,29 @@ Meteor.startup(function () {
 
         },
         getShoppingCart: function (userId) {
-            console.log(userId);
             var products = product2user.find({ userId: userId }).fetch();
-            console.log(products);
             if (valid(products)) {
                 for (var i = 0; i < products.length; i++) {
                     products[i].productId = product.findOne({ _id: products[i].productId });
+                    if (products[i].variant != -1) {
+                        if (valid(products[i].productId.variantCodesArr)) {
+                            for (var j = 0; j < products[i].productId.variantCodesArr.length; j++) {
+                                if (products[i].variant == products[i].productId.variantCodesArr[j]) {
+                                    products[i].variant = {
+                                        code: products[i].productId.variantCodesArr[j],
+                                        description: valid(products[i].productId.variantDescriptionsArr[j]) ? products[i].productId.variantDescriptionsArr[j] : "",
+                                        quantity: valid(products[i].productId.variantQuantitiesArr[j]) ? products[i].productId.variantQuantitiesArr[j] : ""
+                                    };
+                                }
+                            }
+                        }
+                    } else {
+                        products[i].variant = {
+                            code: -1,
+                            description: "No Aplica",
+                            quantity: -1
+                        };
+                    }
                 }
             } else {
                 return [];

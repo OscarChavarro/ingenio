@@ -14,21 +14,21 @@
                 <a class="next">›</a>
                 <ol class="indicator"></ol>
             </div -->
-	    <div class="col-xs-12 p">
-	      <div class="ad-gallery" style="width:100%;">
-		<div class="ad-image-wrapper">
-		</div>
-		<div class="ad-controls">
-		</div>
-		<div class="ad-nav">
-		  <div class="ad-thumbs">
-		    <ul class="ad-thumb-list">
-
-		    </ul>
-		  </div>
-		</div>
-	      </div>
-	      </div>
+            <div class="col-xs-12 p">
+                <div class="ad-gallery" style="width:100%;">
+                    <div class="ad-image-wrapper">
+                    </div>
+                    <div class="ad-controls">
+                    </div>
+                    <div class="ad-nav">
+                        <div class="ad-thumbs">
+                            <ul class="ad-thumb-list">
+                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Detalles generales del producto -->
         <div class="col-xs-12 col-md-12 col-lg-6 " style="padding-bottom:15px;">
@@ -92,16 +92,38 @@
                                 <form class="col-xs-12 p m add-product" role="form">
                                     <input type="hidden" value="{{getCurrent._id}}" name="productId" id="productId">
                                     <input type="hidden" value="{{getCurrent.price}}" name="productPrice" id="productPrice">
-                                    <div class="col-xs-4 ol-md-3 p m">
-                                        <label for="" class="peque">Cantidad de<br>Artículos</label>
+                                    <div class="col-xs-4 ol-md-2 p m">
+                                        <label for="quantity" class="peque">Cantidad de<br>Artículos</label>
                                         <input class="col-xs-12 m border-azul" type="text" name="quantity" id="quantity" placeholder="Cantidad">
                                     </div>
+                                    <div class="col-xs-4 ol-md-2 p m" >
+                                        {{#with productVariants getCurrent}}
+                                            <label for="variant" class="peque">Variantes <br> del producto</label>
+                                            {{#if hasMoreThanOneVariant this}}
+                                                <select class="col-xs-12 m" style="padding:15px;" name="variant" id="variant">
+                                                    <option value="">Seleccione una:</option>
+                                                    {{#each this}}
+                                                        {{#if isVariantInShoppingCart this getShoppingCart}}
+                                                            <option value="" disabled>{{description}} (En el carrito)</option>
+                                                        {{else}}
+                                                            <option value="{{code}}">{{description}}</option>
+                                                        {{/if}}
+                                                    {{/each}}
+                                                </select>
+                                            {{else}}
+                                                {{#with getFirstVariant this}}
+                                                    <input class="col-xs-12 m" type="text" value="{{description}}" name="" id="" disabled="disabled">
+                                                    <input class="col-xs-12 m" type="hidden" value="{{code}}" name="variant" id="variant" disabled="disabled">
+                                                {{/with}}
+                                            {{/if}}
+                                        {{/with}}
+                                    </div>
                                     <div class="col-xs-4 col-md-2 p m">
-                                        <label for="" class="peque">Precio <br> Unitario</label>
+                                        <label for="price" class="peque">Precio <br> Unitario</label>
                                         <input class="col-xs-12 m " type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
                                     </div>
                                     <div class="col-xs-4 col-md-3 p m ">
-                                        <label for="" class="peque">Valor Total <br> Antes del I.V.A.</label>
+                                        <label for="price" class="peque">Valor Total <br> Antes del I.V.A.</label>
                                         <input class="col-xs-12 m " type="text" name="price" id="price" disabled="disabled" value="{{getCurrent.price}}">
                                     </div>
                                     <div class="col-xs-4 col-md-3 p  m">
@@ -148,6 +170,13 @@
                 <p class="m">Cantidad</p>
             </div>
         </div>
+        {{#each productVariants getCurrent}}
+            <div class="col-xs-8" style="padding:5px;">
+                <p class="m">{{code}} / {{description}}</p>
+            </div><div class="col-xs-4" style="padding:5px;">
+                <p class="m">{{quantity}}</p>
+            </div>
+        {{/each}}
       </div>
       <div class="col-xs-12 col-md-8">
         <!-- {{#if isLoggedIn}} -->
@@ -155,10 +184,11 @@
         <div class="col-xs-12 titu">
             <div class="cont-item-lista f01">
                 <div class="col-xs-1 text-center p  "><p>Item</p></div>
-                <div class="col-xs-5 text-center p   "><p>Nombre</p></div>
+                <div class="col-xs-3 text-center p   "><p>Nombre</p></div>
                 <div class="col-xs-2 text-center p  "><p>Cant.</p></div>
                 <div class="col-xs-2 text-center p  "><p>Precio unid.</p></div>
                 <div class="col-xs-2 text-center p  ">Valor total antes de iva</div>
+                <div class="col-xs-2 text-center p  "></div>
             </div>
         </div>
         {{#unless isLoading getShoppingCart}}
@@ -168,7 +198,7 @@
                 {{#each getShoppingCart}}
                     <div class="row">
                         <div class="col-xs-1 text-center"><p>{{productId.supplierReference}}</p></div>
-                        <div class="col-xs-5 text-center "><p>{{productId.nameSpa}}</p></div>
+                        <div class="col-xs-3 text-center "><p>{{productId.nameSpa}} ({{variant.description}})</p></div>
                         <div class="col-xs-2 text-center"><p><input
                                     type="text"
                                     class="cart-amount form-control"
@@ -176,6 +206,7 @@
                                     value="{{quantity}}"></p></div>
                         <div class="col-xs-2 text-center"><p>{{productId.price}}</p></div>
                         <div class="col-xs-2 text-center">{{getSubtotal productId.price quantity}}</div>
+                        <div class="col-xs-2 text-center">{{#quickRemoveButton collection="product2user" _id=_id onSuccess=onShoppingCartItemSuccess class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}</div>
                     </div>
                 {{/each}}
             {{/if}}
