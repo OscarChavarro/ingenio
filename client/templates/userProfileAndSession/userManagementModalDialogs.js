@@ -123,8 +123,8 @@ Template.defineUserRegistrationModalDialog.events({
                 Router.go("/");
             }
         });
-
-        $("#userRegistrationModalDialog").modal("hide");
+        $(".in").removeClass("in");
+        //$("#userRegistrationModalDialog").modal("hide");
         $("body").removeClass("modal-open");
         $(".userRegistrationModalDialog").remove();
 
