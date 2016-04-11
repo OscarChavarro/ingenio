@@ -22,7 +22,7 @@ var sendQuotationList = function (productList) {
     var htmlContent = "<html><body><p>A continuación está la lista de cotización correspondiente al cliente " + Meteor.user().profile.name + " a nombre de la empresa " + Meteor.user().profile.corporation + "</p>";
     htmlContent += "<table style='width:100%;'><tr style='color:white;background-color:blue;'><td>Item</td><td>Nombre</td><td>Variante (Código / Descripción)</td><td>Cant.</td><td>Precio unid.</td><td>Valor total antes de iva</td><tr>"
     for (var i = 0; i < productList.length; i++) {
-        htmlContent += "<tr><td>" + productList[i].productId.supplierReference + "</td><td>" + productList[i].productId.nameSpa + "</td><td>" + (productList[i].variant.quantity = ! -1 ? productList[i].variant.code + " / " + productList[i].variant.description : "No Aplica") + "</td><td>" + productList[i].quantity + "</td><td>" + productList[i].productId.price + "</td><td>" + (parseFloat(productList[i].productId.price) * parseInt(productList[i].quantity)) + "</td><tr>";
+        htmlContent += "<tr><td>" + productList[i].productId.supplierReference + "</td><td>" + productList[i].productId.nameSpa + "</td><td>" + (productList[i].variant.quantity != -1 ? productList[i].variant.code + " / " + productList[i].variant.description : "No Aplica") + "</td><td>" + productList[i].quantity + "</td><td>" + productList[i].productId.price + "</td><td>" + (parseFloat(productList[i].productId.price) * parseInt(productList[i].quantity)) + "</td><tr>";
     }
     htmlContent += "</table></body></html>";
     var senderEmail = "ingenio@cubestudio.co";
