@@ -303,6 +303,7 @@ var loadImages = function (imgs) {
     }
     $(".ad-loader").remove();
     $(".ad-prev").remove();
+    $(".ad-gallery").css("width", "100%");
     imgs.forEach(function (element, index, array) {
         galleries[0].addImage("/resized/resized_128/" + element.u, "/original/productImages/" + element.u);
     });
