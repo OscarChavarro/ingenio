@@ -298,7 +298,16 @@ var loadImages = function (imgs) {
             // Move to next/previous image with keyboard arrows?
             enable_keyboard_move: true, 
             // If set to false, you can't go from the last image to the first, and vice versa
-            cycle: true
+            cycle: true,
+            // All callbacks has the AdGallery objects as 'this' reference
+            callbacks: {
+                afterImageVisible: function () {
+                    $(".ad-image").attr("style", "width:100%;");
+                    $(".ad-image img").attr("width", "");
+                    $(".ad-image img").attr("height", "");
+                    $(".ad-image img").addClass("img-responsive");
+                }
+            }
         });
     }
     $(".ad-loader").remove();
