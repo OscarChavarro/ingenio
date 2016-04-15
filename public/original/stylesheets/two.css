@@ -177,7 +177,7 @@ span{
     padding: 10px;
 }
 .sesion-buscar{
-    padding: 10px;
+    padding: 10px 0 0 0;
 }
 .sesion{
     display: flex;
@@ -513,7 +513,7 @@ animation: resaltador02 5s linear infinite normal;
     padding-bottom: 15px;
 }
 .producto{
-    border: 2px solid #ffffff;
+    border: 2px solid white;
     margin: 6px;
     cursor: pointer;
     max-width: 200px;
@@ -572,7 +572,15 @@ opacity: 0;
 ///////////////////////////// medias queries
 ============================================*/
 @media only screen and (min-width: 425px){
-
+.cont-logo{
+  padding-bottom: 0;
+  padding: 0!important;
+  min-height: 50px;
+  height: auto;
+}
+.inicio>img{
+  max-width: 200px!important;
+}
 
 }
 @media only screen and (min-width: 425px){
