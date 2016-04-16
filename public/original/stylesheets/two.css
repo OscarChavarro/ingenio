@@ -78,7 +78,7 @@ body,html {
 }
 .cabecera-fijada{
     position: relative;
-    margin: 10px;
+    margin:25px;
     width: 100%;
 }
 .contenedor-main{
