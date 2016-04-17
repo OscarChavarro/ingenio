@@ -314,7 +314,7 @@ var loadImages = function (imgs) {
     $(".ad-prev").remove();
     $(".ad-gallery").css("width", "100%");
     imgs.forEach(function (element, index, array) {
-        galleries[0].addImage("/resized/resized_128/" + element.u, "/original/productImages/" + element.u);
+        galleries[0].addImage("/static/resized/resized_128/" + element.u, "/static/productImages/" + element.u);
     });
     $(galleries[0].next_link[0]).click();
 }

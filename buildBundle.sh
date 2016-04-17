@@ -25,7 +25,7 @@ npm install xlsjs xlsx
 export HOSTNAME=`hostname`
 export ROOT_URL=http://test.ingenio-promocionales.com
 export MONGO_URL=mongodb://test.ingenio-promocionales.com:27017/ingenio
-export PORT=80
+export PORT=3000
 
 pkill -9 node
 nohup node main.js &> /var/log/node.log &
