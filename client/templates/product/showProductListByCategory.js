@@ -36,7 +36,7 @@ var getProductIndexArrayForCategoryId = function (catFriendlyUrl) {
 
                 if ( valid(response.array) && 
                      valid(response.array.length) && response.array.length > 0 ) {
-                    console.log("  - Redefiniendo arreglo en cache: " + response.array.length);
+                    //console.log("  - Redefiniendo arreglo en cache: " + response.array.length);
                     Session.set(n, response.array);
                 }
                 else {
