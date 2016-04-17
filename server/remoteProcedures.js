@@ -136,7 +136,7 @@ Meteor.startup(function () {
                             //    }
                             //}
 
-                            imageUrl = "/static/productImages/" + p.multimediaElementsArr[0];
+                            imageUrl = p.multimediaElementsArr[0];
 
                             array.push({
                                 i: imageUrl,
