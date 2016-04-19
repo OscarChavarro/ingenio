@@ -393,7 +393,6 @@ Meteor.startup(function () {
             if (valid(options["variantDescriptionsArr"])) {
                 options["variantDescriptionsArr"] = new RegExp(options["variantDescriptionsArr"], 'i');
             }
-            console.log(options);
             return product.find(options, filter).fetch();
         }
     })
