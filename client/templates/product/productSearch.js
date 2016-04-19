@@ -1,48 +1,71 @@
-Router.route("/productSearch/:nameSpa", {
+Router.route("/search", {
     name: "productSearch",
     loadingTemplate: "productSearchLoading",
     data: function () {
-        return this.params.nameSpa;
-    },
-    waitOn: function () {
-        return Meteor.subscribe("product") && Meteor.subscribe("product2category") && Meteor.subscribe("productCategory") && Meteor.subscribe("multimediaElement") && Meteor.subscribe("product2multimediaElement");
+        return true;
     }
 });
 
 Template.productSearch.helpers({
     //SE OBTIENEN TODOS LOS PRODUCTOS DE LA CATEGORIA ACTUAL
     getProductList: function () {
-        var search = new RegExp(Template.currentData(), 'i');
-        var productList = product.find({ nameSpa: search }).fetch();
-        return productList;
-    },
-    //SE OBTIENE LA INFORMACION DE LA CATEGORIA ACTUAL
-    getCurrentCategory: function () {
-        return currentCategory = productCategory.findOne({ _id: Template.currentData() });
-    },
-    getImages: function (product) {
-        //SE OBTIENEN LOS ELEMENTOS MULTIMEDIA CORRESPONDIENTE A CADA PRODUCTO
-        var resources = [];
-        var i = 0;
-        if (typeof product != 'undefined') {
-            product2multimediaElement.find({ productId: product._id }, { sort: { order: 1 }, limit: 1 }).forEach(function (element, index, array) {
-                if (element.multimediaElementId) {
-                    var multimedia = multimediaElement.findOne({ _id: element.multimediaElementId });
-                    if (multimedia) {
-                        if (multimedia.copies) {
-                            if (multimedia.copies.multimediaElement) {
-                                resources.push(multimedia);
-                                resources[i].order = multimedia.order;
-                                i++;
-                            }
-                        }
-                    }
-                }
-            });
-            return resources;
+        Session.set("isLoading", true);
+        var filter = {};
+        var filterCont = 0;
+        if (valid(Router.current().params.query.name) && Router.current().params.query.name.length > 0) {
+            filter.nameSpa = Router.current().params.query.name;
+            filterCont++;
         }
+        if (valid(Router.current().params.query.category) && Router.current().params.query.category.length > 0) {
+            filter.category = Router.current().params.query.category;
+            filterCont++;
+        }
+        if (valid(Router.current().params.query.quantity) && Router.current().params.query.quantity.length > 0) {
+            filter["variantQuantitiesArr"] = { "$gt": parseInt(Router.current().params.query.quantity) };
+            filterCont++;
+        }
+        if (valid(Router.current().params.query.price) && Router.current().params.query.price.length > 0) {
+            var price = Router.current().params.query.price.split("-");
+            if (price[1] != "x") {
+                filter.price = { "$gt": parseInt(price[0]), "$lt": parseInt(price[1]) };
+            } else {
+                filter.price = { "$gt": parseInt(price[0]) };
+            }
+            filterCont++;
+        }
+        if (valid(Router.current().params.query.color) && Router.current().params.query.color.length > 0) {
+            filter["variantDescriptionsArr"] = Router.current().params.query.color;
+            filterCont++;
+        }
+        if (!valid(Session.get("productList")) && filterCont > 0) {
+            Meteor.call("getProductList", filter, {}, function (err, result) {
+                if (!valid(err)) {
+                    Session.set("productList", result);
+                }
+                Session.set("isLoading", false);
+            });
+        } else {
+            Session.set("isLoading", false);
+        }
+        return Session.get("productList");
     },
     areThereAnyProducts: function (list) {
-        return (list.length > 0);
+        return (valid(list) ? list.length > 0 : false);
+    },
+    getProductCategoryList: function () {
+        if (!valid(Session.get("categoryList"))) {
+            Meteor.call("getProductCategoryList", function (err, result) {
+                if (!valid(err)) {
+                    Session.set("categoryList", result);
+                }
+            });
+        }
+        return Session.get("categoryList");
+    },
+    getImage: function (images) {
+        return images[0];
+    },
+    isLoading: function (productList) {
+        return Session.get("isLoading");
     }
 });

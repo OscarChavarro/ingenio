@@ -7,7 +7,7 @@ dado en la URL.
 <template name="showProductListByCategory">
     <div class="row">
         <div class="cont-productos">
-            {{#if getProductList}}
+            {{#unless isLoading getProductList}}
                 {{#if hasProducts}}
                     {{#with getCategory}}
                         <h1 class="titu-cate">{{this.nameSpa}}</h1>
@@ -33,9 +33,8 @@ dado en la URL.
                 {{/if}}
             {{else}}
                 <h3>Cargando...</h3>
-            {{/if}}
+            {{/unless}}
         </div>
         <br>
-
     </div>
 </template>

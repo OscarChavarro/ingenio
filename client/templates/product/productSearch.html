@@ -3,21 +3,105 @@
 </template>
 
 <template name="productSearch">
-    <div class="row">
-        {{#if areThereAnyProducts getProductList}}
-            {{#each getProductList}}
-            <div class="col-md-3 col-xs-6" style="text-align:center;">
-                <a href="/product/{{this.friendlyUrl}}">
-                    {{#each getImages this}}
-                        <img src="{{url store='multimediaElement'}}" alt="Imagen del Producto" class="img-responsive">
-                    {{/each}}
-                </a>
-                <br>
-                <a href="/product/{{this.friendlyUrl}}">{{this.nameSpa}}</a>
+    <span style="font-size:16px"><strong>Filtre varios conceptos para la búsqueda de sus productos</strong></span>
+    <form id="advSearch" style="width:60%;padding-top:25px;" action="">
+        <div class="row">
+            <div class="col-md-12" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        Nombre:
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" id="name" name="name" value="">
+                    </div>
+                </div>
             </div>
-            {{/each}}
-        {{else}}
-            <h3>No se encontraron productos para mostrar.</h3>
-        {{/if}}
+            <div class="col-md-6" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        Categoría:
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" id="category" name="category">
+                            <option value="">Todas las categorías</option>
+                            {{#each getProductCategoryList}}
+                            <option value="{{_id}}">{{nameSpa}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        Precio:
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" id="price" name="price">
+                            <option value="">Todos los precios</option>
+                            <option value="0-1000">$0-$1.000</option>
+                            <option value="1000-3000">$1.000-$3.000</option>
+                            <option value="3000-5000">$3.000-$5.000</option>
+                            <option value="5000-10000">$5.000-$10.000</option>
+                            <option value="10000-20000">$10.000-$20.000</option>
+                            <option value="20000-x">Mayor a $20.000</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        Color:
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="color" id="color" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        Inventario mayor a:
+                    </div>
+                    <div class="col-md-6">
+                        <input name="quantity" class="form-control" type="number" id="quantity" tabindex="5" value="" size="10">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" style="padding-bottom:10px;"></div>
+            <div class="col-md-6" style="padding-bottom:10px;text-align:right;">
+                <input type="submit" class="btn btn-primary" value="Enviar">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="cont-productos">
+            {{#unless isLoading getProductList}}
+                {{#if areThereAnyProducts getProductList}}
+                    {{#each getProductList}}
+                        <div class="producto" style="text-align:center;">
+                            <a href="/product/{{friendlyUrl}}">
+                                <img
+                                    src="http://test.ingenio-promocionales.com/static/productImages/{{getImage multimediaElementsArr}}"
+                                    alt="{{nameSpa}}"
+                                    class="img-responsive">
+                            </a>
+                            <br>
+                            <a href="/product/{{friendlyUrl}}">{{nameSpa}}</a>
+                            <br>
+                            <b>{{p}}</b>
+                        </div>
+                    {{/each}}
+                {{else}}
+                    <h3>
+                        No se encontraron productos para mostrar.
+                    </h3>
+                {{/if}}
+            {{else}}
+                <h3>Cargando...</h3>
+            {{/unless}}
+        </div>
+        <br>
     </div>
 </template>

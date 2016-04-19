@@ -13,42 +13,47 @@ llamando al metodo getProductIndexArrayForCategoryFriendlyUrl del lado
 del servidor.
 */
 var getProductIndexArrayForCategoryId = function (catFriendlyUrl) {
+    Session.set("isLoading", true);
     var array;
     var name = "categoryIndexData_" + catFriendlyUrl;
     array = Session.get(name);
 
     //console.log("Buscando indice de productos para la categoria " + catFriendlyUrl);
 
-    if ( valid(array) ) {
+    if (valid(array)) {
         //console.log("  - Retornando arreglo en cache: " + array.length);
+        Session.set("isLoading", false);
         return array;
     }
 
     console.log("  - Solicitando arreglo al servidor");
-    Meteor.call("getProductIndexArrayForCategoryFriendlyUrl", catFriendlyUrl,
-        function (error, response) {
-            if (valid(error)) {
-                console.log("Error: " + error);
-            }
-            else if (valid(response)) {
-                var n;
-                n = "categoryIndexData_" + response.catFriendlyUrl;
-
-                if ( valid(response.array) && 
-                     valid(response.array.length) && response.array.length > 0 ) {
-                    //console.log("  - Redefiniendo arreglo en cache: " + response.array.length);
-                    Session.set(n, response.array);
+    if (!valid(Session.get(name))) {
+        Meteor.call("getProductIndexArrayForCategoryFriendlyUrl", catFriendlyUrl,
+            function (error, response) {
+                if (valid(error)) {
+                    console.log("Error: " + error);
                 }
-                else {
-                    console.log("  - Error: Arreglo invalido o vacio");
-                    Session.set(n, []);
-                }
-            }
-        }
-        );
+                else if (valid(response)) {
+                    console.log("  - Retornando data del servidor");
+                    var n;
+                    n = "categoryIndexData_" + response.catFriendlyUrl;
 
-    console.log("  - Retornando arreglo vacio");
-    return undefined;
+                    if (valid(response.array) &&
+                        valid(response.array.length) && response.array.length > 0) {
+                        //console.log("  - Redefiniendo arreglo en cache: " + response.array.length);
+                        Session.set(n, response.array);
+                    }
+                    else {
+                        console.log("  - Error: Arreglo invalido o vacio");
+                        Session.set(n, []);
+                    }
+                }
+                Session.set("isLoading", false);
+            });
+    } else {
+        Session.set("isLoading", false);
+    }
+    return Session.get(name);
 }
 
 Template.showProductListByCategory.helpers({
@@ -81,5 +86,8 @@ Template.showProductListByCategory.helpers({
     },
     getCategory: function () {
         return ReactiveMethod.call("getCategoryForCategoryId", categoryFriendlyUrl);
+    },
+    isLoading: function (productList) {
+        return Session.get("isLoading");
     }
 });

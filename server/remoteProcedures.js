@@ -373,6 +373,28 @@ Meteor.startup(function () {
         },
         getCategoryForCategoryId: function (categoryFriendlyUrl) {
             return productCategory.findOne({ friendlyUrl: categoryFriendlyUrl });
+        },
+        getProductCategoryList: function () {
+            return productCategory.find().fetch();
+        },
+        getProductList: function (options, filter) {
+            if (valid(options.category)) {
+                var products = [];
+                var productList = product2category.find({ categoryId: options.category }).fetch();
+                productList.forEach(function (item) {
+                    products.push(item.productId);
+                });
+                delete options.category;
+                options._id = { $in: products };
+            }
+            if (valid(options.nameSpa)) {
+                options.nameSpa = new RegExp(options.nameSpa, 'i');
+            }
+            if (valid(options["variantDescriptionsArr"])) {
+                options["variantDescriptionsArr"] = new RegExp(options["variantDescriptionsArr"], 'i');
+            }
+            console.log(options);
+            return product.find(options, filter).fetch();
         }
     })
 });
