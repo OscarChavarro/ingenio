@@ -6,12 +6,12 @@
     <span style="font-size:16px"><strong>Filtre varios conceptos para la búsqueda de sus productos</strong></span>
     <form id="advSearch" style="width:60%;padding-top:25px;" action="">
         <div class="row">
-            <div class="col-md-12" style="padding-bottom:10px;">
+            <div class="col-md-6" style="padding-bottom:10px;">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         Nombre:
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <input type="text" class="form-control" id="name" name="name" value="">
                     </div>
                 </div>
@@ -69,38 +69,51 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6" style="padding-bottom:10px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        Items por página:
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-control" id="limit" name="limit">
+                            <option value="">Cantidad por Página</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="60">60</option>
+                            <option value="70">70</option>
+                            <option value="80">80</option>
+                            <option value="90">90</option>
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-6" style="padding-bottom:10px;"></div>
             <div class="col-md-6" style="padding-bottom:10px;text-align:right;">
                 <input type="submit" class="btn btn-primary" value="Enviar">
             </div>
         </div>
     </form>
+    <h2>Resultados de la búsqueda:</h2>
     <div class="row">
         <div class="cont-productos">
-            {{#unless isLoading getProductList}}
-                {{#if areThereAnyProducts getProductList}}
-                    {{#each getProductList}}
-                        <div class="producto" style="text-align:center;">
-                            <a href="/product/{{friendlyUrl}}">
-                                <img
-                                    src="http://test.ingenio-promocionales.com/static/productImages/{{getImage multimediaElementsArr}}"
-                                    alt="{{nameSpa}}"
-                                    class="img-responsive">
-                            </a>
-                            <br>
-                            <a href="/product/{{friendlyUrl}}">{{nameSpa}}</a>
-                            <br>
-                            <b>{{p}}</b>
-                        </div>
-                    {{/each}}
-                {{else}}
-                    <h3>
+            {{#unless isLoading getProductList}} {{#if areThereAnyProducts getProductList}} {{#each getProductList}}
+            <div class="producto" style="text-align:center;">
+                <a href="/product/{{friendlyUrl}}">
+                    <img src="http://test.ingenio-promocionales.com/static/productImages/{{getImage multimediaElementsArr}}" alt="{{nameSpa}}"
+                    class="img-responsive">
+                </a>
+                <br>
+                <a href="/product/{{friendlyUrl}}">{{nameSpa}}</a>
+                <br>
+                <b>{{p}}</b>
+            </div>
+            {{/each}} {{else}}
+            <h3>
                         No se encontraron productos para mostrar.
-                    </h3>
-                {{/if}}
-            {{else}}
-                <h3>Cargando...</h3>
-            {{/unless}}
+                    </h3> {{/if}} {{else}}
+            <h3>Cargando...</h3> {{/unless}}
         </div>
         <br>
     </div>

@@ -11,6 +11,7 @@ Template.productSearch.helpers({
     getProductList: function () {
         Session.set("isLoading", true);
         var filter = {};
+        var options = {};
         var filterCont = 0;
         if (valid(Router.current().params.query.name) && Router.current().params.query.name.length > 0) {
             filter.nameSpa = Router.current().params.query.name;
@@ -37,8 +38,11 @@ Template.productSearch.helpers({
             filter["variantDescriptionsArr"] = Router.current().params.query.color;
             filterCont++;
         }
+        if (valid(Router.current().params.query.limit) && Router.current().params.query.limit.length > 0) {
+            options.limit = parseInt(Router.current().params.query.limit);
+        }
         if (!valid(Session.get("productList")) && filterCont > 0) {
-            Meteor.call("getProductList", filter, {}, function (err, result) {
+            Meteor.call("getProductList", filter, options, function (err, result) {
                 if (!valid(err)) {
                     Session.set("productList", result);
                 }
