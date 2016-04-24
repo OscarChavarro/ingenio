@@ -343,10 +343,19 @@ Meteor.startup(function () {
                         if (valid(products[i].productId.variantCodesArr)) {
                             for (var j = 0; j < products[i].productId.variantCodesArr.length; j++) {
                                 if (products[i].variant == products[i].productId.variantCodesArr[j]) {
+                                    var variantImage = valid(products[i].productId.multimediaElementsArr) ? products[i].productId.multimediaElementsArr[0] : "";
+                                    if (valid(products[i].productId.multimediaElementsArr) && products[i].productId.multimediaElementsArr.length > 0) {
+                                        products[i].productId.multimediaElementsArr.forEach(function (item) {
+                                            if (products[i].productId.variantCodesArr[j] == item.split("_")[1].split(".")[0]) {
+                                                variantImage = item;
+                                            }
+                                        });
+                                    }
                                     products[i].variant = {
                                         code: products[i].productId.variantCodesArr[j],
                                         description: valid(products[i].productId.variantDescriptionsArr[j]) ? products[i].productId.variantDescriptionsArr[j] : "",
-                                        quantity: valid(products[i].productId.variantQuantitiesArr[j]) ? products[i].productId.variantQuantitiesArr[j] : ""
+                                        quantity: valid(products[i].productId.variantQuantitiesArr[j]) ? products[i].productId.variantQuantitiesArr[j] : "",
+                                        image: variantImage
                                     };
                                 }
                             }
@@ -355,7 +364,8 @@ Meteor.startup(function () {
                         products[i].variant = {
                             code: -1,
                             description: "No Aplica",
-                            quantity: -1
+                            quantity: -1,
+                            image: valid(products[i].productId.multimediaElementsArr) ? products[i].productId.multimediaElementsArr[0] : ""
                         };
                     }
                 }

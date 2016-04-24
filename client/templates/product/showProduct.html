@@ -91,6 +91,7 @@
                                             {{#if hasMoreThanOneVariant this}}
                                                 <select class="col-xs-12 m" style="padding:15px;" name="variant" id="variant">
                                                     <option value="">Seleccione una:</option>
+                                                    <option value="-1">No Especificar</option>
                                                     {{#each this}}
                                                         {{#if isVariantInShoppingCart this getShoppingCart}}
                                                             <option value="" disabled>{{description}} (En el carrito)</option>
@@ -172,12 +173,13 @@
         <div class="col-xs-12 cabeza"><h3>LISTA DE PRODUCTOS A COTIZAR</h3></div>
         <div class="col-xs-12 titu">
             <div class="cont-item-lista f01">
+                <div class="col-xs-1 text-center p  "><p></p></div>
                 <div class="col-xs-1 text-center p  "><p>Item</p></div>
                 <div class="col-xs-3 text-center p   "><p>Nombre</p></div>
                 <div class="col-xs-2 text-center p  "><p>Cant.</p></div>
                 <div class="col-xs-2 text-center p  "><p>Precio unid.</p></div>
                 <div class="col-xs-2 text-center p  ">Valor total antes de iva</div>
-                <div class="col-xs-2 text-center p  "></div>
+                <div class="col-xs-1 text-center p  "></div>
             </div>
         </div>
         {{#unless isLoading getShoppingCart}}
@@ -186,6 +188,7 @@
             {{else}}
                 {{#each getShoppingCart}}
                     <div class="row">
+                        <div class="col-xs-1 text-center"><img src="http://test.ingenio-promocionales.com/static/resized/resized_64/{{variant.image}}" alt="{{variant.code}}"></div>
                         <div class="col-xs-1 text-center"><p>{{productId.supplierReference}}</p></div>
                         <div class="col-xs-3 text-center "><p>{{productId.nameSpa}} ({{variant.description}})</p></div>
                         <div class="col-xs-2 text-center"><p><input
@@ -195,7 +198,7 @@
                                     value="{{quantity}}"></p></div>
                         <div class="col-xs-2 text-center"><p>{{productId.price}}</p></div>
                         <div class="col-xs-2 text-center">{{getSubtotal productId.price quantity}}</div>
-                        <div class="col-xs-2 text-center">{{#quickRemoveButton collection="product2user" _id=_id onSuccess=onShoppingCartItemSuccess class="btn btn-danger"}}Eliminar{{/quickRemoveButton}}</div>
+                        <div class="col-xs-1 text-center">{{#quickRemoveButton collection="product2user" _id=_id onSuccess=onShoppingCartItemSuccess class="btn btn-danger"}}<i class="fa fa-trash"></i>{{/quickRemoveButton}}</div>
                     </div>
                 {{/each}}
             {{/if}}
