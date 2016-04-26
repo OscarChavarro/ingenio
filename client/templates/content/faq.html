@@ -1,9 +1,54 @@
 <template name="faqLoading">
-    Cargando preguntas precuentes.
+    Cargando preguntas precuentes...
 </template>
 
 <template name="faq">
     <h1>Preguntas frecuentes</h1>
 
-    Acá van las preguntas frecuentes.
+    <div class="row">
+        <div class="col-md-5 col-xs-12">
+            {{#if isFaqEmpty getQuestions}}
+                No hay preguntas registradas
+            {{else}}
+                <ul style="list-style-type: none;width:100%;">
+                {{#each getQuestions}}
+                    <li class="clearfix" style="padding:5px;"><a href="/faq?question={{friendlyUrl}}" class="change-question" data-questionid="{{_id}}">{{question}}</a>{{#if globalIsUserLoggedIn}}{{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}{{#quickRemoveButton collection="faqQuestions" _id=_id class="btn btn-danger pull-right"}}<i class="fa fa-trash"></i>{{/quickRemoveButton}}{{/if}}{{/if}}</li>
+                {{/each}}
+                </ul>
+            {{/if}}
+            <hr>
+            {{#if globalIsUserLoggedIn}}
+                {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                <form class="add-question" style="width:100%;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            Añadir nueva pregunta
+                        </div>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="question" id="question" value="">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                </form>
+                {{/if}}
+            {{/if}}
+        </div>
+        <div class="col-md-7 col-xs-12">
+            {{#with getCurrentQuestion}}
+                {{#if globalIsUserLoggedIn}}{{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}<button class="btn btn-success pull-right save-answer" data-questionid="{{_id}}"><i class="fa fa-floppy-o" data-questionid="{{_id}}"></i></button>{{/if}}{{/if}}
+                <h1>{{question}}</h1>
+                {{#if globalIsUserLoggedIn}}
+                    {{#if globalCheckUserRole "SYSTEM_ADMINISTRATOR"}}
+                        {{initEditor getCurrentQuestion}}
+                        <textarea id="answer_{{_id}}">{{answer}}</textarea>
+                        <h1>Así se ve actualmente</h1>
+                    {{/if}}
+                {{/if}}
+                {{initContent}}
+                <div class="answer">{{{answer}}}</div>
+            {{/with}}
+        </div>
+    </div>
 </template>

@@ -71,3 +71,9 @@ Meteor.publish(
         return product2user.find({ userId: userId });
     }
     );
+
+Meteor.publish(
+    "faqQuestions", function () {
+        return faqQuestions.find();
+    }
+    )
