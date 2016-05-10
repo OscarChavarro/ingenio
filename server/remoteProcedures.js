@@ -1,4 +1,4 @@
-var excel = Npm.require('xlsx');
+var excel = Npm.require("xlsx");
 
 Meteor.startup(function () {
     Meteor.methods({
@@ -152,6 +152,13 @@ Meteor.startup(function () {
             //console.log("  - Retornando arreglo para la categoria " + furl);
             //console.log("  - Elementos en el arreglo: " + array.length);
             return { catFriendlyUrl: furl, array: array };
+        },
+        /**
+        */
+        importIngenioTable: function () {
+            console.log("- IMPORTANDO EXCEL -");
+            importIngenioTableFromExcel(excel, "/home/jedilink/usr/ingenio/categoriasIngenio.xlsx");
+            return "Ok";
         },
         /**
         */
