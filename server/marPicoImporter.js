@@ -95,73 +95,74 @@ var importImagesToProducts = function(marPicoProduct, productHashTable, product)
     }
 }
 
-var importImagesToCfs = function(marPicoProduct, productHashTable)
+/**
+ic: Ingenio Category
+iscn: Ingenio subcategory
+ip: Ingenio product
+*/
+var addAssociation = function(ic, iscn, ip)
 {
-    var cfs = global["multimediaElementRaw"];
-    var product2multimediaElement = global["product2multimediaElement"];
+    console.log("    . Subcategoria [" + iscn + "]");
+    var isc = productCategory.findOne({nameSpa: iscn});
 
-    console.log("3. Importando imagenes:");
-    var path = "/home/jedilink/_netbeans_workspace/86_IngenioMarpicoDownloader_Desktop/output/images";
-    //var path = "/home/jedilink/82_IngenioDownloader_Desktop/output/images";
-    var destinationPath = "/home/jedilink/usr/ingenio/ingenioSynced/.meteor/local/cfs/files/multimediaElement";
-    //var destinationPath = "/var/www/cfs/files/multimediaElement";
+    if ( !valid(isc) ) {
+        var icid = productCategory.insert(
+            {nameSpa: iscn, parentCategoryId: ic._id, friendlyUrl: iscn});
+        isc = productCategory.findOne({_id: icid});
+    }
+    if ( !valid(isc) ) {
+        console.log("    . Error buscando subcategoria");
+        return;
+    }
+    var product2category = global["product2category"];
+    product2category.insert({
+        productId: ip._id,
+        categoryId: isc._id
+    });
+}
 
-    var folderArr = fs.readdirSync(path);
-    if ( !valid(folderArr) || !valid(folderArr.length) || folderArr.length <= 0 ) {
-        console.log("  - ERROR: no se encontraron imágenes de producto. Revisar ruta " + path);
+
+var linkCategories = function(mpp, ip, iRootC)
+{
+    console.log("  - Procesando categorias para el producto " + ip.marPicoProductId);
+    var ic = mpp.ingenioCategory;
+    if ( !valid(ic) ) {
+        console.log("    . Saltando producto, no especifica categoria ingenio");
+        return;
+    }
+    ic = ic.trim();
+    var productCategory = global["productCategory"];
+    var product2category = global["product2category"];
+
+    var pc = productCategory.findOne({nameSpa: ic});
+
+    if ( !valid(pc) ) {
+        console.log("    . Insertando categoria [" + ic + "]");
+        var icid = productCategory.insert(
+            {nameSpa: ic, parentCategoryId: iRootC._id, friendlyUrl: ic});
+        pc = productCategory.findOne({_id: icid});
+    }
+
+    if ( !valid(pc) ) {
+        console.log("    . Error determinando categoria");
         return;
     }
 
-    for ( i in folderArr ) {
-        console.log("  - Procesando imágenes para el producto de id " + folderArr[i]);
+    var sc1 = null;
+    var sc2 = null;
+    var sc3 = null;
 
-        var marPicoProductId = parseInt(folderArr[i]);
-
-        var mpp = marPicoProduct.findOne({id: marPicoProductId});        
-        if ( valid(mpp) ) {
-            var fileArr = fs.readdirSync(path + "/" + folderArr[i]);
-            var j;
-            for ( j in fileArr ) {
-                var date = new Date();
-                var me = cfs.insert({uploadedAt: date});
-
-                if ( valid(me) ) {
-                    var fileSize;
-                    var filename = path + "/" + folderArr[i] + "/" + fileArr[j];
-                    var fileInfo = fs.lstatSync(filename);
-                    fileSize = fileInfo.size;
-                    var o = {
-                        name: fileArr[j],
-                        updatedAt: date,
-                        size: fileSize,
-                        type: "image/jpeg"
-                    };
-                    var destinationName = "multimediaElement-" + me + "-" + fileArr[j];
-                    var c = {multimediaElement: {
-                        name: fileArr[j],
-                        type: "image/jpeg",
-                        size: fileSize,
-                        key: destinationName,
-                        updatedAt: date,
-                        createdAt: date
-                    }};
-                    cfs.update({_id: me}, {$set: {original: o, copies: c}});
-
-                    if ( !fs.existsSync(destinationPath + "/" + destinationName) ) {
-                        fs.link(filename, destinationPath + "/" + destinationName);
-                    }
-
-                    product2multimediaElement.insert(
-                        {
-                            productId: productHashTable[marPicoProductId],
-                            multimediaElementId: me
-                        });
-                }
-            }
-        }
+    if ( valid(mpp.ingenioSubCategory1) ) {
+        sc1 = mpp.ingenioSubCategory1.trim();
     }
-    //oldcfs.drop();
-    //csf.rename("cfs.multimediaElement.filerecord", function(e, c){});
+    if ( valid(mpp.ingenioSubCategory2) ) {
+        sc2 = mpp.ingenioSubCategory2.trim();
+    }
+    if ( valid(mpp.ingenioSubCategory3) ) {
+        sc3 = mpp.ingenioSubCategory3.trim();
+    }
+
+    addAssociation(pc, sc1, ip);
 }
 
 importMarPicoCollectionsToIngenioCollections = function()
@@ -191,20 +192,20 @@ importMarPicoCollectionsToIngenioCollections = function()
         }
     }
 
+    /*
     console.log("1. Importando categorias:");
     var filter = {parentCategoryId: 0};
     var options = {sort: [["nameSpa", "asc"]]};
     var sourceTopCategoriesArray = marPicoCategory.find(filter, options).fetch();
     var i;
     var categoryHashTable = {};
-    var productHashTable = {};
 
     for ( i in sourceTopCategoriesArray ) {
         var mpc;
         mpc = sourceTopCategoriesArray[i];
         
         var furl;
-        furl = web2utf(computeFriendlyUrl(mpc.id));
+        furl = web2utf(computeFrieloooooooooooooooooooooooooooooooooooondlyUrl(mpc.id));
         var ic = productCategory.findOne({nameSpa: web2utf(mpc.nameSpa)});
         if ( !valid(ic) ) {
             productCategory.insert({nameSpa: web2utf(mpc.nameSpa), parentCategoryId: iRootC._id, friendlyUrl: furl});
@@ -244,19 +245,19 @@ importMarPicoCollectionsToIngenioCollections = function()
             console.log("    . " + web2utf(mpsc.nameSpa) + " (" + mpsc.id + " -> " + ncid + ")");
         }
     }
+    */
     
     console.log("2. Importando productos:");
-    var cursor = marPicoProduct.find();
+    var productHashTable = {};
+
     var provider = supplier.findOne({name: "MarPico"});
     if ( !valid(provider) ) {
         return "Error: no esta el proveedor MarPico";
     }
 
     var count = 1;
+    var cursor = marPicoProduct.find();
     cursor.forEach(function(mpp) {
-	if ( mpp.name.indexOf("Antiestr") > -1 ) {
-            console.log("  - " + web2utf(mpp.name));
-	}
         var ip;
 
         ip = product.findOne({marPicoProductId: mpp.id});
@@ -285,6 +286,7 @@ importMarPicoCollectionsToIngenioCollections = function()
 
         if ( valid(ipid) ) {
             productHashTable[mpp.id] = ipid;
+            /*
             for( i in mpp.arrayOfparentCategoriesId ) {
                 var mpcid = mpp.arrayOfparentCategoriesId[i];
 
@@ -295,11 +297,12 @@ importMarPicoCollectionsToIngenioCollections = function()
                     });
                 }
             }
+            */
+            linkCategories(mpp, ip, iRootC);
         }
         count++;
     });
 
-    //importImagesToCfs(marPicoProduct, productHashTable);
     importImagesToProducts(marPicoProduct, productHashTable, product);
     console.log("==== IMPORTACION DE PRODUCTOS MARPICO LISTA ====");
     
