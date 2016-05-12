@@ -4,13 +4,19 @@ var isLetter = function(c) {
 
 importIngenioTableFromExcel = function(excel, filename)
 {
-    console.log("  - Importando desde " + filename);
+    console.log("Importando asociaciones de categorias ingenio desde " + filename);
     var workbook = excel .readFile(filename);
-    console.log("  - Listo");
-
-    console.log("  - Datos en la hoja " + workbook.SheetNames[1]);
     var ws = workbook.Sheets[workbook.SheetNames[1]];
     var c;
+
+    var marPicoProduct = global["marPicoProduct"];
+
+    if ( !valid(marPicoProduct) ) {
+        console.log("  * ERROR: base de datos no disponible");
+        return;
+    }
+
+    var elem = {};
 
     for ( c in ws ) {
         if( c[0] === '!' ) {
@@ -46,18 +52,42 @@ importIngenioTableFromExcel = function(excel, filename)
 
         switch ( colindex ) {
           case "B":
-        	console.log("  - Referencia: " + v);
+            elem = {}
+        	//console.log("  - Referencia: " + v);
+            elem.marpicoReference = v;
         	break;
-          case "J":
-        	console.log("    . Cat1: " + v);
+          case "J": 
+        	//console.log("    . Cat: " + v);
+            elem.ingenioCategory = v;
         	break;
           case "K":
-        	console.log("    . Cat2: " + v);
+        	//console.log("    . Subcat 1: " + v);
+            elem.ingenioSubCategory1 = v;
         	break;
           case "L":
-        	console.log("    . Cat3: " + v);
+        	//console.log("    . Subcat 2: " + v);
+            elem.ingenioSubCategory2 = v;
+        	break;
+          case "M":
+        	//console.log("    . Subcat 3: " + v);
+            elem.ingenioSubCategory3 = v;
+
+            // Procesar registro
+            var re = {$regex: "" + elem.marpicoReference};
+            var mpp = marPicoProduct.findOne({name: re});
+
+            if ( !valid(mpp) ) {
+                console.log("  - Error: no se encuentra producto marpico para " + elem.marpicoReference);
+                continue;
+            }
+            marPicoProduct.update({_id: mpp._id}, {$set: {ingenioCategory: elem.ingenioCategory}});
+            marPicoProduct.update({_id: mpp._id}, {$set: {ingenioSubCategory1: elem.ingenioSubCategory1}});
+            marPicoProduct.update({_id: mpp._id}, {$set: {ingenioSubCategory2: elem.ingenioSubCategory2}});
+            marPicoProduct.update({_id: mpp._id}, {$set: {ingenioSubCategory3: elem.ingenioSubCategory3}});
         	break;
         }
-        //console.log("  - " + c + "=" + JSON.stringify(v));
+
+
     }
+    console.log("Importacion de categorias Ingenio finalizada");
 }
