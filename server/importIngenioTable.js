@@ -1,11 +1,11 @@
-var isLetter = function(c) {
+isLetter = function(c) {
   return c.toLowerCase() != c.toUpperCase();
 }
 
 importIngenioTableFromExcel = function(excel, filename)
 {
     console.log("Importando asociaciones de categorias ingenio desde " + filename);
-    var workbook = excel .readFile(filename);
+    var workbook = excel.readFile(filename);
     var ws = workbook.Sheets[workbook.SheetNames[1]];
     var c;
 

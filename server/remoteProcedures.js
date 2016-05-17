@@ -105,7 +105,7 @@ Meteor.startup(function () {
                 } else {
                     categories.push(c);
                 }
-                if (valid(categories)) {
+                if ( valid(categories) ) {
                     categories.forEach(function (item) {
                         //console.log("  - Buscando productos para la categoria " + item._id);
                         var cursorp2c = product2category.find({ categoryId: item._id }).fetch();
@@ -158,6 +158,13 @@ Meteor.startup(function () {
         importIngenioTable: function () {
             console.log("- IMPORTANDO EXCEL -");
             importIngenioTableFromExcel(excel, "/home/jedilink/usr/ingenio/categoriasIngenio.xlsx");
+            return "Ok";
+        },
+        /**
+        */
+        importIngenioLookupTables: function () {
+            console.log("- IMPORTANDO EXCEL DE TABLAS DE DATOS PARA COTIZACION -");
+            importIngenioLookupTablesFromExcel(excel, "/home/jedilink/usr/ingenio/lookupTablesIngenio.xlsx");
             return "Ok";
         },
         /**
