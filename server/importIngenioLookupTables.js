@@ -18,29 +18,29 @@ var processTableBegin = function(v)
     return null;
 }
 
+/**
+Algoritmo incremental para actualizar en la base de datos la informacion
+correspondiente a la tabla de la variable F en el modelo de ecuacion de
+costo Ingenio.
+*/
 var lastFprovider = "unknown";
 var lastFvalues = [];
-
 var processCellF = function(lookupTable, ri, colindex, v)
 {
     //console.log("  - F[" + ri + "][" + colindex + "] = " + v);
-
+    if ( ri < 0 ) {
+        return;
+    }
     if ( colindex === "A" ) {
         lastFprovider = v;
         return;
     }
-
     if ( colindex !== "B" ) {
         return;
     }
 
     var f;
     f = lookupTable.findOne({tableName: "f"});
-
-    if ( ri < 0 ) {
-        return;
-    }
-
     if ( !valid(f) ) {
         lookupTable.insert({tableName: "f", values: []});
         f = lookupTable.findOne({tableName: "f"});
@@ -50,13 +50,55 @@ var processCellF = function(lookupTable, ri, colindex, v)
     }
 
     lastFvalues[ri] = {provider: lastFprovider, percent: v};
-    console.log("  * f.values (" + ri + ")" + lastFvalues.length + ": ");
     lookupTable.update({_id: f._id}, {$set: {values: lastFvalues}});
 }
 
+var lastGStartRange = 0;
+var lastGColumnNames = [];
+var lastGvalueMatrix = [];
+var extractFirstNumberFromString = function(v)
+{
+    var tokens = v.split(" ");
+    var normalized = tokens[0].split(".").join("");
+    var n = parseFloat(normalized);
+    return n;
+}
 var processCellG = function(lookupTable, ri, colindex, v)
 {
-    //console.log("  - G[" + ri + "][" + colindex + "] = " + v);
+    console.log("  - G[" + ri + "][" + colindex + "] = " + v);
+
+    if ( ri < 0 ) {
+        if ( ri == -1 ) {
+            lastGColumnNames[colindex] = v;
+        }
+        return;
+    }
+    if ( colindex === "A" ) {
+        lastGStartRange = extractFirstNumberFromString(v);
+        return;
+    }
+    else {
+        console.log(
+            "  - Range " + lastGStartRange + " for provider " + lastGColumnNames[colindex] +
+            ": " + v);
+        var f;
+        f = lookupTable.findOne({tableName: "g"});
+        if ( !valid(f) ) {
+            lookupTable.insert({tableName: "g", values: []});
+            f = lookupTable.findOne({tableName: "g"});
+        }
+        if ( !valid(f) ) {
+            return;
+        }
+        
+        var values = f.values;
+        if ( !valid(f.values) ) {
+            values = [];
+        }
+        values.push({startValue: lastGStartRange, provider: lastGColumnNames[colindex]});
+
+        lookupTable.update(f._id, {$set: {values:values}});
+    }
 }
 
 var processCellH = function(lookupTable, ri, colindex, v)
