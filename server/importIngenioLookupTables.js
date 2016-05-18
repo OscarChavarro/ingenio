@@ -125,7 +125,7 @@ var lastHrange = 0;
 var lastHvalues = [];
 var processCellH = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - H[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - H[" + ri + "][" + colindex + "] = " + v);
     if ( ri < 0 ) {
         return;
     }
@@ -147,14 +147,38 @@ var processCellH = function(lookupTable, ri, colindex, v)
         return;
     }
 
-    lastHvalues[ri] = {quantityStartValue: lastHrange, percent: v};
+    lastHvalues[ri] = {moneyStartValue: lastHrange, percent: v};
     lookupTable.update({_id: f._id}, {$set: {values: lastHvalues}});
-
 }
 
+var lastCHrange = 0;
+var lastCHvalues = [];
 var processCellCH = function(lookupTable, ri, colindex, v)
 {
     //console.log("  - CH[" + ri + "][" + colindex + "] = " + v);
+    if ( ri < 0 ) {
+        return;
+    }
+    if ( colindex === "A" ) {
+        lastCHrange = extractFirstNumberFromString(v);
+        return;
+    }
+    if ( colindex !== "B" ) {
+        return;
+    }
+
+    var f;
+    f = lookupTable.findOne({tableName: "ch"});
+    if ( !valid(f) ) {
+        lookupTable.insert({tableName: "ch", values: []});
+        f = lookupTable.findOne({tableName: "ch"});
+    }
+    if ( !valid(f) ) {
+        return;
+    }
+
+    lastCHvalues[ri] = {moneyStartValue: lastCHrange, margin: v};
+    lookupTable.update({_id: f._id}, {$set: {values: lastCHvalues}});
 }
 
 var processCellI = function(lookupTable, ri, colindex, v)
