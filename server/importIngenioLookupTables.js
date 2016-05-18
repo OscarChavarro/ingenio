@@ -212,9 +212,34 @@ var processCellI = function(lookupTable, ri, colindex, v)
     }
 }
 
+var lastJrange = 0;
+var lastJvalues = [];
 var processCellJ = function(lookupTable, ri, colindex, v)
 {
     //console.log("  - J[" + ri + "][" + colindex + "] = " + v);
+    if ( ri < 0 ) {
+        return;
+    }
+    if ( colindex === "A" ) {
+        lastJrange = extractFirstNumberFromString(v);
+        return;
+    }
+    if ( colindex !== "B" ) {
+        return;
+    }
+
+    var f;
+    f = lookupTable.findOne({tableName: "j"});
+    if ( !valid(f) ) {
+        lookupTable.insert({tableName: "j", values: []});
+        f = lookupTable.findOne({tableName: "j"});
+    }
+    if ( !valid(f) ) {
+        return;
+    }
+
+    lastJvalues[ri] = {moneyStartValue: lastHrange, percent: v};
+    lookupTable.update({_id: f._id}, {$set: {values: lastJvalues}});    
 }
 
 var processCellL = function(lookupTable, ri, colindex, v)
