@@ -95,7 +95,30 @@ var processCellG = function(lookupTable, ri, colindex, v)
         if ( !valid(f.values) ) {
             values = [];
         }
-        values.push({startValue: lastGStartRange, provider: lastGColumnNames[colindex]});
+
+        var i;
+        var p = null;
+        for ( i in values ) {
+            if ( values[i].startValue == lastGStartRange ) {
+                p = values[i];
+                break;
+            }
+        }
+        if ( !valid(p) ) {
+            values.push({startValue: lastGStartRange, providerArray: []});
+            for ( i in values ) {
+                if ( values[i].startValue == lastGStartRange ) {
+                    p = values[i];
+                    break;
+                }
+            }
+        }
+
+        if ( !valid(p) ) {
+            return;
+        }
+
+        p.providerArray.push({provider: lastGColumnNames[colindex], discountPercent: v});
 
         lookupTable.update(f._id, {$set: {values:values}});
     }
