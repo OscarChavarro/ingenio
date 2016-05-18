@@ -10,7 +10,6 @@ var processTableBegin = function(v)
 
     var i;
     for ( i = 1; i < tokens.length; i++ ) {
-        console.log("* [" + tokens[i] + "]");
         if ( valid(tokens[i]) && tokens[i] !== " " && tokens[i] !== "" ) {
             return tokens[i];
         }
@@ -19,79 +18,126 @@ var processTableBegin = function(v)
     return null;
 }
 
-var processCellF = function(ri, colindex, v)
+var lastFprovider = "unknown";
+var lastFvalues = [];
+
+var processCellF = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - F[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - F[" + ri + "][" + colindex + "] = " + v);
+
+    if ( colindex === "A" ) {
+        lastFprovider = v;
+        return;
+    }
+
+    if ( colindex !== "B" ) {
+        return;
+    }
+
+    var f;
+    f = lookupTable.findOne({tableName: "f"});
+
+    if ( ri < 0 ) {
+        return;
+    }
+
+    if ( !valid(f) ) {
+        lookupTable.insert({tableName: "f", values: []});
+        f = lookupTable.findOne({tableName: "f"});
+    }
+    if ( !valid(f) ) {
+        return;
+    }
+
+    lastFvalues[ri] = {provider: lastFprovider, percent: v};
+    console.log("  * f.values (" + ri + ")" + lastFvalues.length + ": ");
+    lookupTable.update({_id: f._id}, {$set: {values: lastFvalues}});
 }
 
-var processCellG = function(ri, colindex, v)
+var processCellG = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - G[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - G[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellH = function(ri, colindex, v)
+var processCellH = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - H[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - H[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellCH = function(ri, colindex, v)
+var processCellCH = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - CH[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - CH[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellI = function(ri, colindex, v)
+var processCellI = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - I[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - I[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellJ = function(ri, colindex, v)
+var processCellJ = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - J[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - J[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellL = function(ri, colindex, v)
+var processCellL = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - L[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - L[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCellM = function(ri, colindex, v)
+var processCellM = function(lookupTable, ri, colindex, v)
 {
-    console.log("  - M[" + ri + "][" + colindex + "] = " + v);
+    //console.log("  - M[" + ri + "][" + colindex + "] = " + v);
 }
 
 var processCell = function(inTable, tableDataIndexStart, rowindex, colindex, v)
 {
     var ri = (rowindex - tableDataIndexStart - 2);
+    var lookupTable = global["lookupTable"];
+
+    if ( !valid(lookupTable) ) {
+        return;
+    }
 
     switch ( inTable ) {
       case "F":
-        processCellF(ri, colindex, v);
+        processCellF(lookupTable, ri, colindex, v);
         break;
       case "G":
-        processCellG(ri, colindex, v);
+        processCellG(lookupTable, ri, colindex, v);
         break;
       case "H":
-        processCellH(ri, colindex, v);
+        processCellH(lookupTable, ri, colindex, v);
         break;
       case "CH":
-        processCellCH(ri, colindex, v);
+        processCellCH(lookupTable, ri, colindex, v);
         break;
       case "I":
-        processCellI(ri, colindex, v);
+        processCellI(lookupTable, ri, colindex, v);
         break;
       case "J":
-        processCellJ(ri, colindex, v);
+        processCellJ(lookupTable, ri, colindex, v);
         break;
       case "L":
-        processCellL(ri, colindex, v);
+        processCellL(lookupTable, ri, colindex, v);
         break;
       case "M":
-        processCellM(ri, colindex, v);
+        processCellM(lookupTable, ri, colindex, v);
         break;
       default:
         console.log("  - UNKNOWN[" + rowindex + "][" + colindex + "] = " + v);
         break;
     }
+}
+
+var cleanLookupTables = function()
+{
+    var lookupTable = global["lookupTable"];
+
+    if ( !valid() ) {
+        return;
+    }
+    console.log("  - Limpiando tablas en la base de datos");
+    lookupTable.remove();
 }
 
 importIngenioLookupTablesFromExcel = function(excel, filename)
@@ -112,6 +158,8 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
         console.log("  * ERROR: No se encuentra la pagina TABLAS en el Excel");
         return;
     }
+
+    cleanLookupTables();
 
     var c;
     var inTable = null;

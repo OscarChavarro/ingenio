@@ -24,7 +24,7 @@ var dataFile = function() {
         //"Content-Disposition": "attachment; filename=" + "custom.filename",
         "Content-Length": stat.size
     });
-
+    
     // Pipe the file contents to the response
     fs.createReadStream(file).pipe(this.response);
 };
