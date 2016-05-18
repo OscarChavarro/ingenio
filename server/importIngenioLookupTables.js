@@ -1,3 +1,14 @@
+var valuesG;
+var valuesI;
+
+var extractFirstNumberFromString = function(v)
+{
+    var tokens = v.split(" ");
+    var normalized = tokens[0].split(".").join("");
+    var n = parseFloat(normalized);
+    return n;
+}
+
 var processTableBegin = function(v)
 {
     var tag;
@@ -55,14 +66,6 @@ var processCellF = function(lookupTable, ri, colindex, v)
 
 var lastGStartRange = 0;
 var lastGColumnNames = [];
-var lastGvalueMatrix = [];
-var extractFirstNumberFromString = function(v)
-{
-    var tokens = v.split(" ");
-    var normalized = tokens[0].split(".").join("");
-    var n = parseFloat(normalized);
-    return n;
-}
 var processCellG = function(lookupTable, ri, colindex, v)
 {
     //console.log("  - G[" + ri + "][" + colindex + "] = " + v);
@@ -77,47 +80,31 @@ var processCellG = function(lookupTable, ri, colindex, v)
         lastGStartRange = extractFirstNumberFromString(v);
         return;
     }
-    else {
-        var f;
-        f = lookupTable.findOne({tableName: "g"});
-        if ( !valid(f) ) {
-            lookupTable.insert({tableName: "g", values: []});
-            f = lookupTable.findOne({tableName: "g"});
-        }
-        if ( !valid(f) ) {
-            return;
-        }
-        
-        var values = f.values;
-        if ( !valid(f.values) ) {
-            values = [];
-        }
-
+    else {        
         var i;
         var p = null;
-        for ( i in values ) {
-            if ( values[i].startValue == lastGStartRange ) {
-                p = values[i];
+        for ( i in valuesG ) {
+            if ( valuesG[i].startValue == lastGStartRange ) {
+                p = valuesG[i];
                 break;
             }
         }
         if ( !valid(p) ) {
-            values.push({startValue: lastGStartRange, providerArray: []});
-            for ( i in values ) {
-                if ( values[i].startValue == lastGStartRange ) {
-                    p = values[i];
+            valuesG.push({startValue: lastGStartRange, discountArray: []});
+            for ( i in valuesG ) {
+                if ( valuesG[i].startValue == lastGStartRange ) {
+                    p = valuesG[i];
                     break;
                 }
             }
         }
 
-        if ( !valid(p) ) {
+        if ( !valid(valuesG[i]) ) {
             return;
         }
 
-        p.providerArray.push({provider: lastGColumnNames[colindex], discountPercent: v});
-
-        lookupTable.update(f._id, {$set: {values:values}});
+        var newcell = {provider: lastGColumnNames[colindex], discountPercent: v};
+        valuesG[i].discountArray.push(newcell);
     }
 }
 
@@ -181,9 +168,48 @@ var processCellCH = function(lookupTable, ri, colindex, v)
     lookupTable.update({_id: f._id}, {$set: {values: lastCHvalues}});
 }
 
+var lastIStartRange = 0;
+var lastIColumnNames = [];
 var processCellI = function(lookupTable, ri, colindex, v)
 {
     //console.log("  - I[" + ri + "][" + colindex + "] = " + v);
+
+    if ( ri < 0 ) {
+        if ( ri == -1 ) {
+            lastIColumnNames[colindex] = v;
+        }
+        return;
+    }
+    if ( colindex === "A" ) {
+        lastIStartRange = extractFirstNumberFromString(v);
+        return;
+    }
+    else {        
+        var i;
+        var p = null;
+        for ( i in valuesI ) {
+            if ( valuesI[i].startValue == lastIStartRange ) {
+                p = valuesI[i];
+                break;
+            }
+        }
+        if ( !valid(p) ) {
+            valuesI.push({startValue: lastIStartRange, discountArray: []});
+            for ( i in valuesI ) {
+                if ( valuesI[i].startValue == lastIStartRange ) {
+                    p = valuesI[i];
+                    break;
+                }
+            }
+        }
+
+        if ( !valid(valuesI[i]) ) {
+            return;
+        }
+
+        var newcell = {provider: lastIColumnNames[colindex], discountPercent: v};
+        valuesI[i].discountArray.push(newcell);
+    }
 }
 
 var processCellJ = function(lookupTable, ri, colindex, v)
@@ -201,10 +227,9 @@ var processCellM = function(lookupTable, ri, colindex, v)
     //console.log("  - M[" + ri + "][" + colindex + "] = " + v);
 }
 
-var processCell = function(inTable, tableDataIndexStart, rowindex, colindex, v)
+var processCell = function(lookupTable, inTable, tableDataIndexStart, rowindex, colindex, v)
 {
     var ri = (rowindex - tableDataIndexStart - 2);
-    var lookupTable = global["lookupTable"];
 
     if ( !valid(lookupTable) ) {
         return;
@@ -273,6 +298,25 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
 
     cleanLookupTables();
 
+    var lookupTable = global["lookupTable"];
+    var f;
+
+    lookupTable.insert({tableName: "g", values: []});
+    f = lookupTable.findOne({tableName: "g"});
+    if ( !valid(f) ) {
+        return;
+    }
+    valuesG = [];
+
+    var ti;
+
+    lookupTable.insert({tableName: "i", values: []});
+    ti = lookupTable.findOne({tableName: "i"});
+    if ( !valid(ti) ) {
+        return;
+    }
+    valuesI = [];
+
     var c;
     var inTable = null;
     var tableDataIndexStart = 0;
@@ -311,8 +355,11 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
             tableDataIndexStart = ri;
         }
         if ( valid(inTable) ) {
-            processCell(inTable, tableDataIndexStart, rowindex, colindex, v);
+            processCell(lookupTable, inTable, tableDataIndexStart, rowindex, colindex, v);
         }
     }
+    lookupTable.update(f._id, {$set: {values: valuesG}});
+    lookupTable.update(ti._id, {$set: {values: valuesI}});
+
     console.log("Importacion de categorias Ingenio finalizada");
 }
