@@ -1,5 +1,6 @@
 var valuesG;
 var valuesI;
+var valuesLM;
 
 var extractFirstNumberFromString = function(v)
 {
@@ -242,14 +243,53 @@ var processCellJ = function(lookupTable, ri, colindex, v)
     lookupTable.update({_id: f._id}, {$set: {values: lastJvalues}});    
 }
 
-var processCellL = function(lookupTable, ri, colindex, v)
+var lastLMColumnNames = [];
+var lastLMlabel = "unknown";
+var processCellLM = function(lookupTable, ri, colindex, v, source)
 {
-    //console.log("  - L[" + ri + "][" + colindex + "] = " + v);
-}
+    //console.log("  - " + source + "[" + ri + "][" + colindex + "] = " + v);
 
-var processCellM = function(lookupTable, ri, colindex, v)
-{
-    //console.log("  - M[" + ri + "][" + colindex + "] = " + v);
+    if ( ri < 0 ) {
+        if ( ri == -1 ) {
+            lastLMColumnNames[colindex] = v;
+        }
+        return;
+    }
+    if ( colindex === "A" ) {
+        lastLMlabel = v;
+        return;
+    }
+    else {        
+        var i;
+        var p = null;
+        for ( i in valuesLM ) {
+            if ( valuesLM[i].stampLabel === lastLMlabel ) {
+                p = valuesLM[i];
+                break;
+            }
+        }
+        if ( !valid(p) ) {
+            valuesLM.push({stampLabel: lastLMlabel, pricesArray: []});
+            for ( i in valuesLM ) {
+                if ( valuesLM[i].stampLabel === lastLMlabel ) {
+                    p = valuesLM[i];
+                    break;
+                }
+            }
+        }
+
+        if ( !valid(valuesLM[i]) ) {
+            return;
+        }
+
+        var vs = "" + v;
+        if ( valid(v) && vs.indexOf("VER") == -1 ) {
+            var newcell = {quantity: lastLMColumnNames[colindex], cost: v};
+            valuesLM[i].pricesArray.push(newcell);            
+        }
+
+    }
+
 }
 
 var processCell = function(lookupTable, inTable, tableDataIndexStart, rowindex, colindex, v)
@@ -280,10 +320,10 @@ var processCell = function(lookupTable, inTable, tableDataIndexStart, rowindex, 
         processCellJ(lookupTable, ri, colindex, v);
         break;
       case "L":
-        processCellL(lookupTable, ri, colindex, v);
+        processCellLM(lookupTable, ri, colindex, v, "l");
         break;
       case "M":
-        processCellM(lookupTable, ri, colindex, v);
+        processCellLM(lookupTable, ri, colindex, v, "m");
         break;
       default:
         console.log("  - UNKNOWN[" + rowindex + "][" + colindex + "] = " + v);
@@ -299,7 +339,7 @@ var cleanLookupTables = function()
         return;
     }
     console.log("  - Limpiando tablas en la base de datos");
-    lookupTable.remove();
+    lookupTable.remove({});
 }
 
 importIngenioLookupTablesFromExcel = function(excel, filename)
@@ -325,7 +365,6 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
 
     var lookupTable = global["lookupTable"];
     var f;
-
     lookupTable.insert({tableName: "g", values: []});
     f = lookupTable.findOne({tableName: "g"});
     if ( !valid(f) ) {
@@ -334,13 +373,20 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
     valuesG = [];
 
     var ti;
-
     lookupTable.insert({tableName: "i", values: []});
     ti = lookupTable.findOne({tableName: "i"});
     if ( !valid(ti) ) {
         return;
     }
     valuesI = [];
+
+    var lm;
+    lookupTable.insert({tableName: "lm", values: []});
+    lm = lookupTable.findOne({tableName: "lm"});
+    if ( !valid(lm) ) {
+        return;
+    }
+    valuesLM = [];
 
     var c;
     var inTable = null;
@@ -376,7 +422,7 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
 
         if ( colindex === "A" && v.indexOf("TABLA") == 0 ) {
             inTable = processTableBegin(v);
-            console.log("COMENZANDO TABLA " + inTable);
+            //console.log("COMENZANDO TABLA " + inTable);
             tableDataIndexStart = ri;
         }
         if ( valid(inTable) ) {
@@ -385,6 +431,7 @@ importIngenioLookupTablesFromExcel = function(excel, filename)
     }
     lookupTable.update(f._id, {$set: {values: valuesG}});
     lookupTable.update(ti._id, {$set: {values: valuesI}});
+    lookupTable.update(lm._id, {$set: {values: valuesLM}});
 
     console.log("Importacion de categorias Ingenio finalizada");
 }
