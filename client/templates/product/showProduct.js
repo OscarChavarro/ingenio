@@ -4,15 +4,8 @@ Router.route("/product/:friendlyUrl", {
     data: function () {
         // Variables globales a esta plantilla
         productFriendlyUrl = this.params.friendlyUrl
-
         // Retorno: deprecated.
         return this.params.friendlyUrl;
-    },
-    waitOn: function () {
-        /*return  Meteor.subscribe("product2multimediaElement") &&
-                Meteor.subscribe("multimediaElement") && 
-                Meteor.subscribe("product") &&
-                Meteor.subscribe("product2user", Meteor.userId());*/
     }
 });
 
@@ -43,6 +36,11 @@ var sendQuotationList = function (productList) {
 
 Template.showProduct.helpers({
     /**
+    */
+    calculatePrice: function(product) {
+        return product.price + 1000;
+    },
+    /**
     Retorna un objeto que contiene informacion del producto especificado en la URL amistosa,
     con un arreglo de categorias agregado como un arreglo en el atributo "categories".
     PRE: Template.currentData() contiene la URL amigable de un producto.
@@ -52,7 +50,7 @@ Template.showProduct.helpers({
         var name = "product_" + productFriendlyUrl;
         var productInfo = Session.get(name);
 
-        if (valid(productInfo)) {
+        if ( valid(productInfo) ) {
             return productInfo;
         }
         else {
@@ -77,15 +75,18 @@ Template.showProduct.helpers({
 
             // Obtener informacion de la base de datos de manera reactiva
             Meteor.call("getProductFromFriendlyUrl", productFriendlyUrl, function (e, v) {
-                if (valid(e) || !valid(v) || !valid(v.u) || !valid(v.p)) {
+                if ( valid(e) || !valid(v) || !valid(v.u) || !valid(v.p) ) {
                     var msg = "Error llamando al procedimiento remoto getProductFromFriendlyUrl";
-                    if (valid(v.s)) {
+                    if ( valid(v.s) ) {
                         msg = msg + v.s;
                     }
                     console.log(msg);
                 }
                 else {
                     var n = "product_" + v.u;
+
+                    console.log("Producto: ");
+                    console.log(v.p);
                     Session.set(n, v.p);
                 }
             });
@@ -93,9 +94,6 @@ Template.showProduct.helpers({
 
         return productInfo;
     },
-    /*isFirstImage: function (image) {
-        return (image.order == 1);
-    },*/
     isLoggedIn: function () {
         return valid(Meteor.userId());
     },
@@ -198,14 +196,23 @@ Template.showProduct.helpers({
 });
 
 Template.showProduct.events({
+    "keypress #quantity": function(event, template)
+    {
+        console.log("Cambiando valor INPUT a: ");
+        var e;
+        e = document.getElementById("totalPrice");
+        console.log("Element:");
+        console.log(e);
+        e.value = 666;
+    },
     "keyup .cart-amount": function (event, template) {
         event.preventDefault();
         event.target.style.color = "#000000";
-        if (!valid(event.target.dataset.id)) {
+        if ( !valid(event.target.dataset.id) ) {
             event.target.style.color = "#ff0000";
             return false;
         }
-        if (!valid(event.target.value) || isNaN(event.target.value) || event.target.value.length <= 0) {
+        if ( !valid(event.target.value) || isNaN(event.target.value) || event.target.value.length <= 0 ) {
             event.target.style.color = "#ff0000";
             return false;
         }
