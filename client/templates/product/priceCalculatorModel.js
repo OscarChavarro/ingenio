@@ -120,8 +120,6 @@ var getMarginFromHValue = function(tableH, scale)
     var prevMargin = tableH.values[0].percent;
     var i;
 
-    console.log("** Margen inicial: " + prevMargin);
-
     for ( i in tableH.values ) {
         prevMargin = tableH.values[i].percent;
         if ( scale >= tableH.values[i].moneyStartValue ) {
@@ -150,7 +148,7 @@ var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupT
     var varP5;
 
     varP5 = product.price * (1.0 - varI) * quantity;
-    console.log("  - Valor P5: $" + varP5);
+    console.log("  - Valor P5*Q: $" + varP5);
 
     //----------------------------------------------------------
     var tableH;
