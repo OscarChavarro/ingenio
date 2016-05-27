@@ -46,7 +46,7 @@ var getLookupTable = function(tables, id)
     return null;
 }
 
-var searchValIDiscountForProvider = function(tableI, i, provider)
+var searchValIGDiscountForProvider = function(tableI, i, provider)
 {
     var j;
     var arr = tableI.values[i].discountArray;
@@ -61,7 +61,7 @@ var searchValIDiscountForProvider = function(tableI, i, provider)
 /**
 Dada una cantidad, busca el porcentaje de descuento basandose en la cantidad.
 */
-var getQuantityDiscountFromIValue = function(tableI, quantity, provider)
+var getQuantityDiscountFromIGValue = function(tableI, quantity, provider)
 {
     if ( !valid(tableI) ) {
         console.log("  * ERROR: No esta la tabla I");
@@ -83,11 +83,11 @@ var getQuantityDiscountFromIValue = function(tableI, quantity, provider)
         return 0;
     });
 
-    var prevDiscount = searchValIDiscountForProvider(tableI, 0, provider);
+    var prevDiscount = searchValIGDiscountForProvider(tableI, 0, provider);
     var i;
 
     for ( i in tableI.values ) {
-        prevDiscount = searchValIDiscountForProvider(tableI, i, provider);
+        prevDiscount = searchValIGDiscountForProvider(tableI, i, provider);
         if ( quantity >= tableI.values[i].startValue ) {
             return prevDiscount;
         }
@@ -142,7 +142,7 @@ var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupT
         varI = 0;
     }
     else {
-        varI = getQuantityDiscountFromIValue(tableI, quantity, product.provider);
+        varI = getQuantityDiscountFromIGValue(tableI, quantity, product.provider);
     }
     console.log("  - Valor I: " + varI);
     var varP5;
@@ -200,6 +200,23 @@ var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, look
         varF = getBaseDiscountFromFValue(tableF, product.provider);
     }
     console.log("  - Valor F (descuento base): " + varF);
+
+    var varP1 = product.price * quantity * (1 - varF);
+
+    console.log("  - Valor P1: " + varP1);
+
+    var varG;
+    var tableG;
+
+    tableG = getLookupTable(lookupTables, "g");
+    if ( !valid(tableG) ) {
+        varI = 0;
+    }
+    else {
+        varI = getQuantityDiscountFromIGValue(tableG, varP1, product.provider);
+    }
+    console.log("  - Valor G: " + varI);
+
 
     return quantity * product.price + 2;   
 }
