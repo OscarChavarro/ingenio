@@ -210,13 +210,14 @@ var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, look
 
     tableG = getLookupTable(lookupTables, "g");
     if ( !valid(tableG) ) {
-        varI = 0;
+        varG = 0;
     }
     else {
-        varI = getQuantityDiscountFromIGValue(tableG, varP1, product.provider);
+        varG = getQuantityDiscountFromIGValue(tableG, varP1, product.provider);
     }
-    console.log("  - Valor G: " + varI);
+    console.log("  - Valor G: " + varG);
 
+    var varP2 = varP1 * (1 - varG);
 
     return quantity * product.price + 2;   
 }
