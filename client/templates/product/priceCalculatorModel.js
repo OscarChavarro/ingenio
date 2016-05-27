@@ -169,9 +169,38 @@ var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupT
 }
 
 /**
+Busca el proveedor de producto en la tabla F y retorna el descuento correspondiente
+en porcentaje (valor double de 0.0 a 1.0). Si no encuentra el proveedor retorna 0%
+*/
+var getBaseDiscountFromFValue = function(tableF, provider)
+{
+    var i;
+
+    for ( i in tableF.values ) {
+        if ( tableF.values[i].provider.indexOf(provider) >= 0 ) {
+            return tableF.values[i].percent;
+        }
+    }
+    return 0;
+}
+
+/**
 Esta es una de las dos subrutinas de control para casos de calculateInternalPrice
 */
-var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, lookupTables) {
+var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, lookupTables) 
+{
+    var varF;
+    var tableI;
+
+    tableF = getLookupTable(lookupTables, "f");
+    if ( !valid(tableF) ) {
+        varF = 0;
+    }
+    else {
+        varF = getBaseDiscountFromFValue(tableF, product.provider);
+    }
+    console.log("  - Valor F (descuento base): " + varF);
+
     return quantity * product.price + 2;   
 }
 
@@ -216,9 +245,14 @@ calculateInternalPrice = function(product, quantity, markIndex)
     console.log("  - Es USB: " + product.isUsb);
     console.log("  - Proveedor: " + product.provider);
 
+    var priceWithoutMarks;
+
     if ( product.isUsb ) {
-        return calculatePriceForUsbProduct(product, quantity, markIndex, lookupTables);
+        priceWithoutMarks = calculatePriceForUsbProduct(product, quantity, markIndex, lookupTables);
+    }
+    else {
+        priceWithoutMarks = calculatePriceForNonUsbProduct(product, quantity, markIndex, lookupTables);
     }
 
-    return calculatePriceForNonUsbProduct(product, quantity, markIndex, lookupTables);
+    return priceWithoutMarks;
 }
