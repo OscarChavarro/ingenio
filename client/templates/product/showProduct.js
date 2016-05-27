@@ -35,19 +35,19 @@ var sendQuotationList = function (productList) {
     ], subject, htmlContent, senderEmail, senderName);
 }
 
-var calculateInternalPrice = function(product, quantity)
-{
-    console.log("CALCULANDO PRECIO");
-    console.log("  - Precio base: " + product.price);
-    console.log("  - Cantidad: " + quantity);
-    return quantity * product.price;
-}
-
 Template.showProduct.helpers({
     /**
     */
     calculatePrice: function(product, quantity) {
-        return calculateInternalPrice(product, quantity);
+        var priceElem = document.getElementById("markType");
+        var markIndex;
+        if ( valid(priceElem) ) {
+            markIndex = priceElem.value;
+        }
+        else {
+            markIndex = 0;
+        }
+        return calculateInternalPrice(product, quantity, markIndex);
     },
     /**
     Retorna un objeto que contiene informacion del producto especificado en la URL amistosa,
@@ -214,11 +214,16 @@ var processNewVal = function(newVal)
         newVal = 1;
     }
     var quantity = parseInt(newVal);
-    price = calculateInternalPrice(currentProduct, quantity);
+    var markIndex = document.getElementById("markType").value;
+    price = calculateInternalPrice(currentProduct, quantity, markIndex);
     document.getElementById("totalPrice").value = price;
 }
 
 Template.showProduct.events({
+    "change #markType": function(event, template) {
+        console.log("Cambiando tipo de marca");
+        processNewVal(document.getElementById("quantity").value);
+    },
     "keydown #quantity": function(event, template) {
         // Procesa el caso del backspace
         if ( event.keyCode == 8 ) {

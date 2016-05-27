@@ -1,7 +1,51 @@
 var excel = Npm.require("xlsx");
 
+var appendExtraDataToProduct = function(p)
+{
+    //------------------------------------------------------
+    if ( !valid(p) ) {
+        return;
+    }
+
+    //------------------------------------------------------
+    var product2category = global["product2category"];
+    var productCategory = global["productCategory"];
+    if ( !valid(product2category) ||
+         !valid(productCategory) ) {
+        return;
+    }
+
+    p.isUsb = false;
+    var cats = product2category.find({productId: p._id}).fetch();
+    var arr = [];
+    var i;
+    for ( i in cats ) {
+        var c;
+        c = productCategory.findOne({_id: cats[i].categoryId});
+        if ( valid(c) && valid(c.nameSpa) ) {
+            var name = c.nameSpa.toUpperCase();
+            if ( name.indexOf("USB") >= 0 ) {
+                p.isUsb = true;
+                continue;
+            }
+        }
+    }
+
+    //------------------------------------------------------
+    p.provider = "MARPICO";
+}
+
 Meteor.startup(function () {
     Meteor.methods({
+        /**
+        */
+        getLookupTables() {
+            var lookupTable = global["lookupTable"];
+            if ( !valid(lookupTable) ) {
+                return null;
+            }
+            return lookupTable.find().fetch();
+        },
         /**
         */
         getProductImageSetFromFriendlyUrl(productFriendlyUrl) {
@@ -61,6 +105,7 @@ Meteor.startup(function () {
 
             var p;
             p = product.findOne({ friendlyUrl: productFriendlyUrl });
+            appendExtraDataToProduct(p);
 
             if (!valid(p)) {
                 return { u: productFriendlyUrl, p: null, s: "No encuentra un producto cuya URL es " + productFriendlyUrl };
