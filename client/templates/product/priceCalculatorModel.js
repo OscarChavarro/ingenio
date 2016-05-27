@@ -20,6 +20,112 @@ var getLookupTables = function()
     return null;
 }
 
+/**
+Dado un nombre de tabla, se busca esa tabla en la lista de tablas. Si no
+se encuentra se retorna null.
+*/
+var getLookupTable = function(tables, id)
+{
+    var i;
+
+    if ( !valid(tables) ) {
+        console.log("ERROR: No hay tablas");
+        return null;
+    }
+
+    if ( !valid(id) ) {
+        console.log("ERROR: No hay indice para tablas");
+        return null;
+    }
+
+    for ( i in tables ) {
+        if ( tables[i].tableName === id ) {
+            return tables[i];
+        }
+    }
+    return null;
+}
+
+var searchValIDiscountForProvider = function(tableI, i, provider)
+{
+    var j;
+    var arr = tableI.values[i].discountArray;
+    for ( j in arr ) {
+        if ( arr[j].provider.indexOf(provider) >= 0 ) {            
+            return arr[j].discountPercent;
+        }
+    }
+    return 0;
+}
+
+/**
+Dada una cantidad, busca el porcentaje de descuento basandose en la cantidad.
+*/
+var getQuantityDiscountFromIValue = function(tableI, quantity, provider)
+{
+    if ( !valid(tableI) ) {
+        console.log("  * ERROR: No esta la tabla I");
+        return 0;
+    }
+    if ( !valid(tableI.values) ) {
+        console.log("  * ERROR: la tabla I esta mal:");
+        console.log(tableI);
+        return 0;
+    }
+
+    tableI.values.sort(function(a, b) {
+        if ( a.startValue > b.startValue ) {
+            return -1;
+        }
+        else if ( a.startValue < b.startValue ) {
+            return 1;
+        }
+        return 0;
+    });
+
+    var prevDiscount = searchValIDiscountForProvider(tableI, 0, provider);
+    var i;
+
+    for ( i in tableI.values ) {
+        prevDiscount = searchValIDiscountForProvider(tableI, i, provider);
+        if ( quantity >= tableI.values[i].startValue ) {
+            return prevDiscount;
+        }
+    }
+    return selectedValue;
+}
+
+var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupTables) {
+    var varI;
+    var tableI;
+
+    tableI = getLookupTable(lookupTables, "i");
+    if ( !valid(tableI) ) {
+        varI = 0;
+    }
+    else {
+        varI = getQuantityDiscountFromIValue(tableI, quantity, product.provider);
+    }
+    console.log("  - Valor I: " + varI);
+
+    return quantity * product.price + varI;
+}
+
+var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, lookupTables) {
+    return quantity * product.price + 2;   
+}
+
+/**
+Esta es la funcion principal de ejecucion del modelo de precios
+INGENIO. Actualmente se implementa el proceso definido por 
+Manuel Lemes para el primer semestre de 2016. Refierase a la
+documentacion interna de INGENIO para entender este proceso
+paso a paso.
+
+Notese que esta funcion depende de las tablas "lookupTables"
+en la base de datos mongo, que se puede redefinir a partir
+de Excel en un proceso de importacion de datos.
+*/
 calculateInternalPrice = function(product, quantity, markIndex)
 {
     var lookupTables = getLookupTables();
@@ -36,22 +142,23 @@ calculateInternalPrice = function(product, quantity, markIndex)
     console.log("  - Tipo de marca: " + markIndex);
 
     var i;
-    for ( i in lookupTables ) {
-        if ( lookupTables[i].tableName === "lm" ) {
-            console.log("  - TablaLM: OK");
-            var j;
-            for ( j in lookupTables[i].values ) {
-                if ( j == markIndex ) {
-                    console.log("  - Tipo de marca en tabla LM: " + lookupTables[i].values[j].stampLabel );
-                    break;
-                }
+    var tablelm = getLookupTable(lookupTables, "lm");
+    var j;
+    if ( valid(tablelm) ) {
+        for ( j in tablelm.values ) {
+            if ( j == markIndex ) {
+                console.log("  - Tipo de marca en tabla LM: " + tablelm.values[j].stampLabel);
+                break;
             }
-            break;
         }
-    }
+    }  
 
     console.log("  - Es USB: " + product.isUsb);
     console.log("  - Proveedor: " + product.provider);
 
-    return quantity * product.price;
+    if ( product.isUsb ) {
+        return calculatePriceForUsbProduct(product, quantity, markIndex, lookupTables);
+    }
+
+    return calculatePriceForNonUsbProduct(product, quantity, markIndex, lookupTables);
 }
