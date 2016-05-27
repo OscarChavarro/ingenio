@@ -5,6 +5,7 @@ Router.route("/product/:friendlyUrl", {
         // Variables globales a esta plantilla
         productFriendlyUrl = this.params.friendlyUrl
         // Retorno: deprecated.
+        currentProduct = null;
         return this.params.friendlyUrl;
     }
 });
@@ -34,11 +35,19 @@ var sendQuotationList = function (productList) {
     ], subject, htmlContent, senderEmail, senderName);
 }
 
+var calculateInternalPrice = function(product, quantity)
+{
+    console.log("CALCULANDO PRECIO");
+    console.log("  - Precio base: " + product.price);
+    console.log("  - Cantidad: " + quantity);
+    return quantity * product.price;
+}
+
 Template.showProduct.helpers({
     /**
     */
-    calculatePrice: function(product) {
-        return product.price + 1000;
+    calculatePrice: function(product, quantity) {
+        return calculateInternalPrice(product, quantity);
     },
     /**
     Retorna un objeto que contiene informacion del producto especificado en la URL amistosa,
@@ -51,6 +60,7 @@ Template.showProduct.helpers({
         var productInfo = Session.get(name);
 
         if ( valid(productInfo) ) {
+            currentProduct = productInfo;
             return productInfo;
         }
         else {
@@ -88,10 +98,12 @@ Template.showProduct.helpers({
                     console.log("Producto: ");
                     console.log(v.p);
                     Session.set(n, v.p);
+                    currentProduct = productInfo;
                 }
             });
         }
 
+        currentProduct = productInfo;
         return productInfo;
     },
     isLoggedIn: function () {
@@ -195,15 +207,43 @@ Template.showProduct.helpers({
     }
 });
 
+var processNewVal = function(newVal)
+{
+    if ( !valid(newVal) || newVal === "" || newVal === "NaN" ) {
+        document.getElementById("quantity").value = 1;
+        newVal = 1;
+    }
+    var quantity = parseInt(newVal);
+    price = calculateInternalPrice(currentProduct, quantity);
+    document.getElementById("totalPrice").value = price;
+}
+
 Template.showProduct.events({
+    "keydown #quantity": function(event, template) {
+        // Procesa el caso del backspace
+        if ( event.keyCode == 8 ) {
+            var prevVal = document.getElementById("quantity").value;
+            var newVal =  prevVal.substring(0, prevVal.length-1);
+
+            processNewVal(newVal);
+        }
+    },
     "keypress #quantity": function(event, template)
     {
-        console.log("Cambiando valor INPUT a: ");
+        var c = event.charCode;
+        if ( (c < 48 || c > 57) && c != 0 && c != 13 ) {
+            event.preventDefault();
+            return;
+        }
+        var unitPrice;
+        unitPrice = currentProduct.price;
         var e;
-        e = document.getElementById("totalPrice");
-        console.log("Element:");
-        console.log(e);
-        e.value = 666;
+        var price;
+        var prevVal = document.getElementById("quantity").value;
+        var n = (c - 48);
+        var newVal =  prevVal + n;
+
+        processNewVal(newVal);
     },
     "keyup .cart-amount": function (event, template) {
         event.preventDefault();
