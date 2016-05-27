@@ -92,9 +92,49 @@ var getQuantityDiscountFromIValue = function(tableI, quantity, provider)
             return prevDiscount;
         }
     }
-    return selectedValue;
+    return 0;
 }
 
+var getMarginFromHValue = function(tableH, scale)
+{
+    if ( !valid(tableH) ) {
+        console.log("  * ERROR: No esta la tabla H");
+        return 0;
+    }
+    if ( !valid(tableH.values) ) {
+        console.log("  * ERROR: la tabla H esta mal:");
+        console.log(tableH);
+        return 0;
+    }
+
+    tableH.values.sort(function(a, b) {
+        if ( a.moneyStartValue > b.moneyStartValue ) {
+            return -1;
+        }
+        else if ( a.moneyStartValue < b.moneyStartValue ) {
+            return 1;
+        }
+        return 0;
+    });
+
+    var prevMargin = tableH.values[0].percent;
+    var i;
+
+    console.log("** Margen inicial: " + prevMargin);
+
+    for ( i in tableH.values ) {
+        prevMargin = tableH.values[i].percent;
+        if ( scale >= tableH.values[i].moneyStartValue ) {
+            return prevMargin;
+        }
+    }
+    return 0;
+
+}
+
+/**
+Esta es una de las dos subrutinas de control para casos de calculateInternalPrice
+*/
 var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupTables) {
     var varI;
     var tableI;
@@ -107,10 +147,30 @@ var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupT
         varI = getQuantityDiscountFromIValue(tableI, quantity, product.provider);
     }
     console.log("  - Valor I: " + varI);
+    var varP5;
+
+    varP5 = product.price * (1.0 - varI) * quantity;
+    console.log("  - Valor P5: $" + varP5);
+
+    //----------------------------------------------------------
+    var tableH;
+    var varH;
+    tableH = getLookupTable(lookupTables, "h");
+    if ( !valid(tableH) ) {
+        varH = 0;
+    }
+    else {
+        varH = getMarginFromHValue(tableH, varP5);
+    }
+    console.log("  - Valor H: " + varH);
+
 
     return quantity * product.price + varI;
 }
 
+/**
+Esta es una de las dos subrutinas de control para casos de calculateInternalPrice
+*/
 var calculatePriceForNonUsbProduct = function(product, quantity, markIndex, lookupTables) {
     return quantity * product.price + 2;   
 }
