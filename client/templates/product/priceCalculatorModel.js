@@ -162,8 +162,10 @@ var calculatePriceForUsbProduct = function(product, quantity, markIndex, lookupT
     }
     console.log("  - Valor H: " + varH);
 
+    var varP6 = varP5 / (1 - varH);
+    console.log("  - Valor PUSM: " + varP6 / quantity);
 
-    return quantity * product.price + varI;
+    return varP6;
 }
 
 /**
